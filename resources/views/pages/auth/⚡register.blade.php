@@ -109,18 +109,6 @@ new class extends Component {
                     <span wire:loading>Memproses...</span>
                 </button>
 
-                <div class="position-relative text-center mb-4">
-                    <hr class="opacity-10">
-                    <span
-                        class="position-absolute top-50 start-50 translate-middle bg-white px-3 text-muted extra-small fw-bold text-uppercase">Atau</span>
-                </div>
-
-                <button type="button"
-                    class="btn btn-outline-dark w-100 py-3 fw-bold border border-light-subtle rounded-pill shadow-sm d-flex align-items-center justify-content-center gap-2">
-                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"
-                        style="height: 18px;">
-                    <span class="small font-jakarta">Daftar dengan Google</span>
-                </button>
             </form>
 
             <div class="text-center mt-4">
@@ -129,6 +117,10 @@ new class extends Component {
                         class="fw-bold text-primary text-decoration-none border-bottom border-primary border-2 pb-0.5">Masuk
                         disini</a>
                 </p>
+                <a href="{{ route('home') }}" wire:navigate
+                    class="text-muted text-decoration-none extra-small fw-bold mt-3 d-inline-block opacity-75 hover-opacity-100">
+                    <i class="bi bi-arrow-left me-1"></i> Kembali ke Beranda
+                </a>
             </div>
         </div>
     </section>
