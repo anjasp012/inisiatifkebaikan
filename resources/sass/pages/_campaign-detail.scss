@@ -1,0 +1,546 @@
+// Campaign Detail Page
+
+// ─── Header ───
+section.detail-header-section {
+    padding: 0 !important;
+    position: sticky;
+    top: 0;
+    z-index: 1100;
+    background: #fff;
+    border-bottom: 1px solid #f0f1f3;
+
+    .detail-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 0;
+
+        &__back {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #1a1d1f;
+            font-size: 18px;
+            transition: color 0.2s;
+
+            &:hover {
+                color: $primary;
+            }
+        }
+
+        &__title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1a1d1f;
+        }
+
+        &__spacer {
+            width: 32px;
+        }
+    }
+}
+
+// ─── Image ───
+section.detail-image-section {
+    padding: 0 !important;
+
+    img {
+        width: 100%;
+        display: block;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
+    }
+}
+
+// ─── Info ───
+section.detail-info-section {
+    padding-top: 14px !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid #f0f1f3;
+}
+
+// Badges wrapper
+.detail-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+// Badge below image
+.detail-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border-radius: 4px;
+    background: rgba($primary, 0.08);
+    color: $primary;
+    border: 1px solid rgba($primary, 0.15);
+
+    &--urgent {
+        background: rgba(#ef4444, 0.08);
+        color: #ef4444;
+        border-color: rgba(#ef4444, 0.15);
+    }
+}
+
+// Title
+.detail-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: #1a1d1f;
+    line-height: 1.4;
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
+}
+
+// Progress
+.detail-progress {
+    margin-bottom: 10px;
+
+    .progress {
+        height: 5px;
+        border-radius: 100px;
+        background-color: #f0f1f3;
+
+        .progress-bar {
+            background: linear-gradient(90deg, lighten($primary, 8%) 0%, $primary 100%);
+            border-radius: 100px;
+        }
+    }
+}
+
+// Stats
+.detail-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    &__left {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    &__amount {
+        font-size: 16px;
+        font-weight: 800;
+        color: $primary;
+        line-height: 1.2;
+    }
+
+    &__target {
+        font-size: 10.5px;
+        font-weight: 500;
+        color: #9a9fa5;
+    }
+
+    &__right {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        text-align: right;
+    }
+
+    &__inline {
+        font-size: 13px;
+        color: #6f767e;
+        line-height: 1.4;
+
+        strong {
+            font-weight: 800;
+            color: #1a1d1f;
+        }
+
+        small {
+            font-weight: 500;
+            color: #9a9fa5;
+        }
+    }
+}
+
+// ─── Organizer ───
+section.detail-organizer-section {
+    padding-top: 14px !important;
+    padding-bottom: 14px !important;
+    border-bottom: 1px solid #f0f1f3;
+
+    .detail-organizer {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: inherit;
+        transition: opacity 0.2s;
+
+        &:hover {
+            opacity: 0.7;
+            color: inherit;
+        }
+
+        &__avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba($primary, 0.1) 0%, rgba($primary, 0.03) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 1.5px solid rgba($primary, 0.1);
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        &__initials {
+            font-size: 15px;
+            font-weight: 800;
+            color: $primary;
+        }
+
+        &__info {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            flex: 1;
+        }
+
+        &__name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1a1d1f;
+        }
+
+        &__verified {
+            font-size: 10.5px;
+            font-weight: 600;
+            color: #49a3e3;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+
+            i {
+                color: #49a3e3;
+                font-size: 12px;
+            }
+        }
+
+        &__arrow {
+            font-size: 14px;
+            color: #9a9fa5;
+            flex-shrink: 0;
+        }
+    }
+}
+
+// ─── Tabs ───
+section.detail-tabs-section {
+    padding: 0 !important;
+    position: sticky;
+    top: 52px;
+    z-index: 100;
+    background: #fff;
+
+    .detail-tabs {
+        display: flex;
+        border-bottom: 1px solid #f0f1f3;
+
+        &__item {
+            flex: 1;
+            padding: 12px 8px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #9a9fa5;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+
+            &:hover {
+                color: #6f767e;
+            }
+
+            &.active {
+                color: $primary;
+                border-bottom-color: $primary;
+                font-weight: 700;
+            }
+        }
+    }
+}
+
+// ─── Content ───
+section.detail-content-section {
+    min-height: 260px;
+    padding-bottom: 100px !important;
+
+    .detail-content__story {
+        font-size: 13.5px;
+        font-weight: 400;
+        color: #3a3f47;
+        line-height: 1.75;
+    }
+
+    .detail-content__empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 24px;
+        text-align: center;
+
+        i {
+            font-size: 36px;
+            color: #e0e2e5;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 13px;
+            font-weight: 500;
+            color: #9a9fa5;
+            margin: 0;
+        }
+    }
+}
+
+// Update timeline items
+// Update Timeline
+// Update Accordion Items
+.update-item {
+    border-bottom: 1px solid #f0f1f3;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &__header {
+        display: flex;
+        align-items: flex-start; // Stay top aligned
+        gap: 14px;
+        width: 100%;
+        padding: 16px 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+    }
+
+    &__date {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        min-width: 48px;
+        padding: 6px 4px;
+        border: 2px solid $primary;
+        border-radius: 8px;
+        background: #fff;
+    }
+
+    &__day {
+        font-size: 18px;
+        font-weight: 800;
+        color: $primary;
+        line-height: 1.1;
+    }
+
+    &__month {
+        font-size: 10px;
+        font-weight: 700;
+        color: $primary;
+        text-transform: capitalize;
+        line-height: 1.2;
+    }
+
+    &__year {
+        font-size: 9px;
+        font-weight: 600;
+        color: #9a9fa5;
+        line-height: 1.2;
+    }
+
+    &__title {
+        flex: 1;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1a1d1f;
+        line-height: 1.4;
+        margin-top: 0;
+    }
+
+    &__chevron {
+        font-size: 14px;
+        color: #9a9fa5;
+        flex-shrink: 0;
+        transition: transform 0.2s;
+    }
+
+    &__body {
+        padding: 0 0 14px 62px; // Indent content
+    }
+
+    &__content {
+        font-size: 14px;
+        font-weight: 400;
+        color: #3a3f47;
+        line-height: 1.7;
+        margin-bottom: 12px;
+    }
+
+    &__image {
+        width: 100%;
+        border-radius: 10px;
+        object-fit: cover;
+        display: block;
+    }
+}
+
+// Donor filter sub-tabs
+.donor-filter {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+
+    &__item {
+        padding: 6px 16px;
+        border-radius: 100px;
+        border: 1.5px solid #e0e2e5;
+        background: #fff;
+        font-size: 12px;
+        font-weight: 600;
+        color: #6f767e;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover {
+            border-color: $primary;
+            color: $primary;
+        }
+
+        &.active {
+            border-color: $primary;
+            background: rgba($primary, 0.06);
+            color: $primary;
+        }
+    }
+}
+
+// Donor list
+.donor-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f4f5f6;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &__avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #f4f5f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        i {
+            font-size: 16px;
+            color: #9a9fa5;
+        }
+    }
+
+    &__info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        min-width: 0;
+    }
+
+    &__name {
+        font-size: 12.5px;
+        font-weight: 700;
+        color: #1a1d1f;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__amount {
+        font-size: 11.5px;
+        font-weight: 600;
+        color: $primary;
+    }
+
+    &__date {
+        font-size: 10.5px;
+        font-weight: 500;
+        color: #9a9fa5;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+}
+
+// ─── Sticky CTA ───
+.detail-cta {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    padding: 12px 16px;
+    padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    background: #fff;
+    border-top: 1px solid #f0f1f3;
+    z-index: 1000;
+
+    &__button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 13px 24px;
+        background: $primary;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        border: none;
+        border-radius: 100px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s;
+
+        &:hover {
+            background: darken($primary, 5%);
+            color: #fff;
+        }
+
+        i {
+            font-size: 15px;
+        }
+    }
+}

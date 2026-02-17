@@ -1,0 +1,167 @@
+// Campaign Card — extends Bootstrap .card
+.campaign-card {
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+
+    &:hover {
+        box-shadow: none;
+        color: inherit;
+        text-decoration: none;
+
+        .card-img-top {
+            transform: scale(1.06);
+        }
+
+        .card-title {
+            color: $primary;
+        }
+    }
+
+    // Image wrapper
+    .position-relative {
+        aspect-ratio: 16 / 10;
+        overflow: hidden;
+    }
+
+    // Image
+    .card-img-top {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    // Body
+    .card-body {
+        padding: 10px 12px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        flex: 1;
+    }
+
+    // Title — always 2 lines reserved
+    .card-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a1d1f;
+        line-height: 1.4;
+        margin: 0;
+        min-height: calc(13px * 1.4 * 2);
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        transition: color 0.2s;
+    }
+
+    // Footer section — pushes to bottom
+    &-footer {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    // Progress bar
+    &-progress {
+        .progress {
+            height: 4px;
+            border-radius: 100px;
+            background-color: #f0f1f3;
+
+            .progress-bar {
+                background: linear-gradient(90deg, lighten($primary, 8%) 0%, $primary 100%);
+                border-radius: 100px;
+            }
+        }
+    }
+
+    // Amount
+    &-amount {
+        font-size: 13px;
+        font-weight: 800;
+        color: $primary;
+        line-height: 1.3;
+    }
+
+    // Stats row
+    &-stats {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    &-label {
+        font-size: 10px;
+        font-weight: 600;
+        color: #9a9fa5;
+        margin-bottom: 1px;
+    }
+
+    &-days-value {
+        font-size: 13px;
+        font-weight: 800;
+        color: #1a1d1f;
+        line-height: 1.3;
+    }
+
+    // Badge overlay
+    &-badge {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        padding: 3px 8px;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        color: #fff;
+        font-size: 9px;
+        font-weight: 700;
+        border-radius: 100px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        z-index: 2;
+
+        i {
+            font-size: 10px;
+        }
+
+        &--urgent {
+            background: #ef4444;
+        }
+    }
+
+    // Organizer
+    &-organizer {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10.5px;
+        font-weight: 600;
+        color: #6f767e;
+
+        span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 140px;
+        }
+
+        i {
+            color: #49a3e3;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+    }
+}

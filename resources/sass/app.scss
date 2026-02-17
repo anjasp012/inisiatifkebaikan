@@ -1,0 +1,38 @@
+@import './fonts';
+@import './icons';
+
+@import './colors';
+
+$focus-ring-box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba($primary, 1);
+$form-select-focus-box-shadow: $focus-ring-box-shadow;
+$input-btn-padding-y: .625rem;
+$input-padding-y: $input-btn-padding-y;
+$input-btn-font-size: .875rem;
+$input-font-size: $input-btn-font-size;
+
+$enable-negative-margins: true;
+@import 'bootstrap';
+
+@import './admin';
+@import './public';
+@import './components/campaign-card';
+@import './components/distribution-card';
+@import './components/article-card';
+@import './components/prayer-card';
+@import './components/priority-card';
+@import './pages/campaign-detail';
+
+// Custom Primary Color Enforcement
+// Ensures that any element with a primary background has white text and icons
+.btn-primary {
+    color: #fff !important;
+}
+
+// Outline primary should have primary color text/icons by default
+.btn-outline-primary {
+
+    i,
+    .bi {
+        color: inherit !important;
+    }
+}
