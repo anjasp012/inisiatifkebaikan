@@ -21,6 +21,7 @@ new #[Layout('layouts.admin')] class extends Component {
     {
         $this->validate([
             'bank_name' => 'required|string|max:255',
+            'bank_code' => 'nullable|string|max:50',
             'account_number' => 'required|string|max:50',
             'account_name' => 'required|string|max:255',
             'method' => 'required|string',
@@ -31,6 +32,7 @@ new #[Layout('layouts.admin')] class extends Component {
 
         Bank::create([
             'bank_name' => $this->bank_name,
+            'bank_code' => $this->bank_code,
             'account_number' => $this->account_number,
             'account_name' => $this->account_name,
             'type' => 'manual',
@@ -109,6 +111,15 @@ is-invalid
                                 </select>
                             </div>
                             @error('method')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Kode Bank / Channel (Opsional)</label>
+                            <input type="text" class="form-control @error('bank_code') is-invalid @enderror"
+                                wire:model="bank_code" placeholder="Contoh: 002 atau bca">
+                            @error('bank_code')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>

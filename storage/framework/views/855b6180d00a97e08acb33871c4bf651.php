@@ -1,150 +1,13 @@
 <?php
-
 use Livewire\Attributes\Layout;
 use App\Models\Setting;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-
-new #[Layout('layouts.admin')] class extends Component {
-    use WithFileUploads;
-
-    // General Settings
-    public $website_name;
-    public $website_description;
-    public $whatsapp_number;
-    public $footer_text;
-    public $logo;
-    public $current_logo;
-
-    // Tripay Settings
-    public $tripay_merchant_code;
-    public $tripay_api_key;
-    public $tripay_private_key;
-    public $tripay_mode = 'sandbox';
-
-    // Midtrans Settings
-    public $midtrans_merchant_id;
-    public $midtrans_client_key;
-    public $midtrans_server_key;
-    public $midtrans_mode = 'sandbox';
-
-    // WhaCenter Settings
-    public $whacenter_device_id;
-
-    // Notification Templates
-    public $template_donation_created;
-    public $template_donation_confirmed;
-    public $template_donation_rejected;
-
-    public function mount()
-    {
-        // General
-        $this->website_name = Setting::get('website_name', 'Inisiatif Kebaikan');
-        $this->website_description = Setting::get('website_description', 'Platform donasi terpercaya.');
-        $this->whatsapp_number = Setting::get('whatsapp_number', '628123456789');
-        $this->footer_text = Setting::get('footer_text', '© 2024 Inisiatif Kebaikan. All rights reserved.');
-        $this->current_logo = Setting::get('logo');
-
-        // Tripay
-        $this->tripay_merchant_code = Setting::get('tripay_merchant_code');
-        $this->tripay_api_key = Setting::get('tripay_api_key');
-        $this->tripay_private_key = Setting::get('tripay_private_key');
-        $this->tripay_mode = Setting::get('tripay_mode', 'sandbox');
-
-        // Midtrans
-        $this->midtrans_merchant_id = Setting::get('midtrans_merchant_id');
-        $this->midtrans_client_key = Setting::get('midtrans_client_key');
-        $this->midtrans_server_key = Setting::get('midtrans_server_key');
-        $this->midtrans_mode = Setting::get('midtrans_mode', 'sandbox');
-
-        // WhaCenter
-        $this->whacenter_device_id = Setting::get('whacenter_device_id');
-
-        // Notification Templates
-        $this->template_donation_created = \App\Models\NotificationTemplate::where('slug', 'donation-created')->first()?->content;
-        $this->template_donation_confirmed = \App\Models\NotificationTemplate::where('slug', 'donation-confirmed')->first()?->content;
-        $this->template_donation_rejected = \App\Models\NotificationTemplate::where('slug', 'donation-rejected')->first()?->content;
-    }
-
-    public function getLogsProperty()
-    {
-        return \App\Models\NotificationLog::latest()->limit(10)->get();
-    }
-
-    public function save()
-    {
-        // General
-        Setting::set('website_name', $this->website_name);
-        Setting::set('website_description', $this->website_description);
-        Setting::set('whatsapp_number', $this->whatsapp_number);
-        Setting::set('footer_text', $this->footer_text);
-
-        // Tripay
-        Setting::set('tripay_merchant_code', $this->tripay_merchant_code);
-        Setting::set('tripay_api_key', $this->tripay_api_key);
-        Setting::set('tripay_private_key', $this->tripay_private_key);
-        Setting::set('tripay_mode', $this->tripay_mode);
-
-        // Midtrans
-        Setting::set('midtrans_merchant_id', $this->midtrans_merchant_id);
-        Setting::set('midtrans_client_key', $this->midtrans_client_key);
-        Setting::set('midtrans_server_key', $this->midtrans_server_key);
-        Setting::set('midtrans_mode', $this->midtrans_mode);
-
-        // WhaCenter
-        Setting::set('whacenter_device_id', $this->whacenter_device_id);
-
-        // Notification Templates
-        \App\Models\NotificationTemplate::updateOrCreate(['slug' => 'donation-created'], ['name' => 'Donasi Dibuat', 'content' => $this->template_donation_created]);
-        \App\Models\NotificationTemplate::updateOrCreate(['slug' => 'donation-confirmed'], ['name' => 'Donasi Berhasil', 'content' => $this->template_donation_confirmed]);
-        \App\Models\NotificationTemplate::updateOrCreate(['slug' => 'donation-rejected'], ['name' => 'Donasi Dibatalkan', 'content' => $this->template_donation_rejected]);
-
-        if ($this->logo) {
-            $path = $this->logo->store('settings', 'public');
-            Setting::set('logo', $path);
-            $this->current_logo = $path;
-        }
-
-        $this->dispatch('toast', type: 'success', message: 'Pengaturan berhasil disimpan ✅');
-    }
-};
 ?>
 
-@push('styles')
-    <style>
-        .active-tpl {
-            background: white !important;
-            color: var(--bs-primary) !important;
-            border-left: 4px solid var(--bs-primary) !important;
-        }
-
-        .bg-lighter {
-            background-color: #f8fafc;
-        }
-
-        .extra-small {
-            font-size: 11px;
-        }
-
-        .ls-1 {
-            letter-spacing: 1px;
-        }
-
-        .shadow-micro {
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        }
-
-        [x-cloak] {
-            display: none !important;
-        }
-
-        .bd-tpl-area textarea:focus {
-            background-color: white !important;
-            border-color: var(--bs-primary) !important;
-            box-shadow: 0 0 0 4px rgba(var(--bs-primary-rgb), 0.1) !important;
-        }
-    </style>
-@endpush
+<?php $__env->startPush('styles'); ?>
+    
+<?php $__env->stopPush(); ?>
 
 <div>
     <div class="card card-dashboard border-0 overflow-hidden">
@@ -183,11 +46,36 @@ new #[Layout('layouts.admin')] class extends Component {
                         <div class="row g-4">
                             <div class="col-12">
                                 <label class="form-label fw-bold small text-uppercase">Logo Website</label>
-                                <x-admin.file-upload model="logo" label="Logo Website" :preview="$logo
+                                <?php if (isset($component)) { $__componentOriginal6384af2cfbb3fb249311eef9f601626b = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal6384af2cfbb3fb249311eef9f601626b = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.file-upload','data' => ['model' => 'logo','label' => 'Logo Website','preview' => $logo
                                     ? $logo->temporaryUrl()
                                     : ($current_logo
                                         ? asset('storage/' . $current_logo)
-                                        : asset('assets/images/logo.png'))" />
+                                        : asset('assets/images/logo.png'))]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('admin.file-upload'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['model' => 'logo','label' => 'Logo Website','preview' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($logo
+                                    ? $logo->temporaryUrl()
+                                    : ($current_logo
+                                        ? asset('storage/' . $current_logo)
+                                        : asset('assets/images/logo.png')))]); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
+
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal6384af2cfbb3fb249311eef9f601626b)): ?>
+<?php $attributes = $__attributesOriginal6384af2cfbb3fb249311eef9f601626b; ?>
+<?php unset($__attributesOriginal6384af2cfbb3fb249311eef9f601626b); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal6384af2cfbb3fb249311eef9f601626b)): ?>
+<?php $component = $__componentOriginal6384af2cfbb3fb249311eef9f601626b; ?>
+<?php unset($__componentOriginal6384af2cfbb3fb249311eef9f601626b); ?>
+<?php endif; ?>
                                 <small class="text-muted d-block mt-2">Rekomendasi ukuran: 200x50px (PNG
                                     Transparan)</small>
                             </div>
@@ -364,7 +252,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                             </div>
                                         </div>
                                         <div class="col-md-8 p-4 bg-white bd-tpl-area">
-                                            {{-- Created Template --}}
+                                            
                                             <div x-show="currentTpl === 'created'" x-cloak>
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <span
@@ -394,7 +282,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                                 </div>
                                             </div>
 
-                                            {{-- Confirmed Template --}}
+                                            
                                             <div x-show="currentTpl === 'confirmed'" x-cloak>
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <span
@@ -421,7 +309,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                                 </div>
                                             </div>
 
-                                            {{-- Rejected Template --}}
+                                            
                                             <div x-show="currentTpl === 'rejected'" x-cloak>
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <span
@@ -445,7 +333,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                                 </div>
                                             </div>
 
-                                            {{-- Logs Section --}}
+                                            
                                             <div x-show="currentTpl === 'logs'" x-cloak>
                                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <span
@@ -462,24 +350,24 @@ new #[Layout('layouts.admin')] class extends Component {
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @forelse($this->logs as $log)
+                                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $this->logs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
                                                                 <tr class="align-middle">
                                                                     <td class="text-nowrap py-2">
-                                                                        {{ $log->created_at->format('H:i') }}</td>
+                                                                        <?php echo e($log->created_at->format('H:i')); ?></td>
                                                                     <td class="fw-bold">
-                                                                        {{ Str::limit($log->recipient, 12) }}</td>
+                                                                        <?php echo e(Str::limit($log->recipient, 12)); ?></td>
                                                                     <td>
-                                                                        @if ($log->status === 'success')
+                                                                        <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($log->status === 'success'): ?>
                                                                             <span class="text-success fw-bold"><i
                                                                                     class="bi bi-check-circle-fill me-1"></i>Ok</span>
-                                                                        @else
+                                                                        <?php else: ?>
                                                                             <span class="text-danger fw-bold"
-                                                                                title="{{ $log->error_message }}"><i
+                                                                                title="<?php echo e($log->error_message); ?>"><i
                                                                                     class="bi bi-x-circle-fill me-1"></i>Fail</span>
-                                                                        @endif
+                                                                        <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                                                     </td>
                                                                 </tr>
-                                                            @empty
+                                                            <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
                                                                 <tr>
                                                                     <td colspan="3"
                                                                         class="text-center py-5 text-muted">
@@ -488,7 +376,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                                                         Belum ada riwayat pengiriman
                                                                     </td>
                                                                 </tr>
-                                                            @endforelse
+                                                            <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -527,4 +415,4 @@ new #[Layout('layouts.admin')] class extends Component {
             <i class="bi bi-cpu fs-2 text-info opacity-25"></i>
         </div>
     </div>
-</div>
+</div><?php /**PATH C:\laragon\www\inisiatif\storage\framework/views/livewire/views/ecfb6f37.blade.php ENDPATH**/ ?>

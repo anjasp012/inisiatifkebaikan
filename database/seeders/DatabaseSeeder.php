@@ -30,19 +30,13 @@ class DatabaseSeeder extends Seeder
         $this->seedNotificationTemplates();
         $this->command->info('✅ Notification Templates seeded');
 
-        // 3. ADMIN USER
-        $admin = User::firstOrCreate(
-            ['email' => 'admin@inisiatif.com'],
-            [
-                'name' => 'Admin Inisiatif',
-                'password' => Hash::make('password'),
-                'email_verified_at' => now(),
-            ]
-        );
-        $this->command->info('✅ Admin User seeded (admin@inisiatif.com / password)');
+        // 3. USERS (Admin, Fundraisers, Donatur)
+        $users = $this->seedUsers();
+        $admin = $users['admin'];
+        $this->command->info('✅ Users seeded (admin@inisiatif.com / password)');
 
         // 4. BANKS
-        $this->seedBanks();
+        $banks = $this->seedBanks();
         $this->command->info('✅ Banks seeded');
 
         // 5. CATEGORIES
@@ -50,7 +44,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info('✅ Campaign Categories seeded');
 
         // 6. FUNDRAISERS
-        $fundraisers = $this->seedFundraisers();
+        $fundraisers = $this->seedFundraisers($users['fundraisers']);
         $this->command->info('✅ Fundraisers seeded');
 
         // 7. CAMPAIGNS
@@ -58,7 +52,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info('✅ Campaigns seeded');
 
         // 8. DONATIONS
-        $this->seedDonations($campaigns);
+        $this->seedDonations($campaigns, $banks, $users['donatur']);
         $this->command->info('✅ Donations seeded');
 
         // 9. WITHDRAWALS & DISTRIBUTIONS
@@ -111,6 +105,11 @@ class DatabaseSeeder extends Seeder
                 'name' => 'Donasi Dibatalkan (Failed)',
                 'content' => "Mohon maaf {donor_name},\n\nDonasi Anda untuk program \"{campaign_title}\" tidak dapat dikonfirmasi/dibatalkan.\n\nJika ini adalah kekeliruan, silakan hubungi layanan pelanggan kami melalui WhatsApp di nomor yang tertera di website.\n\nTerima kasih.",
             ],
+            [
+                'slug' => 'otp-login',
+                'name' => 'Login OTP',
+                'content' => "Kode OTP Anda untuk login ke Wahdah Inisiatif Kebaikan adalah: *{otp_code}*\n\nKode ini berlaku selama 5 menit. Jangan berikan kode ini kepada siapapun termasuk pihak Wahdah Inisiatif.",
+            ],
         ];
 
         foreach ($templates as $tpl) {
@@ -118,17 +117,53 @@ class DatabaseSeeder extends Seeder
         }
     }
 
+    private function seedUsers()
+    {
+        // Admin
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@inisiatif.com'],
+            ['name' => 'Admin Inisiatif', 'password' => Hash::make('password'), 'role' => 'admin', 'email_verified_at' => now(), 'phone' => '628111111111']
+        );
+
+        // Fundraisers
+        $fundraiserNames = ['Wahdah Inisiatif Jakarta', 'Relawan Kebaikan Bandung', 'Peduli Ummat Makassar'];
+        $fundraisers = [];
+        foreach ($fundraiserNames as $i => $name) {
+            $fundraisers[] = User::firstOrCreate(
+                ['email' => 'fundraiser' . ($i + 1) . '@inisiatif.com'],
+                ['name' => $name, 'password' => Hash::make('password'), 'role' => 'fundraiser', 'email_verified_at' => now(), 'phone' => '6282222222' . ($i + 1)]
+            );
+        }
+
+        // Donatur (Sample Registered Users)
+        $donaturNames = ['Abdullah Azam', 'Siti Rahma', 'Budi Santoso', 'Anjas Mara', 'Zulfikar Ali'];
+        $donaturs = [];
+        foreach ($donaturNames as $i => $name) {
+            $donaturs[] = User::firstOrCreate(
+                ['email' => Str::slug($name) . '@email.com'],
+                ['name' => $name, 'password' => Hash::make('password'), 'role' => 'donatur', 'email_verified_at' => now(), 'phone' => '6283333333' . ($i + 1)]
+            );
+        }
+
+        return [
+            'admin' => $admin,
+            'fundraisers' => $fundraisers,
+            'donatur' => $donaturs
+        ];
+    }
+
     private function seedBanks()
     {
-        $banks = [
-            ['name' => 'Bank Syariah Indonesia (BSI)', 'no' => '76000-454-68', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/bsi.png'],
-            ['name' => 'Bank Rakyat Indonesia (BRI)', 'no' => '0137-0100-2316-563', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/bri.png'],
-            ['name' => 'Bank Mandiri', 'no' => '13000-2578-6164', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/mandiri.png'],
-            ['name' => 'Bank Central Asia (BCA)', 'no' => '1396-316-316', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/bca.png'],
+        $banksData = [
+            ['name' => 'Bank Syariah Indonesia (BSI)', 'no' => '76000-454-68', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/bsi.png', 'channel' => 'BSI'],
+            ['name' => 'Bank Rakyat Indonesia (BRI)', 'no' => '0137-0100-2316-563', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/bri.png', 'channel' => 'BRI'],
+            ['name' => 'Bank Mandiri', 'no' => '13000-2578-6164', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/mandiri.png', 'channel' => 'MANDIRI'],
+            ['name' => 'Bank Central Asia (BCA)', 'no' => '1396-316-316', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/bca.png', 'channel' => 'BCA'],
         ];
 
-        foreach ($banks as $b) {
-            Bank::updateOrCreate(
+        $banks = [];
+        foreach ($banksData as $b) {
+            $banks[] = Bank::updateOrCreate(
                 ['account_number' => $b['no']],
                 [
                     'bank_name' => $b['name'],
@@ -140,6 +175,7 @@ class DatabaseSeeder extends Seeder
                 ]
             );
         }
+        return $banks;
     }
 
     private function seedCategories()
@@ -163,24 +199,19 @@ class DatabaseSeeder extends Seeder
         return $categories;
     }
 
-    private function seedFundraisers()
+    private function seedFundraisers($users)
     {
-        $names = ['Wahdah Inisiatif Jakarta', 'Relawan Kebaikan Bandung', 'Peduli Ummat Makassar'];
         $fundraisers = [];
-        foreach ($names as $i => $name) {
-            $user = User::firstOrCreate(
-                ['email' => 'fundraiser' . ($i + 1) . '@inisiatif.com'],
-                ['name' => $name, 'password' => Hash::make('password'), 'email_verified_at' => now()]
-            );
-
+        foreach ($users as $i => $user) {
             $fundraisers[] = Fundraiser::updateOrCreate(
                 ['user_id' => $user->id],
                 [
-                    'foundation_name' => $name,
+                    'foundation_name' => $user->name,
                     'status' => 'approved',
                     'bank_name' => 'BSI',
-                    'bank_account_name' => $name,
+                    'bank_account_name' => $user->name,
                     'bank_account_number' => '71234567' . $i,
+                    'office_address' => 'Jl. Kebaikan No. ' . ($i + 1),
                 ]
             );
         }
@@ -223,9 +254,9 @@ class DatabaseSeeder extends Seeder
         return $campaigns;
     }
 
-    private function seedDonations($campaigns)
+    private function seedDonations($campaigns, $banks, $donaturs)
     {
-        $names = ['Hamba Allah', 'Abdullah', 'Fatimah', 'Zulfikar', 'Siti Aminah', 'Budi Harjo', 'Anjas Mara'];
+        $anonymousNames = ['Hamba Allah', 'Hamba Allah Makassar', 'Sahabat Kebaikan'];
         $statuses = ['success', 'success', 'success', 'success', 'pending', 'failed'];
 
         foreach ($campaigns as $campaign) {
@@ -233,21 +264,32 @@ class DatabaseSeeder extends Seeder
             for ($i = 0; $i < $count; $i++) {
                 $status = $statuses[array_rand($statuses)];
                 $amount = rand(10, 500) * 10000;
+                $bank = $banks[array_rand($banks)];
 
-                $donation = Donation::create([
+                // 50% chance registered donatur, 50% anonymous/guest
+                $isRegistered = rand(0, 1);
+                $donatur = $isRegistered ? $donaturs[array_rand($donaturs)] : null;
+
+                $donationData = [
                     'transaction_id' => 'INV-' . strtoupper(Str::random(10)),
                     'campaign_id' => $campaign->id,
-                    'donor_name' => $names[array_rand($names)],
+                    'bank_id' => $bank->id,
+                    'user_id' => $donatur ? $donatur->id : null,
+                    'donor_name' => $donatur ? $donatur->name : $anonymousNames[array_rand($anonymousNames)],
                     'donor_phone' => '08' . rand(111111111, 899999999),
+                    'donor_email' => $donatur ? $donatur->email : 'guest' . rand(1, 1000) . '@email.com',
                     'amount' => $amount,
                     'status' => $status,
                     'payment_method' => 'manual_transfer',
-                    'payment_channel' => 'BCA',
+                    'payment_channel' => $bank->bank_name,
+                    'payment_code' => $bank->account_number,
                     'message' => $i % 4 === 0 ? 'Semoga berkah dan bermanfaat. Aamiin.' : null,
                     'amin_count' => $i % 4 === 0 ? rand(0, 50) : 0,
                     'paid_at' => $status === 'success' ? now()->subDays(rand(0, 7)) : null,
                     'created_at' => now()->subDays(rand(0, 7)),
-                ]);
+                ];
+
+                $donation = Donation::create($donationData);
 
                 if ($status === 'success') {
                     $campaign->increment('collected_amount', $amount);

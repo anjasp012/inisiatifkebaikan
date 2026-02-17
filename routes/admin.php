@@ -27,6 +27,8 @@ Route::livewire('/admin/artikel/ubah/{article:slug}', 'pages::admin.artikel.ubah
 Route::livewire('/admin/fundraiser', 'pages::admin.fundraiser.index')->name('admin.fundraiser');
 Route::livewire('/admin/fundraiser/{fundraiser}', 'pages::admin.fundraiser.detail')->name('admin.fundraiser.detail');
 
+Route::livewire('/admin/donatur', 'pages::admin.donatur.index')->name('admin.donatur');
+
 Route::livewire('/admin/pencairan', 'pages::admin.pencairan.index')->name('admin.pencairan');
 Route::livewire('/admin/pencairan/tambah', 'pages::admin.pencairan.⚡tambah')->name('admin.pencairan.tambah');
 Route::livewire('/admin/pencairan/{withdrawal}', 'pages::admin.pencairan.detail')->name('admin.pencairan.detail');

@@ -34,7 +34,7 @@ new #[Layout('layouts.admin')] class extends Component {
     {
         $this->validate([
             'bank_name' => 'required|string|max:255',
-            'bank_code' => 'required|string|max:50',
+            'bank_code' => $this->type == 'manual' ? 'nullable|string|max:50' : 'required|string|max:50',
             'account_number' => $this->type == 'manual' ? 'required|string|max:50' : 'nullable|string|max:50',
             'account_name' => $this->type == 'manual' ? 'required|string|max:255' : 'nullable|string|max:255',
             'method' => 'required|string',
@@ -134,7 +134,10 @@ is-invalid
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Kode Bank / Channel</label>
+                            <label class="form-label fw-bold">Kode Bank / Channel @if ($type == 'manual')
+                                    (Opsional)
+                                @endif
+                            </label>
                             <input type="text" class="form-control @error('bank_code') is-invalid @enderror"
                                 wire:model="bank_code" placeholder="Contoh: 002 atau bca">
                             @error('bank_code')

@@ -20,7 +20,10 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
+        'role',
+        'avatar',
     ];
 
     /**
@@ -48,5 +51,23 @@ class User extends Authenticatable
     public function fundraiser()
     {
         return $this->hasOne(Fundraiser::class);
+    }
+
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
+
+    public function getAvatarUrlAttribute()
+    {
+        if ($this->role === 'fundraiser' && $this->fundraiser && $this->fundraiser->logo) {
+            return $this->fundraiser->logo_url;
+        }
+
+        if ($this->avatar) {
+            return asset('storage/' . $this->avatar);
+        }
+
+        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=random&color=fff';
     }
 }
