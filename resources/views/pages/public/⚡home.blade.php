@@ -8,8 +8,18 @@ use App\Models\Donation;
 use Livewire\Component;
 use Livewire\Attributes\Computed;
 
+use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Illuminate\Support\Facades\View;
+
 new class extends Component {
     public ?int $recommendedCategory = null;
+
+    public function mount()
+    {
+        $seoData = new SEOData(title: 'Wahdah Inisiatif Kebaikan', description: 'Platform donasi dan penghimpunan dana sosial terpercaya untuk mewujudkan inisiatif kebaikan di seluruh nusantara.', image: asset('assets/images/og-image.jpg'));
+
+        View::share('seoData', $seoData);
+    }
 
     #[Computed]
     public function priorityBannerCampaign()
@@ -318,11 +328,16 @@ new class extends Component {
         <div class="container-fluid">
             <!-- Social Media -->
             <div class="d-flex gap-2 mb-4">
-                <a href="#" class="social-btn"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="social-btn"><i class="bi bi-instagram"></i></a>
-                <a href="#" class="social-btn"><i class="bi bi-twitter-x"></i></a>
-                <a href="#" class="social-btn"><i class="bi bi-tiktok"></i></a>
-                <a href="#" class="social-btn"><i class="bi bi-linkedin"></i></a>
+                <a href="https://www.facebook.com/inisiatifkebaikan" target="_blank" class="social-btn"><i
+                        class="bi bi-facebook"></i></a>
+                <a href="https://www.instagram.com/inisiatifkebaikanorg/" target="_blank" class="social-btn"><i
+                        class="bi bi-instagram"></i></a>
+                <a href="https://x.com/inisiatifbaik" target="_blank" class="social-btn"><i
+                        class="bi bi-twitter-x"></i></a>
+                <a href="https://www.tiktok.com/@inisiatifkebaikanorg" target="_blank" class="social-btn"><i
+                        class="bi bi-tiktok"></i></a>
+                <a href="https://www.linkedin.com/in/inisiatif-kebaikan-579b332b2" target="_blank"
+                    class="social-btn"><i class="bi bi-linkedin"></i></a>
             </div>
 
             <!-- Links -->

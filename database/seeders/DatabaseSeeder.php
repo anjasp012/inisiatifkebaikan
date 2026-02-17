@@ -155,10 +155,11 @@ class DatabaseSeeder extends Seeder
     private function seedBanks()
     {
         $banksData = [
-            ['name' => 'Bank Syariah Indonesia (BSI)', 'no' => '76000-454-68', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/bsi.png', 'channel' => 'BSI'],
-            ['name' => 'Bank Rakyat Indonesia (BRI)', 'no' => '0137-0100-2316-563', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/bri.png', 'channel' => 'BRI'],
-            ['name' => 'Bank Mandiri', 'no' => '13000-2578-6164', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/mandiri.png', 'channel' => 'MANDIRI'],
             ['name' => 'Bank Central Asia (BCA)', 'no' => '1396-316-316', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/bca.png', 'channel' => 'BCA'],
+            ['name' => 'Bank Syariah Indonesia (BSI)', 'no' => '76000-454-68', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/bsi.png', 'channel' => 'BSI'],
+            ['name' => 'Bank Mandiri', 'no' => '13000-2578-6164', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/mandiri.png', 'channel' => 'MANDIRI'],
+            ['name' => 'Bank Rakyat Indonesia (BRI)', 'no' => '0137-0100-2316-563', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/bri.png', 'channel' => 'BRI'],
+            ['name' => 'Bank Muamalat', 'no' => '1050-0183-58', 'an' => 'Yayasan Wahdah Inisiatif Kebaikan', 'logo' => 'assets/images/banks/muamalat.png', 'channel' => 'MUAMALAT'],
         ];
 
         $banks = [];
@@ -250,6 +251,18 @@ class DatabaseSeeder extends Seeder
                     'end_date' => now()->addDays(60),
                 ]
             );
+
+            // Add Explicit SEO Data for Priority Campaigns (Example of override)
+            if ($item['priority']) {
+                $campaigns[count($campaigns) - 1]->seo()->updateOrCreate(
+                    ['title' => $item['title'] . ' | Inisiatif Kebaikan'],
+                    [
+                        'description' => 'Bantu sekarang! ' . Str::limit('Mari bergandengan tangan untuk mendukung ' . $item['title'], 150),
+                        'image' => 'campaigns/dummy-campaign.jpg',
+                        'robots' => 'index, follow',
+                    ]
+                );
+            }
         }
         return $campaigns;
     }

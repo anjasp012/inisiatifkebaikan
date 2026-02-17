@@ -5,8 +5,18 @@ use App\Models\Donation;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 
+use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Illuminate\Support\Facades\View;
+
 new class extends Component {
     public array $localHistory = [];
+
+    public function mount()
+    {
+        $seoData = new SEOData(title: 'Donasi Saya | Inisiatif Kebaikan', robots: 'noindex, nofollow');
+
+        View::share('seoData', $seoData);
+    }
 
     public function syncHistory(array $history)
     {

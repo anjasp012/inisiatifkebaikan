@@ -5,6 +5,7 @@ use App\Models\Donation;
 
 use Livewire\Component;
 use Livewire\Attributes\Computed;
+use Illuminate\Support\Facades\View;
 
 new class extends Component {
     public Campaign $campaign;
@@ -15,6 +16,9 @@ new class extends Component {
     {
         $this->campaign = $campaign->load(['category', 'fundraiser']);
         views($this->campaign)->record();
+
+        // Pass model directly for granular SEO
+        View::share('seoData', $this->campaign);
     }
 
     #[Computed]

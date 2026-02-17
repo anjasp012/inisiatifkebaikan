@@ -22,7 +22,12 @@ class EnsureVerified
             && !Auth::user()->isVerified()
             && !$request->routeIs('verification')
             && !$request->routeIs('logout')
-            && !$request->routeIs('livewire.*')
+            && !$request->routeIs('login') // Login page
+            && !$request->routeIs('register') // Register page
+            && !$request->routeIs('livewire.update') // Specific to Livewire 3 default
+            && !$request->routeIs('livewire.message') // Just in case Livewire 2 logic
+            && !$request->routeIs('livewire.*') // Catch-all?
+            && !$request->header('X-Livewire') // Safest: Check if it's a Livewire request
         ) {
             return redirect()->route('verification');
         }

@@ -13,10 +13,21 @@ Route::livewire('/donasi/{campaign:slug}/nominal', 'pages::public.donation.amoun
 Route::livewire('/donasi/{campaign:slug}/data', 'pages::public.donation.data')->name('donation.data');
 Route::livewire('/donasi/{campaign:slug}/pembayaran', 'pages::public.donation.payment')->name('donation.payment');
 Route::livewire('/donasi/instruksi/{transaction_id}', 'pages::public.donation.instruction')->name('donation.instruction');
+Route::livewire('/donasi/instruksi/{transaction_id}', 'pages::public.donation.instruction')->name('donation.instruction');
 Route::livewire('/donasi-saya', 'pages::public.donasi-saya.index')->name('donasi-saya');
 
-Route::livewire('/login', 'pages::auth.login')->name('login');
-Route::livewire('/register', 'pages::auth.register')->name('register');
+// Account Routes
+Route::middleware('auth')->group(function () {
+    Route::livewire('/akun', 'pages::public.account.index')->name('account.index');
+    Route::livewire('/akun/profil', 'pages::public.account.profile')->name('account.profile');
+    Route::livewire('/akun/password', 'pages::public.account.password')->name('account.password');
+});
+
+Route::middleware('guest')->group(function () {
+    Route::livewire('/login', 'pages::auth.login')->name('login');
+    Route::livewire('/register', 'pages::auth.register')->name('register');
+});
+
 Route::livewire('/verifikasi', 'pages::auth.verification')->name('verification');
 
 

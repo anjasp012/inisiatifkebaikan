@@ -4,7 +4,17 @@ use App\Models\CampaignCategory;
 use Livewire\Component;
 use Livewire\Attributes\Computed;
 
+use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Illuminate\Support\Facades\View;
+
 new class extends Component {
+    public function mount()
+    {
+        $seoData = new SEOData(title: 'Kategori Program Inisiatif Kebaikan', description: 'Temukan berbagai kategori program kebaikan yang sesuai dengan kepedulian Anda.');
+
+        View::share('seoData', $seoData);
+    }
+
     #[Computed]
     public function categories()
     {

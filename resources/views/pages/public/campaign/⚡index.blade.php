@@ -7,9 +7,20 @@ use Livewire\Attributes\Computed;
 use Livewire\WithPagination;
 use App\Models\Campaign;
 use App\Models\CampaignCategory;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Illuminate\Support\Facades\View;
 
 new class extends Component {
     use WithPagination;
+
+    public function mount()
+    {
+        $title = $this->category ? 'Program Kebaikan: ' . ucwords(str_replace('-', ' ', $this->category)) : 'Daftar Program Kebaikan - Wahdah Inisiatif';
+
+        $seoData = new SEOData(title: $title, description: 'Temukan dan bantu saudara kita yang membutuhkan melalui berbagai program kebaikan terpercaya.');
+
+        View::share('seoData', $seoData);
+    }
 
     #[Url]
     public $category = '';

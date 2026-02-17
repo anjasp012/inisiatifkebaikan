@@ -19,6 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->appendToGroup('web', [
             \App\Http\Middleware\EnsureVerified::class,
         ]);
+        // Redirect authenticated users to home (/)
+        $middleware->redirectTo(guests: '/', users: '/');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

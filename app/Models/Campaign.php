@@ -5,10 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
+use RalphJSmit\Laravel\SEO\Support\HasSEO;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Illuminate\Support\Str;
 
 class Campaign extends Model implements Viewable
 {
     use InteractsWithViews;
+    use HasSEO;
+
     protected $guarded = ['id'];
 
     protected $casts = [
@@ -20,6 +25,15 @@ class Campaign extends Model implements Viewable
         'is_optimized' => 'boolean',
         'is_slider' => 'boolean',
     ];
+
+    public function getDynamicSEOData(): SEOData
+    {
+        return new SEOData(
+            title: $this->title,
+            description: $this->short_description ?? Str::limit(strip_tags($this->description), 150),
+            image: $this->thumbnail_url,
+        );
+    }
 
     public function getThumbnailUrlAttribute()
     {

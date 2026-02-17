@@ -13,11 +13,13 @@ new #[Layout('layouts.app')] class extends Component {
     public function mount()
     {
         if (!Auth::check()) {
-            return redirect()->route('login');
+            $this->redirect(route('login'), navigate: true);
+            return;
         }
 
         if (Auth::user()->user_verified_at) {
-            return redirect()->route('home');
+            $this->redirect(route('home'), navigate: true);
+            return;
         }
 
         $this->ensureOtpSent();
@@ -53,19 +55,34 @@ new #[Layout('layouts.app')] class extends Component {
     {
         $this->validate();
 
+        /** @var User */
         $user = Auth::user();
 
-        if ($user->otp_code == $this->otp && now()->lessThanOrEqualTo($user->otp_expires_at)) {
-            $user->update([
-                'otp_code' => null,
-                'otp_expires_at' => null,
-                'user_verified_at' => now(),
-            ]);
-
-            return redirect()->route('home');
+        // Ensure user is authenticated
+        if (!$user) {
+            $this->redirect(route('login'), navigate: true);
+            return;
         }
 
-        $this->addError('otp', 'Kode OTP salah atau sudah kadaluarsa.');
+        // Logic check
+        if ($user->otp_code == $this->otp) {
+            // Check expiry
+            if ($user->otp_expires_at && now()->lessThanOrEqualTo($user->otp_expires_at)) {
+                // Update user verification status
+                $user->user_verified_at = now();
+                $user->otp_code = null;
+                $user->otp_expires_at = null;
+                $user->save();
+
+                $this->redirect(route('home'), navigate: true);
+            } else {
+                $this->addError('otp', 'Kode OTP sudah kadaluarsa. Silakan minta kirim ulang.');
+                return;
+            }
+        } else {
+            $this->addError('otp', 'Kode OTP salah. Silakan coba lagi.');
+            return;
+        }
     }
 };
 ?>
@@ -82,7 +99,7 @@ new #[Layout('layouts.app')] class extends Component {
                 <p class="text-muted small">Masukkan kode OTP yang dikirim ke WhatsApp Anda.</p>
             </div>
 
-            <form wire:submit="verify" class="mt-4" style="max-width: 400px; margin: 0 auto;">
+            <form wire:submit.prevent="verify" class="mt-4" style="max-width: 400px; margin: 0 auto;">
                 @if (session()->has('success'))
                     <div class="alert alert-success small mb-4 border-0 bg-success bg-opacity-10 text-success">
                         <i class="bi bi-check-circle me-1"></i> {{ session('success') }}
