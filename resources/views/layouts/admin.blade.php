@@ -92,13 +92,14 @@
                         <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <div>
-                                <small class="d-block text-end">Administrator</small>
-                                <strong class="d-block text-end">Admin</strong>
+                                <small class="d-block text-end">{{ Auth::user()->name }}</small>
+                                <strong class="d-block text-end">{{ Auth::user()->role }}</strong>
                             </div>
-                            <span class="bg-primary text-white">A</span>
+                            <span
+                                class="bg-primary text-white">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="" wire:navigate>
+                            <li><a class="dropdown-item" href="{{ route('admin.settings') }}" wire:navigate>
                                     <i class="bi bi-gear me-2"></i>
                                     Pengaturan
                                 </a></li>

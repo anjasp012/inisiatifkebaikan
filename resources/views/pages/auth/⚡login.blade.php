@@ -27,6 +27,10 @@ new class extends Component {
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
             session()->regenerate();
 
+            if (!Auth::user()->phone_verified_at) {
+                return redirect()->route('verification');
+            }
+
             // Redirect to intended URL if available, otherwise home
             return redirect()->intended(route('home'));
         }

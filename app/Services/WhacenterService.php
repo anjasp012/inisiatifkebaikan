@@ -12,8 +12,8 @@ class WhacenterService
 
     public function __construct()
     {
-        // Prioritaskan dari Database Setting, jika kosong baru dari config/env
-        $this->deviceId = \App\Models\Setting::get('whacenter_device_id') ?? config('services.whacenter.device_id');
+        // Prioritaskan dari Database Setting
+        $this->deviceId = \App\Models\Setting::get('whacenter_device_id');
     }
 
     /**

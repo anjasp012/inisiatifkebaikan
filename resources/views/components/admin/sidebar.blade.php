@@ -69,7 +69,7 @@
         </x-admin.sidebar-item>
         <x-admin.sidebar-item href="{{ route('admin.donatur') }}">
             <i class="bi bi-person-heart"></i>
-            Daftar Donatur
+            Data User
         </x-admin.sidebar-item>
 
         <li class="sidebar-label px-3 text-uppercase fw-bold mb-2 mt-3">Konten & Sistem</li>

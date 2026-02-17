@@ -243,7 +243,7 @@
 <?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
             <i class="bi bi-person-heart"></i>
-            Daftar Donatur
+            Data User
          <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginalcbbd6fe8562b9975f1f44673965482e9)): ?>

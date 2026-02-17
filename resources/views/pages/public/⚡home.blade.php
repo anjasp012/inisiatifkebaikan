@@ -109,7 +109,7 @@ new class extends Component {
                                 <h1>{{ $campaign->title }}</h1>
                                 <p>{{ $campaign->description }}</p>
                                 <div class="d-flex gap-4 align-items-center">
-                                    <a href="{{ route('donation.amount', $campaign->slug) }}"
+                                    <a href="{{ route('campaign.show', $campaign->slug) }}" wire:navigate
                                         class="btn btn-sm btn-primary text-nowrap py-2 px-4 rounded-pill fw-semibold">Donasi
                                         Sekarang <i class="bi bi-arrow-right ms-2"></i></a>
                                     <div class="hero-info">Target: <br> Rp
@@ -131,7 +131,8 @@ new class extends Component {
             <div class="row g-2">
                 @foreach ($this->categories() as $category)
                     <div class="col-3">
-                        <a href="{{ route('campaign.index', ['category' => $category->slug]) }}" class="category-item">
+                        <a wire:navigate href="{{ route('campaign.index', ['category' => $category->slug]) }}"
+                            class="category-item">
                             <div class="category-icon">
                                 <i class="{{ $category->icon }}"></i>
                             </div>
@@ -140,7 +141,7 @@ new class extends Component {
                     </div>
                 @endforeach
                 <div class="col-3">
-                    <a href="{{ route('category.index') }}" class="category-item">
+                    <a wire:navigate href="{{ route('category.index') }}" class="category-item">
                         <div class="category-icon">
                             <i class="bi bi-three-dots"></i>
                         </div>
@@ -155,7 +156,7 @@ new class extends Component {
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between mb-4" bis_skin_checked="1">
                 <h2 class="section-title">Kebutuhan Darurat &amp; Mendesak</h2>
-                <a class="link-more" href="">
+                <a class="link-more" href="" wire:navigate>
                     Lihat Semua
                     <i class="bi bi-chevron-right"></i>
                 </a>
@@ -184,7 +185,7 @@ new class extends Component {
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between mb-4" bis_skin_checked="1">
                 <h2 class="section-title">Program Inisiatif Pilihan</h2>
-                <a class="link-more" href="">
+                <a class="link-more" href="" wire:navigate>
                     Lihat Semua
                     <i class="bi bi-chevron-right"></i>
                 </a>
@@ -202,7 +203,7 @@ new class extends Component {
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between mb-4" bis_skin_checked="1">
                 <h2 class="section-title">Program Kebaikan</h2>
-                <a class="link-more" href="">
+                <a class="link-more" href="" wire:navigate>
                     Lihat Semua
                     <i class="bi bi-chevron-right"></i>
                 </a>
@@ -221,7 +222,7 @@ new class extends Component {
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between mb-4" bis_skin_checked="1">
                 <h2 class="section-title">Laporan Penyaluran</h2>
-                <a class="link-more" href="">
+                <a class="link-more" href="" wire:navigate>
                     Lihat Semua
                     <i class="bi bi-chevron-right"></i>
                 </a>
@@ -240,7 +241,7 @@ new class extends Component {
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between mb-4" bis_skin_checked="1">
                 <h2 class="section-title">Artikel Terbaru</h2>
-                <a class="link-more" href="">
+                <a class="link-more" href="" wire:navigate>
                     Lihat Semua
                     <i class="bi bi-chevron-right"></i>
                 </a>
@@ -259,7 +260,7 @@ new class extends Component {
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between mb-4" bis_skin_checked="1">
                 <h2 class="section-title">Harapan & Doa Sahabat Inisiatif</h2>
-                <a class="link-more" href="">
+                <a class="link-more" href="" wire:navigate>
                     Lihat Semua
                     <i class="bi bi-chevron-right"></i>
                 </a>
@@ -303,7 +304,7 @@ new class extends Component {
                     </div>
                 @endforelse
                 <div class="col-12">
-                    <a href=""
+                    <a href="" wire:navigate
                         class="btn btn-sm py-2 btn-outline-primary fw-bold w-100 rounded-pill mb-4">Lihat
                         Lebih
                         Banyak</a>
@@ -329,17 +330,17 @@ new class extends Component {
                 <div class="col-6">
                     <h6 class="footer-heading">Tentang</h6>
                     <ul class="footer-links">
-                        <li><a href="#">Tentang Kami</a></li>
-                        <li><a href="#">Syarat & Ketentuan</a></li>
-                        <li><a href="#">Kebijakan Privasi</a></li>
+                        <li><a href="#" wire:navigate>Tentang Kami</a></li>
+                        <li><a href="#" wire:navigate>Syarat & Ketentuan</a></li>
+                        <li><a href="#" wire:navigate>Kebijakan Privasi</a></li>
                     </ul>
                 </div>
                 <div class="col-6">
                     <h6 class="footer-heading">Dukungan</h6>
                     <ul class="footer-links">
-                        <li><a href="#">Pusat Bantuan</a></li>
-                        <li><a href="#">Daftar Mitra</a></li>
-                        <li><a href="#">Hubungi Kami</a></li>
+                        <li><a href="#" wire:navigate>Pusat Bantuan</a></li>
+                        <li><a href="#" wire:navigate>Daftar Mitra</a></li>
+                        <li><a href="#" wire:navigate>Hubungi Kami</a></li>
                     </ul>
                 </div>
             </div>

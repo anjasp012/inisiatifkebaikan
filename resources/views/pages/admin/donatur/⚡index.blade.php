@@ -15,7 +15,7 @@ new #[Layout('layouts.admin')] class extends Component {
     protected $queryString = ['search'];
 
     #[Computed]
-    public function donateurs()
+    public function users()
     {
         return User::where('role', 'donatur')
             ->when($this->search, function ($query) {
@@ -47,7 +47,7 @@ new #[Layout('layouts.admin')] class extends Component {
         <div class="card-body border-bottom">
             <div class="d-flex flex-column flex-lg-row justify-content-lg-between align-items-lg-center gap-3">
                 <div>
-                    <h5 class="fw-bold mb-1">Daftar Donatur</h5>
+                    <h5 class="fw-bold mb-1">Data User</h5>
                     <p class="text-muted small mb-0">Manajemen data user yang terdaftar sebagai donatur.</p>
                 </div>
 
@@ -66,51 +66,62 @@ new #[Layout('layouts.admin')] class extends Component {
                     <tr>
                         <th class="text-center" style="width: 50px;">NO</th>
                         <th>NAMA LENGKAP</th>
-                        <th>EMAIL</th>
+                        <th>INFO KONTAK</th>
+                        <th class="text-center">STATUS</th>
                         <th class="text-center">TOTAL DONASI</th>
                         <th class="text-center">JUMLAH TRANSAKSI</th>
-                        <th>BERGABUNG</th>
-                        <th class="text-end pe-3">AKSI</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($this->donateurs as $no => $donatur)
+                <tbody>
+                    @foreach ($this->users as $no => $item)
                         <tr>
-                            <td class="text-center">{{ $this->donateurs->firstItem() + $no }}</td>
+                            <td class="text-center">{{ $this->users->firstItem() + $no }}</td>
                             <td>
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold"
                                         style="width: 40px; height: 40px;">
-                                        {{ substr($donatur->name, 0, 1) }}
+                                        {{ substr($item->name, 0, 1) }}
                                     </div>
-                                    <div class="fw-bold">{{ $donatur->name }}</div>
+                                    <div>
+                                        <div class="fw-bold">{{ $item->name }}</div>
+                                        <div class="x-small text-muted">Bergabung:
+                                            {{ $item->created_at->format('d M Y') }}</div>
+                                    </div>
                                 </div>
                             </td>
-                            <td>{{ $donatur->email }}</td>
+                            <td>
+                                <div class="small fw-bold">{{ $item->email }}</div>
+                                <div class="x-small text-muted">{{ $item->phone ?? '-' }}</div>
+                            </td>
+                            <td class="text-center">
+                                @if ($item->isVerified())
+                                    <span
+                                        class="badge bg-success bg-opacity-10 text-success border border-success-subtle">
+                                        <i class="bi bi-patch-check-fill me-1"></i> Verified
+                                    </span>
+                                @else
+                                    <span
+                                        class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle">
+                                        <i class="bi bi-exclamation-circle-fill me-1"></i> Unverified
+                                    </span>
+                                @endif
+                            </td>
                             <td class="text-center fw-bold text-success">
-                                Rp {{ number_format($donatur->donations_sum_amount ?? 0, 0, ',', '.') }}
+                                Rp {{ number_format($item->donations_sum_amount ?? 0, 0, ',', '.') }}
                             </td>
                             <td class="text-center">
                                 <span class="badge bg-light text-dark border px-2 py-1">
-                                    {{ number_format($donatur->donations_count) }} Kali
+                                    {{ number_format($item->donations_count) }} Kali
                                 </span>
-                            </td>
-                            <td>
-                                <div class="small">{{ $donatur->created_at->format('d M Y') }}</div>
-                                <div class="x-small text-muted">{{ $donatur->created_at->diffForHumans() }}</div>
-                            </td>
-                            <td class="text-end pe-3">
-                                <button class="btn btn-sm btn-light border" title="Detail User (Soon)">
-                                    <i class="bi bi-person-lines-fill"></i>
-                                </button>
                             </td>
                         </tr>
                     @endforeach
-                    @if ($this->donateurs->isEmpty())
+                    @if ($this->users->isEmpty())
                         <tr>
                             <td colspan="7" class="text-center py-5 text-muted">
                                 <i class="bi bi-people fs-1 d-block mb-2 opacity-25"></i>
-                                Tidak ada data donatur ditemukan.
+                                Tidak ada data user ditemukan.
                             </td>
                         </tr>
                     @endif
@@ -119,12 +130,12 @@ new #[Layout('layouts.admin')] class extends Component {
             <div class="card-footer bg-white border-top py-3">
                 <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
                     <div class="text-muted small">
-                        Menampilkan <strong>{{ $this->donateurs->firstItem() }}</strong> -
-                        <strong>{{ $this->donateurs->lastItem() }}</strong> dari
-                        <strong>{{ $this->donateurs->total() }}</strong> donatur
+                        Menampilkan <strong>{{ $this->users->firstItem() }}</strong> -
+                        <strong>{{ $this->users->lastItem() }}</strong> dari
+                        <strong>{{ $this->users->total() }}</strong> user
                     </div>
                     <div>
-                        {{ $this->donateurs->links() }}
+                        {{ $this->users->links() }}
                     </div>
                 </div>
             </div>

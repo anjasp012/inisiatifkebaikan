@@ -17,6 +17,7 @@ Route::livewire('/donasi-saya', 'pages::public.donasi-saya.index')->name('donasi
 
 Route::livewire('/login', 'pages::auth.login')->name('login');
 Route::livewire('/register', 'pages::auth.register')->name('register');
+Route::livewire('/verifikasi', 'pages::auth.verification')->name('verification');
 
 
 

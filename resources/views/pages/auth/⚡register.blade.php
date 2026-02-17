@@ -13,6 +13,9 @@ new class extends Component {
     #[Rule('required|email|unique:users,email')]
     public $email = '';
 
+    #[Rule('required|numeric|unique:users,phone')]
+    public $phone = '';
+
     #[Rule('required|min:8|confirmed')]
     public $password = '';
 
@@ -25,12 +28,14 @@ new class extends Component {
         $user = User::create([
             'name' => $this->name,
             'email' => $this->email,
+            'phone' => $this->phone,
             'password' => Hash::make($this->password),
+            'role' => 'donatur',
         ]);
 
         Auth::login($user);
 
-        return redirect(route('home'));
+        return redirect()->route('verification');
     }
 };
 ?>
@@ -74,6 +79,21 @@ new class extends Component {
                             placeholder="user@email.com">
                     </div>
                     @error('email')
+                        <div class="text-danger extra-small mt-1 px-1 fw-bold">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small text-muted text-uppercase ls-1">Nomor WhatsApp</label>
+                    <div class="input-group bg-light rounded-3 overflow-hidden border-0">
+                        <span class="input-group-text bg-transparent border-0 pe-1 text-muted">
+                            <i class="bi bi-whatsapp"></i>
+                        </span>
+                        <input type="tel" wire:model="phone"
+                            class="form-control py-3 bg-transparent border-0 shadow-none @error('phone') is-invalid @enderror"
+                            placeholder="08123456789">
+                    </div>
+                    @error('phone')
                         <div class="text-danger extra-small mt-1 px-1 fw-bold">{{ $message }}</div>
                     @enderror
                 </div>

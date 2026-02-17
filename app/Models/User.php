@@ -21,9 +21,12 @@ class User extends Authenticatable
         'name',
         'email',
         'phone',
+        'user_verified_at',
         'password',
         'role',
         'avatar',
+        'otp_code',
+        'otp_expires_at',
     ];
 
     /**
@@ -44,7 +47,8 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            'user_verified_at' => 'datetime',
+            'otp_expires_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
@@ -69,5 +73,10 @@ class User extends Authenticatable
         }
 
         return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&background=random&color=fff';
+    }
+
+    public function isVerified()
+    {
+        return !is_null($this->user_verified_at);
     }
 }

@@ -122,7 +122,7 @@ class DatabaseSeeder extends Seeder
         // Admin
         $admin = User::firstOrCreate(
             ['email' => 'admin@inisiatif.com'],
-            ['name' => 'Admin Inisiatif', 'password' => Hash::make('password'), 'role' => 'admin', 'email_verified_at' => now(), 'phone' => '628111111111']
+            ['name' => 'Admin Inisiatif', 'password' => Hash::make('password'), 'role' => 'admin', 'user_verified_at' => now(), 'phone' => '628111111111']
         );
 
         // Fundraisers
@@ -131,7 +131,7 @@ class DatabaseSeeder extends Seeder
         foreach ($fundraiserNames as $i => $name) {
             $fundraisers[] = User::firstOrCreate(
                 ['email' => 'fundraiser' . ($i + 1) . '@inisiatif.com'],
-                ['name' => $name, 'password' => Hash::make('password'), 'role' => 'fundraiser', 'email_verified_at' => now(), 'phone' => '6282222222' . ($i + 1)]
+                ['name' => $name, 'password' => Hash::make('password'), 'role' => 'fundraiser', 'user_verified_at' => now(), 'phone' => '6282222222' . ($i + 1)]
             );
         }
 
@@ -141,7 +141,7 @@ class DatabaseSeeder extends Seeder
         foreach ($donaturNames as $i => $name) {
             $donaturs[] = User::firstOrCreate(
                 ['email' => Str::slug($name) . '@email.com'],
-                ['name' => $name, 'password' => Hash::make('password'), 'role' => 'donatur', 'email_verified_at' => now(), 'phone' => '6283333333' . ($i + 1)]
+                ['name' => $name, 'password' => Hash::make('password'), 'role' => 'donatur', 'user_verified_at' => now(), 'phone' => '6283333333' . ($i + 1)]
             );
         }
 
