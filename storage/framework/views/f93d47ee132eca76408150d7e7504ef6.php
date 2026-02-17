@@ -1,1 +1,0 @@
-modal-content-<?php echo e($selectedDistribution->id); ?><?php /**PATH C:\laragon\www\inisiatif\storage\framework\views/e5fee5b590b47b45c4e940b15eed6c69.blade.php ENDPATH**/ ?>

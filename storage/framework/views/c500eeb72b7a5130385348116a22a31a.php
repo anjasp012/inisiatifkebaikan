@@ -1,1 +1,0 @@
-paginator-<?php echo e($paginator->getPageName()); ?>-page-<?php echo e($page); ?><?php /**PATH C:\laragon\www\inisiatif\storage\framework\views/1c99b643baeceffebe99ddae94a85d50.blade.php ENDPATH**/ ?>

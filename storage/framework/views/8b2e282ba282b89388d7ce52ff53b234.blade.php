@@ -1,1 +1,0 @@
-dist-row-{{ $dist->id }}

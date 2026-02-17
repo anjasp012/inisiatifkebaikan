@@ -1,1 +1,0 @@
-dist-row-<?php echo e($dist->id); ?><?php /**PATH C:\laragon\www\inisiatif\storage\framework\views/8b2e282ba282b89388d7ce52ff53b234.blade.php ENDPATH**/ ?>

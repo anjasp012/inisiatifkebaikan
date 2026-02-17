@@ -1,1 +1,0 @@
-show-{{ $dist->id }}

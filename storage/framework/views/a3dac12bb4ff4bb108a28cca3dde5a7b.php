@@ -1,1 +1,0 @@
-prayer-<?php echo e($prayer->id); ?><?php /**PATH C:\laragon\www\inisiatif\storage\framework\views/a4cf00f9c1b773ae54ae666f97842c35.blade.php ENDPATH**/ ?>
