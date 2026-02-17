@@ -19,9 +19,10 @@
         <span>Report</span>
     </a>
 
-    <a href="{{ route('account.index') }}" wire:navigate wire:current="active" class="nav-item">
+    <a href="{{ Auth::check() ? route('account.index') : route('login') }}" wire:navigate wire:current="active"
+        class="nav-item">
         <i
             class="bi {{ request()->routeIs('account.index') || request()->routeIs('login') ? 'bi-person-fill' : 'bi-person' }}"></i>
-        <span>Akun</span>
+        <span>{{ Auth::check() ? 'Akun' : 'Masuk' }}</span>
     </a>
 </nav>
