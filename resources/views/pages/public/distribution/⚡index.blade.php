@@ -36,7 +36,7 @@ new class extends Component {
 
             <div class="row g-3">
                 @forelse ($this->distributions as $distribution)
-                    <div class="col-6">
+                    <div class="col-12">
                         <x-app.distribution-card :distribution="$distribution" />
                     </div>
                 @empty
