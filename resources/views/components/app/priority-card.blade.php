@@ -27,7 +27,7 @@
             </h6>
 
             <p class="text-muted small mb-3" style="line-height: 1.5; font-size: 11px;">
-                {{ Str::limit($campaign->description, 75) }}
+                {{ Str::limit(strip_tags($campaign->description), 75) }}
             </p>
 
             <div class="row g-2 mb-3">
