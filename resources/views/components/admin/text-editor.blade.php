@@ -85,8 +85,14 @@
                 ],
             })
             .then(editor => {
-                editor.setData(this.value);
+                editor.setData(this.value || '');
                 editor.model.document.on('change:data', () => {
+                    const data = editor.getData();
+                    this.value = data;
+                });
+
+                // Sync on blur to ensure data is captured before submission
+                editor.editing.view.document.on('blur', () => {
                     this.value = editor.getData();
                 });
 

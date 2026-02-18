@@ -1,6 +1,7 @@
 <?php
 
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use App\Models\Distribution;
 use App\Models\Campaign;
 use Livewire\Component;
@@ -8,7 +9,7 @@ use Livewire\WithPagination;
 use Livewire\Attributes\Computed;
 use Livewire\WithFileUploads;
 
-new #[Layout('layouts.admin')] class extends Component {
+new #[Layout('layouts.admin')] #[Title('Riwayat Distribusi')] class extends Component {
     use WithPagination, WithFileUploads;
     protected $paginationTheme = 'bootstrap';
 
@@ -62,7 +63,7 @@ new #[Layout('layouts.admin')] class extends Component {
         ]);
 
         $this->reset(['campaign_id', 'amount', 'recipient_name', 'distribution_date', 'description', 'file_path']);
-        $this->dispatch('toast', ['type' => 'success', 'message' => 'Laporan penyaluran berhasil ditambahkan ✅']);
+        $this->dispatch('toast', type: 'success', message: 'Laporan penyaluran berhasil ditambahkan ✅');
     }
 
     #[Computed]
@@ -98,8 +99,7 @@ new #[Layout('layouts.admin')] class extends Component {
                         <div class="mb-3 @error('campaign_id') is-invalid-tomselect @enderror">
                             <label class="form-label small fw-bold text-uppercase opacity-75">Program Campaign</label>
                             <div wire:ignore>
-                                <select wire:model="campaign_id"
-                                    class="form-select @error('campaign_id') is-invalid @enderror"
+                                <select class="form-select @error('campaign_id') is-invalid @enderror"
                                     x-init="new TomSelect($el, {
                                         placeholder: 'Pilih atau cari Campaign...',
                                         allowEmptyOption: false,
@@ -152,8 +152,12 @@ new #[Layout('layouts.admin')] class extends Component {
                         </div>
 
                         <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary text-white fw-bold px-4 shadow-sm">
-                                <i class="bi bi-send-fill me-2 text-white"></i> Publikasikan Kabar
+                            <button type="submit" class="btn btn-primary text-white fw-bold px-4 shadow-sm"
+                                wire:loading.attr="disabled">
+                                <span wire:loading.remove><i class="bi bi-send-fill me-2"></i> Publikasikan Kabar</span>
+                                <span wire:loading>
+                                    <div class="spinner-border spinner-border-sm me-2" role="status"></div> Mengirim...
+                                </span>
                             </button>
                         </div>
                     </form>
