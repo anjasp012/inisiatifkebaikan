@@ -1,12 +1,13 @@
 <?php
 
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use App\Models\Donation;
 use App\Models\PaymentProof;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-new #[Layout('layouts.admin')] class extends Component {
+new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component {
     use WithFileUploads;
 
     public Donation $donation;

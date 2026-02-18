@@ -2,10 +2,11 @@
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\WithFileUploads;
 use App\Models\Bank;
 
-new #[Layout('layouts.admin')] class extends Component {
+new #[Layout('layouts.admin')] #[Title('Tambah Bank')] class extends Component {
     use WithFileUploads;
 
     public $logo;

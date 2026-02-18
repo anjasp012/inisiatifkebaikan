@@ -1,6 +1,7 @@
 <?php
 
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use App\Models\Donation;
 use App\Models\Campaign;
 use App\Models\PaymentProof;
@@ -10,7 +11,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Computed;
 
-new #[Layout('layouts.admin')] class extends Component {
+new #[Layout('layouts.admin')] #[Title('Tambah Donasi')] class extends Component {
     use WithFileUploads;
 
     public $campaign_id;

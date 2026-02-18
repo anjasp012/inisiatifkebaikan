@@ -2,12 +2,13 @@
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
 use App\Models\Campaign;
 use App\Models\CampaignCategory;
 
-new #[Layout('layouts.admin')] class extends Component {
+new #[Layout('layouts.admin')] #[Title('Tambah Program')] class extends Component {
     use WithFileUploads;
 
     public $thumbnail;

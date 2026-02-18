@@ -5,10 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ isset($title) ? $title . ' | ' . config('app.name', 'Laravel') : config('app.name', 'Laravel') }}</title>
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>
+        {{ isset($title) ? $title . ' | Admin ' . config('app.name', 'Laravel') : 'Admin | ' . config('app.name', 'Laravel') }}
+    </title>
 
-    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo-dashboard.png') }}" type="image/png">
 
     <!-- AOS Animation CSS -->
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">

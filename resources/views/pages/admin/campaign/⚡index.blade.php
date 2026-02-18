@@ -2,11 +2,12 @@
 
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use App\Models\Campaign;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-new #[Layout('layouts.admin')] class extends Component {
+new #[Layout('layouts.admin')] #[Title('Daftar Program')] class extends Component {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     public $search;

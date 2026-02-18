@@ -8,6 +8,7 @@
 
     <!-- Meta SEO -->
     {!! seo($seoData ?? null) !!}
+    <link rel="shortcut icon" href="{{ asset('assets/images/logo-dashboard.png') }}" type="image/png">
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 

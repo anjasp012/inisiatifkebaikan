@@ -1,6 +1,7 @@
 <?php
 
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use App\Models\Campaign;
 use App\Models\Donation;
@@ -9,7 +10,7 @@ use App\Models\User;
 use App\Models\Withdrawal;
 use Illuminate\Support\Facades\DB;
 
-new #[Layout('layouts.admin')] class extends Component {
+new #[Layout('layouts.admin')] #[Title('Dashboard')] class extends Component {
     public $period = 'today'; // today, week, month, year
     public $campaignTab = 'views'; // views, donations
 
