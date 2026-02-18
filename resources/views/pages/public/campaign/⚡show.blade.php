@@ -15,7 +15,9 @@ new class extends Component {
     public function mount(Campaign $campaign)
     {
         $this->campaign = $campaign->load(['category', 'fundraiser']);
-        views($this->campaign)->record();
+        views($this->campaign)
+            ->cooldown(now()->addHours(2))
+            ->record();
 
         // Pass model directly for granular SEO
         View::share('seoData', $this->campaign);
