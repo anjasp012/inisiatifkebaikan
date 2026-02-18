@@ -1,4 +1,11 @@
-@props(['model', 'id' => null, 'label' => null, 'placeholder' => '0', 'defer' => false])
+@props([
+    'model',
+    'id' => null,
+    'label' => null,
+    'placeholder' => '0',
+    'defer' => false,
+    'labelClass' => 'form-label',
+])
 
 @php
     $id = $id ?? $model;
@@ -39,7 +46,7 @@
 }" wire:ignore>
 
     @if ($label)
-        <label for="{{ $id }}" class="form-label">{{ $label }}</label>
+        <label for="{{ $id }}" class="{{ $labelClass }}">{{ $label }}</label>
     @endif
 
     <div class="input-group">

@@ -1,43 +1,46 @@
-<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header" id="toastHeader">
-            <strong class="me-auto">Notifikasi</strong>
-            <button type="button" class="btn btn-transparent text-white p-0" data-bs-dismiss="toast"
-                aria-label="Close">
-                <i class="fs-5 bi bi-x"></i>
-            </button>
+<div x-data="{
+    type: 'success',
+    message: '',
+    show(data) {
+        if (!data) return;
+        this.type = data.type || 'success';
+        this.message = data.message || '';
+
+        const el = document.getElementById('liveToast');
+        if (typeof bootstrap !== 'undefined') {
+            const bs = bootstrap.Toast.getOrCreateInstance(el);
+            bs.show();
+        }
+    }
+}" x-on:toast.window="show($event.detail[0] || $event.detail)"
+    class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+    <div id="liveToast" class="toast border-0 shadow-lg"
+        :class="{
+            'bg-success text-white': type === 'success',
+            'bg-danger text-white': type === 'error' || type === 'danger',
+            'bg-warning text-dark': type === 'warning',
+            'bg-info text-white': type === 'info'
+        }"
+        role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header border-0 text-white"
+            :class="{
+                'bg-success': type === 'success',
+                'bg-danger': type === 'error' || type === 'danger',
+                'bg-warning text-dark': type === 'warning',
+                'bg-info': type === 'info'
+            }">
+            <i class="bi me-2"
+                :class="{
+                    'bi-check-circle-fill': type === 'success',
+                    'bi-exclamation-triangle-fill': type === 'error' || type === 'danger' || type === 'warning',
+                    'bi-info-circle-fill': type === 'info'
+                }"></i>
+            <strong class="me-auto font-uppercase" x-text="type === 'error' ? 'GAGAL' : 'NOTIFIKASI'"></strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"
+                aria-label="Close"></button>
         </div>
-        <div class="toast-body" id="toastBody">
+        <div class="toast-body fw-medium" x-text="message">
         </div>
     </div>
 </div>
-
-<?php $__env->startPush('scripts'); ?>
-    <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session('toast')): ?>
-        <script>
-            var toastEl = document.getElementById('liveToast');
-            var toastHeader = document.getElementById('toastHeader');
-            var toastBody = document.getElementById('toastBody');
-            var {
-                type,
-                message
-            } = <?php echo json_encode(session('toast'), 15, 512) ?>;
-
-            // Map standard types to high-visibility colors
-            var bgClass = 'bg-' + type;
-            if (type === 'error') bgClass = 'bg-danger';
-            if (type === 'success') bgClass = 'bg-success';
-
-            toastHeader.className = 'toast-header ' + bgClass + ' text-white border-0';
-            toastEl.className = 'toast ' + bgClass + ' text-white border-0 shadow-lg';
-            toastBody.textContent = message;
-
-            var toast = new bootstrap.Toast(toastEl, {
-                autohide: true,
-                delay: 5000
-            });
-            toast.show();
-        </script>
-    <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-<?php $__env->stopPush(); ?>
 <?php /**PATH C:\laragon\www\inisiatif\resources\views/components/admin/toast.blade.php ENDPATH**/ ?>

@@ -1,6 +1,7 @@
 <?php
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\WithFileUploads;
 use App\Models\Bank;
 ?>
@@ -49,7 +50,7 @@ use App\Models\Bank;
 
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Nama Bank / Channel</label>
+                            <label class="form-label fw-bold extra-small text-uppercase">Nama Bank / Channel</label>
                             <input type="text" class="form-control <?php $__errorArgs = ['bank_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -79,7 +80,7 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid-tomselect <?php unset($
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>">
-                            <label class="form-label fw-bold">Metode Pembayaran</label>
+                            <label class="form-label fw-bold extra-small text-uppercase">Metode Pembayaran</label>
                             <div wire:ignore>
                                 <select x-data="{
                                     tom: null,
@@ -126,7 +127,11 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Kode Bank / Channel</label>
+                            <label class="form-label fw-bold extra-small text-uppercase">Kode Bank / Channel
+                                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($type == 'manual'): ?>
+                                    (Opsional)
+                                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
+                            </label>
                             <input type="text" class="form-control <?php $__errorArgs = ['bank_code'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -149,7 +154,7 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Nomor Rekening</label>
+                            <label class="form-label fw-bold extra-small text-uppercase">Nomor Rekening</label>
                             <input type="text" class="form-control <?php $__errorArgs = ['account_number'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -172,7 +177,7 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Atas Nama</label>
+                            <label class="form-label fw-bold extra-small text-uppercase">Atas Nama</label>
                             <input type="text" class="form-control <?php $__errorArgs = ['account_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -215,5 +220,4 @@ unset($__errorArgs, $__bag); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendB
             </form>
         </div>
     </div>
-    
 </div><?php /**PATH C:\laragon\www\inisiatif\storage\framework/views/livewire/views/bc4d9598.blade.php ENDPATH**/ ?>

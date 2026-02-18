@@ -70,6 +70,10 @@
             aspect-ratio: auto !important;
             object-fit: contain;
         }
+
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
 
     <!-- Styles / Scripts -->
@@ -121,6 +125,10 @@
             </nav>
             <div class="container-fluid p-3 p-sm-4">
                 {{ $slot }}
+
+                @if (session('toast'))
+                    <div x-data x-init="$nextTick(() => { $dispatch('toast', @js(session('toast'))) })"></div>
+                @endif
             </div>
         </main>
     </div>

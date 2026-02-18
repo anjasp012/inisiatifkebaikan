@@ -214,7 +214,7 @@ new class extends Component {
                         </div>
                     @endif
                 </div>
-                <div class="mt-3 text-muted extra-small fw-medium opacity-25">ID#{{ $donation->transaction_id }}</div>
+                <div class="py-2 text-muted extra-small fw-medium opacity-50">ID#{{ $donation->transaction_id }}</div>
             </div>
         </div>
 

@@ -71,6 +71,10 @@
             aspect-ratio: auto !important;
             object-fit: contain;
         }
+
+        [x-cloak] {
+            display: none !important;
+        }
     </style>
 
     <!-- Styles / Scripts -->
@@ -145,6 +149,10 @@
             <div class="container-fluid p-3 p-sm-4">
                 <?php echo e($slot); ?>
 
+
+                <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if(session('toast')): ?>
+                    <div x-data x-init="$nextTick(() => { $dispatch('toast', <?php echo \Illuminate\Support\Js::from(session('toast'))->toHtml() ?>) })"></div>
+                <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
             </div>
         </main>
     </div>

@@ -264,29 +264,54 @@ use Livewire\WithFileUploads;
                         <p class="small text-muted mb-4">Verifikasi pembayaran ini sesuai dengan bukti transfer yang
                             diunggah donatur.</p>
 
-                        <div class="bg-light p-3 rounded-3 text-dark mb-4 border">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold small text-primary mb-2">SESUAIKAN NOMINAL</label>
-                                <div class="input-group border rounded-3 overflow-hidden">
-                                    <span
-                                        class="input-group-text bg-white border-0 extra-small fw-bold text-muted">Rp</span>
-                                    <input type="number" wire:model="editAmount"
-                                        class="form-control border-0 bg-white fw-bold text-primary"
-                                        placeholder="Gross amount...">
-                                </div>
-                            </div>
+                        <div class="bg-light p-3 rounded-4 text-dark mb-4 border">
+                            <?php if (isset($component)) { $__componentOriginal8a17b1f728b4d3b64d1256cf0f2b5c31 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal8a17b1f728b4d3b64d1256cf0f2b5c31 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.input-rupiah','data' => ['model' => 'editAmount','label' => 'SESUAIKAN NOMINAL','labelClass' => 'form-label fw-bold text-primary extra-small mb-2','placeholder' => '...','class' => 'form-control-lg rounded-3 border-0 py-3 fw-bold text-primary bg-white shadow-sm']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('admin.input-rupiah'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['model' => 'editAmount','label' => 'SESUAIKAN NOMINAL','labelClass' => 'form-label fw-bold text-primary extra-small mb-2','placeholder' => '...','class' => 'form-control-lg rounded-3 border-0 py-3 fw-bold text-primary bg-white shadow-sm']); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
 
-                            <div>
-                                <label class="form-label fw-bold small text-danger mb-2">MERCHANT FEE (BIAYA)</label>
-                                <div class="input-group border rounded-3 overflow-hidden">
-                                    <span
-                                        class="input-group-text bg-white border-0 extra-small fw-bold text-muted">Rp</span>
-                                    <input type="number" wire:model="editMerchantFee"
-                                        class="form-control border-0 bg-white fw-bold text-danger"
-                                        placeholder="Admin/Bank fee...">
-                                </div>
-                            </div>
-                            <small class="text-muted mt-2 d-block extra-small">
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal8a17b1f728b4d3b64d1256cf0f2b5c31)): ?>
+<?php $attributes = $__attributesOriginal8a17b1f728b4d3b64d1256cf0f2b5c31; ?>
+<?php unset($__attributesOriginal8a17b1f728b4d3b64d1256cf0f2b5c31); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal8a17b1f728b4d3b64d1256cf0f2b5c31)): ?>
+<?php $component = $__componentOriginal8a17b1f728b4d3b64d1256cf0f2b5c31; ?>
+<?php unset($__componentOriginal8a17b1f728b4d3b64d1256cf0f2b5c31); ?>
+<?php endif; ?>
+
+                            <?php if (isset($component)) { $__componentOriginal8a17b1f728b4d3b64d1256cf0f2b5c31 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal8a17b1f728b4d3b64d1256cf0f2b5c31 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.input-rupiah','data' => ['model' => 'editMerchantFee','label' => 'MERCHANT FEE (BIAYA)','labelClass' => 'form-label fw-bold text-primary extra-small mb-2','placeholder' => '...','class' => 'form-control-lg rounded-3 border-0 py-3 fw-bold text-danger bg-white shadow-sm']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('admin.input-rupiah'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['model' => 'editMerchantFee','label' => 'MERCHANT FEE (BIAYA)','labelClass' => 'form-label fw-bold text-primary extra-small mb-2','placeholder' => '...','class' => 'form-control-lg rounded-3 border-0 py-3 fw-bold text-danger bg-white shadow-sm']); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
+
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal8a17b1f728b4d3b64d1256cf0f2b5c31)): ?>
+<?php $attributes = $__attributesOriginal8a17b1f728b4d3b64d1256cf0f2b5c31; ?>
+<?php unset($__attributesOriginal8a17b1f728b4d3b64d1256cf0f2b5c31); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal8a17b1f728b4d3b64d1256cf0f2b5c31)): ?>
+<?php $component = $__componentOriginal8a17b1f728b4d3b64d1256cf0f2b5c31; ?>
+<?php unset($__componentOriginal8a17b1f728b4d3b64d1256cf0f2b5c31); ?>
+<?php endif; ?>
+
+                            <small class="text-muted d-block extra-small" style="margin-top: -5px;">
                                 Sesuaikan jika ada biaya admin bank atau gateway.
                             </small>
                         </div>

@@ -360,29 +360,16 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                         <p class="small text-muted mb-4">Verifikasi pembayaran ini sesuai dengan bukti transfer yang
                             diunggah donatur.</p>
 
-                        <div class="bg-light p-3 rounded-3 text-dark mb-4 border">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold small text-primary mb-2">SESUAIKAN NOMINAL</label>
-                                <div class="input-group border rounded-3 overflow-hidden">
-                                    <span
-                                        class="input-group-text bg-white border-0 extra-small fw-bold text-muted">Rp</span>
-                                    <input type="number" wire:model="editAmount"
-                                        class="form-control border-0 bg-white fw-bold text-primary"
-                                        placeholder="Gross amount...">
-                                </div>
-                            </div>
+                        <div class="bg-light p-3 rounded-4 text-dark mb-4 border">
+                            <x-admin.input-rupiah model="editAmount" label="SESUAIKAN NOMINAL"
+                                labelClass="form-label fw-bold text-primary extra-small mb-2" placeholder="..."
+                                class="form-control-lg rounded-3 border-0 py-3 fw-bold text-primary bg-white shadow-sm" />
 
-                            <div>
-                                <label class="form-label fw-bold small text-danger mb-2">MERCHANT FEE (BIAYA)</label>
-                                <div class="input-group border rounded-3 overflow-hidden">
-                                    <span
-                                        class="input-group-text bg-white border-0 extra-small fw-bold text-muted">Rp</span>
-                                    <input type="number" wire:model="editMerchantFee"
-                                        class="form-control border-0 bg-white fw-bold text-danger"
-                                        placeholder="Admin/Bank fee...">
-                                </div>
-                            </div>
-                            <small class="text-muted mt-2 d-block extra-small">
+                            <x-admin.input-rupiah model="editMerchantFee" label="MERCHANT FEE (BIAYA)"
+                                labelClass="form-label fw-bold text-primary extra-small mb-2" placeholder="..."
+                                class="form-control-lg rounded-3 border-0 py-3 fw-bold text-danger bg-white shadow-sm" />
+
+                            <small class="text-muted d-block extra-small" style="margin-top: -5px;">
                                 Sesuaikan jika ada biaya admin bank atau gateway.
                             </small>
                         </div>

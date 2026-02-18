@@ -26,12 +26,16 @@ new #[Layout('layouts.admin')] #[Title('Tambah Donasi')] class extends Component
     public $status = 'success';
     public $created_at;
     public $payment_proofs = []; // Array of uploaded files
-    public $claimed_amounts = []; // Array of claimed amounts for each proof
-    public $proof_notes = []; // Array of notes for each proof
 
     public function mount()
     {
         $this->created_at = date('Y-m-d H:i');
+    }
+
+    public function removeProof($index)
+    {
+        unset($this->payment_proofs[$index]);
+        $this->payment_proofs = array_values($this->payment_proofs);
     }
 
     public function store()
@@ -77,8 +81,6 @@ new #[Layout('layouts.admin')] #[Title('Tambah Donasi')] class extends Component
                     PaymentProof::create([
                         'donation_id' => $donation->id,
                         'file_path' => $path,
-                        'claimed_amount' => $this->claimed_amounts[$index] ?? null,
-                        'notes' => $this->proof_notes[$index] ?? null,
                     ]);
                 }
             }
@@ -90,8 +92,11 @@ new #[Layout('layouts.admin')] #[Title('Tambah Donasi')] class extends Component
             $campaign->increment('collected_amount', $this->amount);
         }
 
-        $this->dispatch('toast', ['type' => 'success', 'message' => 'Donasi manual berhasil ditambahkan ✅']);
-        return redirect()->route('admin.donasi');
+        session()->flash('toast', [
+            'type' => 'success',
+            'message' => 'Donasi manual berhasil ditambahkan ✅',
+        ]);
+        return $this->redirect(route('admin.donasi'), navigate: true);
     }
 
     #[Computed]
@@ -244,6 +249,9 @@ is-invalid
                                     <x-admin.input-rupiah model="merchant_fee" label="Merchant Fee (Biaya)"
                                         placeholder="0" />
                                 </div>
+                            </div>
+
+                            <div class="row g-3 mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-uppercase">Status Pembayaran</label>
                                     <div class="@error('status') is-invalid-tomselect @enderror">
@@ -276,10 +284,7 @@ is-invalid
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row g-3 mb-3">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <x-admin.input-calendar model="created_at" label="Tanggal Donasi"
                                         enableTime="true" />
                                 </div>
@@ -292,96 +297,95 @@ is-invalid
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Bukti Transfer -->
-                <div class="col-lg-5">
-                    <div class="bg-light p-4 rounded-4 h-100 border-0">
-                        <h6 class="fw-bold mb-4 border-bottom pb-2">Bukti Transfer</h6>
+                    <!-- Bukti Transfer -->
+                    <div class="col-lg-5">
+                        <div class="bg-light p-4 rounded-4 h-100 border-0">
+                            <h6 class="fw-bold mb-4 border-bottom pb-2">Bukti Transfer</h6>
 
-                        <div class="mb-4">
-                            <label class="form-label small fw-bold d-flex justify-content-between align-items-center">
-                                <span>Upload Lampiran (Multiple)</span>
-                                <span class="badge bg-white text-muted border fw-normal">Max 5MB/file</span>
-                            </label>
+                            <div class="mb-4" x-data="{ isDropping: false }">
+                                <label
+                                    class="form-label small fw-bold d-flex justify-content-between align-items-center">
+                                    <span>UPLOAD BUKTI TRANSFER (MULTIPLE)</span>
+                                    <span class="badge bg-white text-muted border fw-normal">Max 5MB/file</span>
+                                </label>
 
-                            <input type="file" wire:model="payment_proofs" multiple class="form-control "
-                                accept="image/*">
+                                <div class="position-relative">
+                                    <label for="payment_proofs"
+                                        class="file-upload-dropzone w-100 d-flex flex-column align-items-center justify-content-center border-2 border-dashed rounded-4 p-4 transition-all"
+                                        :class="isDropping ? 'border-primary bg-primary bg-opacity-10' :
+                                            'border-light-subtle bg-white'"
+                                        @dragover.prevent="isDropping = true" @dragleave.prevent="isDropping = false"
+                                        @drop.prevent="isDropping = false" style="cursor: pointer; min-height: 120px;">
 
-                            <div wire:loading wire:target="payment_proofs" class="text-primary small mt-2">
-                                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                                Mengunggah file...
-                            </div>
+                                        <div class="upload-icon-circle mb-2 bg-light rounded-circle d-flex align-items-center justify-content-center shadow-sm"
+                                            style="width: 45px; height: 45px;">
+                                            <i class="bi bi-cloud-arrow-up fs-5 text-primary"></i>
+                                        </div>
+                                        <span class="fw-bold text-dark small">Klik atau Seret Gambar Ke Sini</span>
+                                        <span class="text-muted extra-small mt-1">PNG, JPG atau WebP</span>
 
-                            @if ($payment_proofs)
-                                <div class="mt-4 vstack gap-3">
-                                    @foreach ($payment_proofs as $index => $proof)
-                                        <div class="card border-0  overflow-hidden border-0">
-                                            <div class="card-body p-3">
-                                                <div class="d-flex gap-3">
-                                                    @if ($proof->isPreviewable())
-                                                        <img src="{{ $proof->temporaryUrl() }}"
-                                                            class="rounded object-fit-cover"
-                                                            style="width: 70px; height: 70px;">
-                                                    @endif
-                                                    <div class="flex-grow-1">
-                                                        <div class="row g-2 mb-2">
-                                                            <div class="col-12">
-                                                                <div class="input-group input-group-sm">
-                                                                    <span class="input-group-text bg-white">Rp</span>
-                                                                    <input type="number"
-                                                                        wire:model="claimed_amounts.{{ $index }}"
-                                                                        class="form-control"
-                                                                        placeholder="Nominal di bukti">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-12">
-                                                                <input type="text"
-                                                                    wire:model="proof_notes.{{ $index }}"
-                                                                    class="form-control form-control-sm"
-                                                                    placeholder="Catatan (misal: Bank Pengirim)">
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <span class="extra-small text-muted text-truncate"
-                                                                style="max-width: 150px;">
-                                                                {{ $proof->getClientOriginalName() }}
-                                                            </span>
-                                                            <button type="button"
-                                                                wire:click="$set('payment_proofs.{{ $index }}', null)"
-                                                                class="btn btn-link text-danger btn-sm p-0 text-decoration-none extra-small">
-                                                                <i class="bi bi-trash"></i> Hapus
-                                                            </button>
-                                                        </div>
+                                        <input type="file" id="payment_proofs" wire:model="payment_proofs"
+                                            multiple class="position-absolute opacity-0 w-100 h-100 top-0 start-0"
+                                            accept="image/*" style="cursor: pointer;">
+                                    </label>
+
+                                    <div wire:loading.flex wire:target="payment_proofs"
+                                        class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 rounded-4 align-items-center justify-content-center z-3">
+                                        <div class="text-center">
+                                            <div class="spinner-border spinner-border-sm text-primary mb-2"
+                                                role="status"></div>
+                                            <div class="extra-small fw-bold text-primary">Mengunggah...</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if ($payment_proofs)
+                                    <div class="mt-4 row g-2">
+                                        @foreach ($payment_proofs as $index => $proof)
+                                            @if ($proof)
+                                                <div class="col-2">
+                                                    <div
+                                                        class="position-relative ratio ratio-1x1 border rounded-3 overflow-hidden shadow-sm bg-white">
+                                                        @if ($proof->isPreviewable())
+                                                            <img src="{{ $proof->temporaryUrl() }}"
+                                                                class="object-fit-cover w-100 h-100">
+                                                        @endif
+
+                                                        <button type="button"
+                                                            wire:click="removeProof({{ $index }})"
+                                                            class="position-absolute top-0 end-0 btn btn-danger btn-sm p-0 d-flex align-items-center justify-content-center m-1 shadow-sm rounded-circle"
+                                                            style="width: 22px; height: 22px; z-index: 5; border: 2px solid white;">
+                                                            <i class="bi bi-x fs-6 fw-bold"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endif
-                        </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
 
-                        @error('payment_proofs.*')
-                            <div class="text-danger small mt-1">{{ $message }}</div>
-                        @enderror
+                            @error('payment_proofs.*')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
                     </div>
                 </div>
-        </div>
 
-        <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
-            <a href="{{ route('admin.donasi') }}" wire:navigate class="btn btn-light px-4">Batal</a>
-            <button type="submit" class="btn btn-primary px-5 fw-bold" wire:loading.attr="disabled">
-                <span wire:loading.remove wire:target="store">
-                    <i class="bi bi-check-circle me-2"></i> Simpan Donasi
-                </span>
-                <span wire:loading wire:target="store">
-                    <div class="spinner-border spinner-border-sm me-2" role="status"></div>
-                    Menyimpan...
-                </span>
-            </button>
+                <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
+                    <a href="{{ route('admin.donasi') }}" wire:navigate class="btn btn-light px-4">Batal</a>
+                    <button type="submit" class="btn btn-primary px-5 fw-bold" wire:loading.attr="disabled">
+                        <span wire:loading.remove wire:target="store">
+                            <i class="bi bi-check-circle me-2"></i> Simpan Donasi
+                        </span>
+                        <span wire:loading wire:target="store">
+                            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                            Menyimpan...
+                        </span>
+                    </button>
+                </div>
+            </form>
         </div>
-        </form>
     </div>
-</div>
 </div>
