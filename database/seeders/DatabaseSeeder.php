@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         // 3. USERS (Admin, Fundraisers, Donatur)
         $users = $this->seedUsers();
         $admin = $users['admin'];
-        $this->command->info('✅ Users seeded (admin@inisiatif.com / password)');
+        $this->command->info('✅ Users seeded (admin@inisiatifkebaikan.org / password)');
 
         // 4. BANKS
         $banks = $this->seedBanks();
