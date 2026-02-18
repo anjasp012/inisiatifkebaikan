@@ -1,12 +1,13 @@
 <?php
 
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Campaign;
 use App\Models\CampaignUpdate;
 
-new #[Layout('layouts.admin')] class extends Component {
+new #[Layout('layouts.admin')] #[Title('Tambah Update')] class extends Component {
     use WithFileUploads;
 
     public Campaign $campaign;
@@ -68,7 +69,7 @@ new #[Layout('layouts.admin')] class extends Component {
             <form wire:submit="save">
                 <div class="row g-3 mb-3">
                     <div class="col-md-12">
-                        <x-admin.file-upload model="image" label="Gambar Update (Opsional)" />
+                        <x-admin.file-upload model="image" label="Gambar Update (Opsional)" :preview="$image ? $image->temporaryUrl() : null" />
                     </div>
 
                     <div class="col-md-8">
@@ -81,7 +82,7 @@ new #[Layout('layouts.admin')] class extends Component {
                     </div>
 
                     <div class="col-md-4">
-                        <x-admin.input-calendar model="published_at" label="Tanggal Publikasi" />
+                        <x-admin.input-calendar model="published_at" label="Tanggal Publikasi" :enable-time="true" />
                     </div>
 
                     <div class="col-md-12" wire:ignore>

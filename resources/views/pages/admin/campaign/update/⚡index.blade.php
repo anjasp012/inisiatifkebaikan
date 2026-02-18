@@ -1,13 +1,14 @@
 <?php
 
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Campaign;
 use App\Models\CampaignUpdate;
 use Illuminate\Support\Str;
 
-new #[Layout('layouts.admin')] class extends Component {
+new #[Layout('layouts.admin')] #[Title('Update Program')] class extends Component {
     use WithPagination;
 
     public Campaign $campaign;
