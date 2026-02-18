@@ -1,6 +1,6 @@
 @props(['distribution'])
 
-<a href="#" class="card distribution-card" wire:navigate>
+<a href="{{ route('distribution.show', $distribution->id) }}" class="card distribution-card" wire:navigate>
     <div class="position-relative">
         <img src="{{ $distribution->file_url }}" class="card-img-top" alt="{{ $distribution->campaign->title }}">
         <span class="badge distribution-card-date">

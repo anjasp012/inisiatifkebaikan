@@ -14,9 +14,10 @@
         <span>Donasi Saya</span>
     </a>
 
-    <a href="#" class="nav-item">
-        <i class="bi bi-file-earmark-bar-graph"></i>
-        <span>Report</span>
+    <a href="{{ route('distribution.index') }}" wire:navigate wire:current="active" class="nav-item">
+        <i
+            class="bi {{ request()->routeIs('distribution.index') ? 'bi-file-earmark-bar-graph-fill' : 'bi-file-earmark-bar-graph' }}"></i>
+        <span>Laporan</span>
     </a>
 
     <a href="{{ Auth::check() ? (Auth::user()->role === 'admin' ? route('admin.dashboard') : route('account.index')) : route('login') }}"

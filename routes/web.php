@@ -16,6 +16,10 @@ Route::livewire('/donasi/instruksi/{transaction_id}', 'pages::public.donation.in
 Route::livewire('/donasi/instruksi/{transaction_id}', 'pages::public.donation.instruction')->name('donation.instruction');
 Route::livewire('/donasi-saya', 'pages::public.donasi-saya.index')->name('donasi-saya');
 
+// Distribution Reports
+Route::livewire('/laporan', 'pages::public.distribution.index')->name('distribution.index');
+Route::livewire('/laporan/{distribution}', 'pages::public.distribution.show')->name('distribution.show');
+
 // Account Routes
 Route::middleware('auth')->group(function () {
     Route::livewire('/akun', 'pages::public.account.index')->name('account.index');

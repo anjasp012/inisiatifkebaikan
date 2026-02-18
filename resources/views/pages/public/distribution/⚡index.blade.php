@@ -1,0 +1,62 @@
+<?php
+
+use App\Models\Distribution;
+use Livewire\Component;
+use Livewire\WithPagination;
+use Livewire\Attributes\Computed;
+use RalphJSmit\Laravel\SEO\Support\SEOData;
+use Illuminate\Support\Facades\View;
+
+new class extends Component {
+    use WithPagination;
+
+    public function mount()
+    {
+        $seoData = new SEOData(title: 'Laporan Penyaluran | Inisiatif Kebaikan', description: 'Daftar rincian penyaluran bantuan dan donasi dari para muhsinin untuk para penerima manfaat.', image: asset('assets/images/og-image.jpg'));
+
+        View::share('seoData', $seoData);
+    }
+
+    #[Computed]
+    public function distributions()
+    {
+        return Distribution::with('campaign')->orderBy('distribution_date', 'desc')->paginate(12);
+    }
+};
+?>
+
+<div>
+    <x-app.navbar-secondary title="Laporan Penyaluran" />
+
+    <section class="distribution-list-section py-4">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h2 class="section-title">Riwayat Penyaluran</h2>
+            </div>
+
+            <div class="row g-3">
+                @forelse ($this->distributions as $distribution)
+                    <div class="col-6">
+                        <x-app.distribution-card :distribution="$distribution" />
+                    </div>
+                @empty
+                    <div class="col-12 text-center py-5">
+                        <div class="mb-4">
+                            <i class="bi bi-file-earmark-text text-primary opacity-25" style="font-size: 80px;"></i>
+                        </div>
+                        <h6 class="fw-bold mb-2">Belum ada laporan</h6>
+                        <p class="text-muted small mb-4 px-4">
+                            Belum ada laporan penyaluran yang dipublikasikan saat ini.
+                        </p>
+                    </div>
+                @endforelse
+            </div>
+
+            <div class="mt-4 pb-5">
+                {{ $this->distributions->links() }}
+            </div>
+        </div>
+    </section>
+
+    <x-app.bottom-nav />
+</div>
