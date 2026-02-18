@@ -2,13 +2,12 @@
 
 use App\Models\Distribution;
 use Livewire\Component;
-use Livewire\WithPagination;
 use Livewire\Attributes\Computed;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 use Illuminate\Support\Facades\View;
 
 new class extends Component {
-    use WithPagination;
+    public int $perPage = 5;
 
     public function mount()
     {
@@ -17,10 +16,21 @@ new class extends Component {
         View::share('seoData', $seoData);
     }
 
+    public function loadMore()
+    {
+        $this->perPage += 5;
+    }
+
     #[Computed]
     public function distributions()
     {
-        return Distribution::with('campaign')->orderBy('distribution_date', 'desc')->paginate(12);
+        return Distribution::with('campaign')->orderBy('distribution_date', 'desc')->limit($this->perPage)->get();
+    }
+
+    #[Computed]
+    public function hasMore()
+    {
+        return Distribution::count() > $this->perPage;
     }
 };
 ?>
@@ -28,7 +38,7 @@ new class extends Component {
 <div>
     <x-app.navbar-secondary title="Laporan Penyaluran" />
 
-    <section class="distribution-list-section py-4">
+    <section class="distribution-list-section">
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <h2 class="section-title">Riwayat Penyaluran</h2>
@@ -52,9 +62,15 @@ new class extends Component {
                 @endforelse
             </div>
 
-            <div class="mt-4 pb-5">
-                {{ $this->distributions->links() }}
-            </div>
+            @if ($this->hasMore)
+                <div x-intersect="$wire.loadMore()" class="text-center py-4 mb-5">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            @else
+                <div class="py-5"></div>
+            @endif
         </div>
     </section>
 
