@@ -31,9 +31,10 @@
                         'imageTextAlternative',
                         '|',
                         'resizeImage:original',
-                        'resizeImage:25',
+                        'resizeImage:100',
+                        'resizeImage:75',
                         'resizeImage:50',
-                        'resizeImage:75'
+                        'resizeImage:25'
                     ],
                     resizeOptions: [{
                             name: 'resizeImage:original',
@@ -41,9 +42,14 @@
                             value: null
                         },
                         {
-                            name: 'resizeImage:25',
-                            label: '25%',
-                            value: '25'
+                            name: 'resizeImage:100',
+                            label: '100%',
+                            value: '100'
+                        },
+                        {
+                            name: 'resizeImage:75',
+                            label: '75%',
+                            value: '75'
                         },
                         {
                             name: 'resizeImage:50',
@@ -51,12 +57,36 @@
                             value: '50'
                         },
                         {
-                            name: 'resizeImage:75',
-                            label: '75%',
-                            value: '75'
+                            name: 'resizeImage:25',
+                            label: '25%',
+                            value: '25'
                         }
                     ],
-                }
+                },
+                removePlugins: [
+                    'AIAssistant',
+                    'CKBox',
+                    'CKFinder',
+                    'EasyImage',
+                    'RealTimeCollaborativeComments',
+                    'RealTimeCollaborativeTrackChanges',
+                    'RealTimeCollaborativeRevisionHistory',
+                    'PresenceList',
+                    'Comments',
+                    'TrackChanges',
+                    'TrackChangesData',
+                    'RevisionHistory',
+                    'Pagination',
+                    'WProofreader',
+                    'MathType',
+                    'SlashCommand',
+                    'Template',
+                    'DocumentOutline',
+                    'FormatPainter',
+                    'TableOfContents',
+                    'PasteFromOfficeEnhanced',
+                    'CaseChange'
+                ],
             })
             .then(editor => {
                 editor.setData(this.value);
