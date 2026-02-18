@@ -251,7 +251,7 @@ new class extends Component {
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between mb-4" bis_skin_checked="1">
                 <h2 class="section-title">Artikel Terbaru</h2>
-                <a class="link-more" href="" wire:navigate>
+                <a class="link-more" href="{{ route('article.index') }}" wire:navigate>
                     Lihat Semua
                     <i class="bi bi-chevron-right"></i>
                 </a>

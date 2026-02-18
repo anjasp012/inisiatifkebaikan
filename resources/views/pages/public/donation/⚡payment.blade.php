@@ -204,7 +204,7 @@ new class extends Component {
 };
 ?>
 
-<div class="bg-white min-vh-100 font-jakarta"
+<div class="bg-white min-vh-100"
     @donation-created.window="
         (function() {
             try {
@@ -223,12 +223,12 @@ new class extends Component {
         title="Pembayaran" />
 
     <section class="py-3">
-        <div class="container-fluid px-3" style="max-width: 480px;">
+        <div class="container-fluid px-3">
 
             <div class="card border-0 bg-lighter rounded-4 mb-4 border border-light">
                 <div class="card-body p-3 d-flex justify-content-between align-items-center">
                     <div>
-                        <span class="text-muted extra-small fw-bold uppercase ls-sm d-block">Total Donasi</span>
+                        <span class="text-muted extra-small fw-bold uppercase ls-md d-block">Total Donasi</span>
                         <div class="h3 fw-bold text-dark mb-0">Rp
                             {{ number_format($donationData['amount'] ?? 0, 0, ',', '.') }}</div>
                     </div>
@@ -340,7 +340,7 @@ new class extends Component {
                                         <div>
                                             <span
                                                 class="text-start d-block fw-bold text-dark small">{{ $bank->bank_name }}</span>
-                                            <div class="text-muted" style="font-size: 9px;">
+                                            <div class="text-muted extra-small">
                                                 <span class="fw-bold">{{ $bank->account_number }}</span>
                                                 <span class="px-1">•</span>
                                                 <span>a.n {{ $bank->account_name }}</span>
@@ -392,69 +392,8 @@ new class extends Component {
 
             <div class="mt-5 pb-5 text-center opacity-50">
                 <i class="bi bi-shield-check text-success extra-small"></i>
-                <span class="extra-small fw-bold text-muted ps-1 uppercase ls-sm">Keamanan Transaksi Terjamin</span>
+                <span class="extra-small fw-bold text-muted ps-1 uppercase ls-md">Keamanan Transaksi Terjamin</span>
             </div>
         </div>
     </section>
 </div>
-
-<style>
-    .font-jakarta {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    .bg-lighter {
-        background: #fafafb;
-    }
-
-    .extra-small {
-        font-size: 10px;
-    }
-
-    .ls-sm {
-        letter-spacing: 0.05em;
-    }
-
-    .uppercase {
-        text-transform: uppercase;
-    }
-
-    .shadow-micro {
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-    }
-
-    .bank-logo-mini {
-        width: 35px;
-        height: 22px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #fff;
-    }
-
-    .bank-logo-mini img {
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: contain;
-    }
-
-    .rotate-180 {
-        transform: rotate(180deg);
-    }
-
-    .space-y-3>*+* {
-        margin-top: 0.85rem;
-    }
-
-    .list-group-item:active {
-        background-color: #f8f9fa;
-    }
-
-    .card {
-        border-color: #f0f1f3 !important;
-    }
-
-    [x-cloak] {
-        display: none !important;
-    }
-</style>

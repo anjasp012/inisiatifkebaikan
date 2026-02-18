@@ -176,8 +176,8 @@ new #[Layout('layouts.admin')] #[Title('Riwayat Distribusi')] class extends Comp
                         </div>
 
                         <div class="position-relative">
-                            <input type="text" class="form-control ps-5" placeholder="Cari penyaluran..."
-                                wire:model.live.debounce.300ms="search" style="min-width: 250px;">
+                            <input type="text" class="form-control ps-5 w-250" placeholder="Cari penyaluran..."
+                                wire:model.live.debounce.300ms="search">
                             <i
                                 class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                         </div>
@@ -187,7 +187,7 @@ new #[Layout('layouts.admin')] #[Title('Riwayat Distribusi')] class extends Comp
                     <table class="table table-borderless align-middle mb-0">
                         <thead class="table-light">
                             <tr class="text-uppercase x-small fw-bold text-muted">
-                                <th class="ps-4" style="width: 50px;">No</th>
+                                <th class="ps-4 col-no">No</th>
                                 <th>Program & Penerima</th>
                                 <th class="text-end">Nominal</th>
                                 <th class="text-center">Tanggal</th>
@@ -206,13 +206,13 @@ new #[Layout('layouts.admin')] #[Title('Riwayat Distribusi')] class extends Comp
                                         <div class="d-flex align-items-center gap-2 mt-1">
                                             @if ($dist->campaign && $dist->campaign->category)
                                                 <span
-                                                    class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 border border-primary border-opacity-10"
-                                                    style="font-size: 9px; font-weight: 600;">
+                                                    class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 border border-primary border-opacity-10 extra-small fw-semibold">
                                                     <i class="bi bi-tag-fill me-1"></i>
                                                     {{ $dist->campaign->category->name }}
                                                 </span>
                                             @endif
-                                            <div class="text-muted x-small">Penerima: {{ $dist->recipient_name }}</div>
+                                            <div class="text-muted extra-small">Penerima: {{ $dist->recipient_name }}
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="text-end fw-bold text-primary">
@@ -279,20 +279,20 @@ new #[Layout('layouts.admin')] #[Title('Riwayat Distribusi')] class extends Comp
                         <div class="modal-body p-4">
                             <div class="row g-4">
                                 <div class="col-md-5">
-                                    <label class="form-label x-small fw-bold text-uppercase text-muted">Foto
+                                    <label class="form-label extra-small fw-bold text-uppercase text-muted">Foto
                                         Dokumentasi</label>
                                     <img src="{{ $selectedDistribution->file_url }}"
                                         class="img-fluid rounded shadow-sm border" alt="Dokumentasi">
                                 </div>
                                 <div class="col-md-7">
-                                    <label class="form-label x-small fw-bold text-uppercase text-muted">Nama
+                                    <label class="form-label extra-small fw-bold text-uppercase text-muted">Nama
                                         Campaign</label>
                                     <h6 class="fw-bold mb-1 text-primary">
                                         {{ $selectedDistribution->campaign->title ?? 'Campaign Terhapus' }}
                                     </h6>
                                     @if ($selectedDistribution->campaign && $selectedDistribution->campaign->category)
                                         <span
-                                            class="badge bg-primary bg-opacity-10 text-primary x-small border border-primary border-opacity-10">
+                                            class="badge bg-primary bg-opacity-10 text-primary extra-small border border-primary border-opacity-10">
                                             {{ $selectedDistribution->campaign->category->name }}
                                         </span>
                                     @endif
@@ -301,18 +301,18 @@ new #[Layout('layouts.admin')] #[Title('Riwayat Distribusi')] class extends Comp
                                 <div class="row g-3 mb-3">
                                     <div class="col-6">
                                         <label
-                                            class="form-label x-small fw-bold text-uppercase text-muted">Penerima</label>
+                                            class="form-label extra-small fw-bold text-uppercase text-muted">Penerima</label>
                                         <div class="fw-bold">{{ $selectedDistribution->recipient_name }}</div>
                                     </div>
                                     <div class="col-6">
                                         <label
-                                            class="form-label x-small fw-bold text-uppercase text-muted">Tanggal</label>
+                                            class="form-label extra-small fw-bold text-uppercase text-muted">Tanggal</label>
                                         <div class="fw-bold">
                                             {{ Carbon\Carbon::parse($selectedDistribution->distribution_date)->translatedFormat('d M Y') }}
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <label class="form-label x-small fw-bold text-uppercase text-muted">Total
+                                        <label class="form-label extra-small fw-bold text-uppercase text-muted">Total
                                             Disalurkan</label>
                                         <h5 class="fw-bold text-primary mb-0">
                                             Rp {{ number_format($selectedDistribution->amount, 0, ',', '.') }}
@@ -320,7 +320,7 @@ new #[Layout('layouts.admin')] #[Title('Riwayat Distribusi')] class extends Comp
                                     </div>
                                 </div>
 
-                                <label class="form-label x-small fw-bold text-uppercase text-muted">Keterangan /
+                                <label class="form-label extra-small fw-bold text-uppercase text-muted">Keterangan /
                                     Kabar</label>
                                 <div class="p-3 bg-light rounded border small ck-content">
                                     {!! $selectedDistribution->description !!}
@@ -334,25 +334,6 @@ new #[Layout('layouts.admin')] #[Title('Riwayat Distribusi')] class extends Comp
     </div>
 </div>
 
-<style>
-    .x-small {
-        font-size: 0.7rem;
-    }
-
-    .object-fit-cover {
-        object-fit: cover;
-    }
-
-    /* Validation Style for TomSelect */
-    .is-invalid-tomselect .ts-control {
-        border-color: #dc3545 !important;
-        padding-right: calc(1.5em + 0.75rem);
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5zM6 8.2h.01'/%3e%3c/svg%3e");
-        background-repeat: no-repeat;
-        background-position: right calc(0.375em + 0.1875rem) center;
-        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-    }
-</style>
 
 @push('scripts')
     <script>

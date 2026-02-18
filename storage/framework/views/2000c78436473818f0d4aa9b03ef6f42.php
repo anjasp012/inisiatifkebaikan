@@ -5,10 +5,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title><?php echo e(isset($title) ? $title . ' | ' . config('app.name', 'Laravel') : config('app.name', 'Laravel')); ?></title>
-    <title><?php echo e(config('app.name', 'Laravel')); ?></title>
+    <title>
+        <?php echo e(isset($title) ? $title . ' | Admin ' . config('app.name', 'Laravel') : 'Admin | ' . config('app.name', 'Laravel')); ?>
 
-    <link rel="shortcut icon" href="<?php echo e(asset('assets/images/favicon.png')); ?>" type="image/x-icon">
+    </title>
+
+    <link rel="shortcut icon" href="<?php echo e(asset('assets/images/logo-dashboard.png')); ?>" type="image/png">
 
     <!-- AOS Animation CSS -->
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
@@ -16,8 +18,8 @@
     <!-- Tom Select CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
 
-    <!-- CKEditor 5 -->
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+    <!-- CKEditor 5 Superbuild -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/super-build/ckeditor.js"></script>
 
     <!-- Flatpickr CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -61,6 +63,13 @@
 
         .ck-content {
             font-size: 0.95rem;
+        }
+
+        .ck-content img {
+            max-width: 100%;
+            height: auto !important;
+            aspect-ratio: auto !important;
+            object-fit: contain;
         }
     </style>
 

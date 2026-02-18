@@ -7,7 +7,7 @@ use Livewire\WithPagination;
 ?>
 
 <div>
-    <div class="card card-dashboard">
+    <div class="card card-dashboard border-0">
         <div class="card-body border-bottom">
             <div class="d-flex flex-column flex-lg-row justify-content-lg-between align-items-lg-center gap-3">
                 <div>
@@ -19,7 +19,7 @@ use Livewire\WithPagination;
                     <a href="<?php echo e(route('admin.artikel.tambah')); ?>" wire:navigate class="btn btn-primary text-white">
                         <i class="bi bi-plus-lg me-1"></i> Tambah Artikel
                     </a>
-                    <div wire:ignore class="d-inline-block" style="min-width: 200px;">
+                    <div wire:ignore class="d-inline-block w-250">
                         <select x-data="{
                             tom: null,
                             init() {
@@ -40,8 +40,8 @@ use Livewire\WithPagination;
                         </select>
                     </div>
                     <div class="position-relative">
-                        <input type="text" class="form-control ps-5" placeholder="Cari artikel..."
-                            wire:model.live.debounce.250ms="search" style="min-width: 250px;">
+                        <input type="text" class="form-control ps-5 w-250" placeholder="Cari artikel..."
+                            wire:model.live.debounce.250ms="search">
                         <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                     </div>
                 </div>
@@ -51,14 +51,14 @@ use Livewire\WithPagination;
             <table class="table table-borderless align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="text-center">NO</th>
-                        <th>THUMBNAIL</th>
+                        <th class="text-center col-no">NO</th>
+                        <th class="col-thumb">THUMBNAIL</th>
                         <th>JUDUL ARTIKEL</th>
                         <th>PENULIS</th>
                         <th>VIEWS</th>
                         <th>STATUS</th>
                         <th>DIBUAT</th>
-                        <th class="text-end">AKSI</th>
+                        <th class="text-end col-actions pe-3">AKSI</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,15 +66,14 @@ use Livewire\WithPagination;
                         <tr>
                             <td class="text-center"><?php echo e($this->articles->firstItem() + $no); ?></td>
                             <td>
-                                <img loading="lazy" src="<?php echo e($article->thumbnail_url); ?>" width="100px" class="rounded-1"
-                                    alt="<?php echo e($article->title); ?>">
+                                <img loading="lazy" src="<?php echo e($article->thumbnail_url); ?>"
+                                    class="rounded avatar-xl object-fit-cover" alt="<?php echo e($article->title); ?>">
                             </td>
                             <td>
                                 <div class="fw-bold"><?php echo e($article->title); ?></div>
                                 <div class="mt-1">
                                     <span
-                                        class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 border border-primary border-opacity-10"
-                                        style="font-size: 10px; font-weight: 600;">
+                                        class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 border border-primary border-opacity-10 extra-small fw-semibold">
                                         <i class="bi bi-tag-fill me-1"></i>
                                         <?php echo e($article->category); ?>
 
@@ -97,7 +96,7 @@ use Livewire\WithPagination;
                                 <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
                             </td>
                             <td><?php echo e($article->created_at->diffForHumans()); ?></td>
-                            <td class="text-end">
+                            <td class="text-end pe-3">
                                 <div class="d-flex justify-content-end gap-1">
                                     <a href="<?php echo e(route('admin.artikel.ubah', $article)); ?>" wire:navigate
                                         class="btn btn-sm btn-warning text-white" title="Ubah"><i

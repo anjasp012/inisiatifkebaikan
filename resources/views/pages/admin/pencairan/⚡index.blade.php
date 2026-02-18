@@ -148,7 +148,7 @@ new #[Layout('layouts.admin')] class extends Component {
                         <i class="bi bi-plus-lg me-1"></i> Buat Pencairan
                     </a>
 
-                    <div wire:ignore class="d-inline-block" style="min-width: 150px;">
+                    <div wire:ignore class="d-inline-block w-150">
                         <select x-data="{
                             tom: null,
                             init() {
@@ -169,8 +169,8 @@ new #[Layout('layouts.admin')] class extends Component {
                         </select>
                     </div>
                     <div class="position-relative">
-                        <input type="text" class="form-control ps-5" placeholder="Cari campaign/mitra..."
-                            wire:model.live.debounce.300ms="search" style="min-width: 250px;">
+                        <input type="text" class="form-control ps-5 w-250" placeholder="Cari campaign/mitra..."
+                            wire:model.live.debounce.300ms="search">
                         <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                     </div>
                 </div>
@@ -193,13 +193,13 @@ new #[Layout('layouts.admin')] class extends Component {
                         <tr wire:click="showReceipt({{ $w->id }})" style="cursor: pointer;"
                             class="transition-row">
                             <td class="ps-4">
-                                <div class="fw-bold small text-dark text-truncate" style="max-width: 280px;">
+                                <div class="fw-bold extra-small text-dark text-truncate max-w-200">
                                     {{ $w->campaign->title }}</div>
                             </td>
                             <td>
                                 <div class="small text-muted">{{ $w->requester_name }}</div>
                             </td>
-                            <td class="text-center small text-muted">
+                            <td class="text-center extra-small text-muted">
                                 {{ $w->created_at->format('d-m-Y') }}
                             </td>
                             <td class="text-center">
@@ -380,50 +380,4 @@ new #[Layout('layouts.admin')] class extends Component {
         </div>
     @endif
 
-    <style>
-        .x-small {
-            font-size: 0.75rem;
-        }
-
-        .transition-row {
-            transition: background-color 0.15s ease;
-        }
-
-        .transition-row:hover {
-            background-color: rgba(var(--bs-primary-rgb), 0.04) !important;
-        }
-
-        .modal-backdrop-custom {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1050;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-            backdrop-filter: blur(4px);
-        }
-
-        .receipt-modal {
-            animation: receiptSlideUp 0.25s ease-out;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        @keyframes receiptSlideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
 </div>

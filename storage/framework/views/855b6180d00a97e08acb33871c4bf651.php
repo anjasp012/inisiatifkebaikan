@@ -5,12 +5,8 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 ?>
 
-<?php $__env->startPush('styles'); ?>
-    
-<?php $__env->stopPush(); ?>
-
 <div>
-    <div class="card card-dashboard border-0 overflow-hidden">
+    <div class="card card-dashboard border-0 overflow-hidden border-0">
         <form wire:submit.prevent="save">
             <div class="card-body p-0">
                 <ul class="nav nav-pills p-3 bg-white border-bottom gap-2" id="settingsTab" role="tablist">
@@ -45,7 +41,7 @@ use Livewire\WithFileUploads;
                     <div class="tab-pane fade show active" id="general" role="tabpanel">
                         <div class="row g-4">
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">Logo Website</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Logo Website</label>
                                 <?php if (isset($component)) { $__componentOriginal6384af2cfbb3fb249311eef9f601626b = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal6384af2cfbb3fb249311eef9f601626b = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.file-upload','data' => ['model' => 'logo','label' => 'Logo Website','preview' => $logo
@@ -81,23 +77,24 @@ use Livewire\WithFileUploads;
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-bold small text-uppercase">Nama Website</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Nama Website</label>
                                 <input type="text" wire:model="website_name" class="form-control">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-bold small text-uppercase">Nomor WhatsApp (CS)</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Nomor WhatsApp (CS)</label>
                                 <input type="text" wire:model="whatsapp_number" class="form-control"
                                     placeholder="628xxx">
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">Deskripsi Meta (SEO)</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Deskripsi Meta
+                                    (SEO)</label>
                                 <textarea wire:model="website_description" class="form-control" rows="3"></textarea>
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">Teks Footer</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Teks Footer</label>
                                 <input type="text" wire:model="footer_text" class="form-control">
                             </div>
                         </div>
@@ -107,23 +104,23 @@ use Livewire\WithFileUploads;
                     <div class="tab-pane fade" id="tripay" role="tabpanel">
                         <div class="row g-4">
                             <div class="col-md-6">
-                                <label class="form-label fw-bold small text-uppercase">Merchant Code</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Merchant Code</label>
                                 <input type="text" wire:model="tripay_merchant_code" class="form-control"
                                     placeholder="Txxxx">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-bold small text-uppercase">Mode Environment</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Mode Environment</label>
                                 <select wire:model="tripay_mode" class="form-select">
                                     <option value="sandbox">Sandbox (Testing)</option>
                                     <option value="production">Production (Live)</option>
                                 </select>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">API Key</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">API Key</label>
                                 <input type="password" wire:model="tripay_api_key" class="form-control">
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">Private Key</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Private Key</label>
                                 <input type="password" wire:model="tripay_private_key" class="form-control">
                             </div>
                         </div>
@@ -138,23 +135,23 @@ use Livewire\WithFileUploads;
                     <div class="tab-pane fade" id="midtrans" role="tabpanel">
                         <div class="row g-4">
                             <div class="col-md-6">
-                                <label class="form-label fw-bold small text-uppercase">Merchant ID</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Merchant ID</label>
                                 <input type="text" wire:model="midtrans_merchant_id" class="form-control"
                                     placeholder="Gxxxx">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-bold small text-uppercase">Mode Environment</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Mode Environment</label>
                                 <select wire:model="midtrans_mode" class="form-select">
                                     <option value="sandbox">Sandbox (Testing)</option>
                                     <option value="production">Production (Live)</option>
                                 </select>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">Client Key</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Client Key</label>
                                 <input type="text" wire:model="midtrans_client_key" class="form-control">
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">Server Key</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Server Key</label>
                                 <input type="password" wire:model="midtrans_server_key" class="form-control">
                             </div>
                         </div>
@@ -169,9 +166,10 @@ use Livewire\WithFileUploads;
                     <div class="tab-pane fade" id="whatsapp" role="tabpanel">
                         <div class="row g-4">
                             <div class="col-md-5">
-                                <div class="card border-0 bg-lighter rounded-4 p-4 h-100">
+                                <div class="card border-0 bg-light rounded-4 p-4 h-100 border-0">
                                     <h6 class="fw-bold text-dark mb-3">Konfigurasi Perangkat</h6>
-                                    <label class="form-label fw-bold extra-small text-muted text-uppercase ls-1">Device
+                                    <label
+                                        class="form-label fw-bold extra-small text-muted text-uppercase ls-sm">Device
                                         ID WhaCenter</label>
                                     <div class="input-group bg-white rounded-3 overflow-hidden border border-light">
                                         <span class="input-group-text bg-transparent border-0 pe-2">
@@ -181,7 +179,7 @@ use Livewire\WithFileUploads;
                                             class="form-control border-0 py-3 shadow-none"
                                             placeholder="Masukan Device ID Aktif">
                                     </div>
-                                    <div class="mt-3 p-3 rounded-3 bg-white border border-light shadow-micro">
+                                    <div class="mt-3 p-3 rounded-3 bg-white border border-light shadow-sm">
                                         <div class="d-flex align-items-center gap-2 mb-2">
                                             <div class="bg-success bg-opacity-10 py-1 px-2 rounded">
                                                 <i class="bi bi-check2 text-success small"></i>
@@ -241,6 +239,20 @@ use Livewire\WithFileUploads;
                                                     <i class="bi bi-chevron-right extra-small"
                                                         x-show="currentTpl === 'rejected'"></i>
                                                 </button>
+                                                <button type="button" @click="currentTpl = 'otp_login'"
+                                                    :class="currentTpl === 'otp_login' ? 'active-tpl' : 'text-muted'"
+                                                    class="list-group-item list-group-item-action border-0 py-3 px-4 small fw-bold transition-all d-flex align-items-center justify-content-between bg-transparent">
+                                                    OTP Login
+                                                    <i class="bi bi-chevron-right extra-small"
+                                                        x-show="currentTpl === 'otp_login'"></i>
+                                                </button>
+                                                <button type="button" @click="currentTpl = 'otp_register'"
+                                                    :class="currentTpl === 'otp_register' ? 'active-tpl' : 'text-muted'"
+                                                    class="list-group-item list-group-item-action border-0 py-3 px-4 small fw-bold transition-all d-flex align-items-center justify-content-between bg-transparent">
+                                                    OTP Register
+                                                    <i class="bi bi-chevron-right extra-small"
+                                                        x-show="currentTpl === 'otp_register'"></i>
+                                                </button>
                                                 <button type="button" @click="currentTpl = 'logs'"
                                                     :class="currentTpl === 'logs' ? 'active-tpl' : 'text-muted'"
                                                     class="list-group-item list-group-item-action border-0 py-3 px-4 small fw-bold transition-all d-flex align-items-center justify-content-between bg-transparent">
@@ -268,16 +280,16 @@ use Livewire\WithFileUploads;
                                                     <div class="d-flex flex-wrap gap-1">
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('created', '{donor_name}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Name</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Name</button>
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('created', '{campaign_title}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Program</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Program</button>
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('created', '{amount}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Amount</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Amount</button>
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('created', '{payment_code}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Rek/VA</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Rek/VA</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -298,13 +310,13 @@ use Livewire\WithFileUploads;
                                                     <div class="d-flex flex-wrap gap-1">
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('confirmed', '{donor_name}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Name</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Name</button>
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('confirmed', '{campaign_title}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Program</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Program</button>
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('confirmed', '{amount}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Amount</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Amount</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -325,10 +337,54 @@ use Livewire\WithFileUploads;
                                                     <div class="d-flex flex-wrap gap-1">
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('rejected', '{donor_name}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Name</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Name</button>
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('rejected', '{campaign_title}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Program</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Program</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            
+                                            <div x-show="currentTpl === 'otp_login'" x-cloak>
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <span
+                                                        class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill extra-small fw-bold border border-warning border-opacity-25">Trigger:
+                                                        Login User</span>
+                                                </div>
+                                                <textarea id="tpl_otp_login" wire:model="template_otp_login"
+                                                    class="form-control font-monospace border-light bg-light bg-opacity-25 p-3 rounded-3" rows="12"
+                                                    style="font-size: 13px; resize: none;"></textarea>
+                                                <div class="mt-4 pt-3 border-top border-light">
+                                                    <p class="extra-small fw-bold text-muted text-uppercase ls-1 mb-2">
+                                                        Klik untuk Sisipkan:</p>
+                                                    <div class="d-flex flex-wrap gap-1">
+                                                        <button type="button"
+                                                            @click.prevent="insertPlaceholder('otp_login', '{otp_code}')"
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">OTP
+                                                            Code</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            
+                                            <div x-show="currentTpl === 'otp_register'" x-cloak>
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <span
+                                                        class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill extra-small fw-bold border border-info border-opacity-25">Trigger:
+                                                        Registrasi Akun</span>
+                                                </div>
+                                                <textarea id="tpl_otp_register" wire:model="template_otp_register"
+                                                    class="form-control font-monospace border-light bg-light bg-opacity-25 p-3 rounded-3" rows="12"
+                                                    style="font-size: 13px; resize: none;"></textarea>
+                                                <div class="mt-4 pt-3 border-top border-light">
+                                                    <p class="extra-small fw-bold text-muted text-uppercase ls-1 mb-2">
+                                                        Klik untuk Sisipkan:</p>
+                                                    <div class="d-flex flex-wrap gap-1">
+                                                        <button type="button"
+                                                            @click.prevent="insertPlaceholder('otp_register', '{otp_code}')"
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">OTP
+                                                            Code</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -343,7 +399,7 @@ use Livewire\WithFileUploads;
                                                 <div class="table-responsive">
                                                     <table class="table table-sm extra-small">
                                                         <thead>
-                                                            <tr class="text-muted text-uppercase ls-1">
+                                                            <tr class="text-muted text-uppercase ls-sm">
                                                                 <th>Waktu</th>
                                                                 <th>Tujuan</th>
                                                                 <th>Status</th>

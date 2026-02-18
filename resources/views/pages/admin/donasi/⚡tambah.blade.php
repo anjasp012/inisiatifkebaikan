@@ -41,6 +41,7 @@ new #[Layout('layouts.admin')] #[Title('Tambah Donasi')] class extends Component
             'status' => 'required|in:pending,success,failed',
             'donor_name' => 'required|string',
             'donor_phone' => 'nullable|string',
+            'donor_email' => 'nullable|email',
             'amount' => 'required|numeric|min:1000',
             'created_at' => 'required|date',
             'payment_proofs.*' => 'nullable|image|max:5120', // Max 5MB per image
@@ -105,7 +106,7 @@ new #[Layout('layouts.admin')] #[Title('Tambah Donasi')] class extends Component
 ?>
 
 <div>
-    <div class="card card-dashboard">
+    <div class="card card-dashboard border-0">
         <div class="card-body border-bottom">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
@@ -122,7 +123,7 @@ new #[Layout('layouts.admin')] #[Title('Tambah Donasi')] class extends Component
                 <div class="row g-4">
                     <!-- Data Donasi -->
                     <div class="col-lg-7">
-                        <div class="bg-light p-4 rounded-4 h-100">
+                        <div class="bg-light p-4 rounded-4 h-100 border-0">
                             <h6 class="fw-bold mb-4 border-bottom pb-2">Informasi Donasi</h6>
 
                             <div class="mb-3 @error('campaign_id') is-invalid-tomselect @enderror">
@@ -160,8 +161,12 @@ is-invalid
 
                             <div class="mb-3">
                                 <label class="form-label small fw-bold text-uppercase">Nama Donatur</label>
-                                <input type="text" wire:model="donor_name" class="form-control"
+                                <input type="text" wire:model="donor_name"
+                                    class="form-control @error('donor_name') is-invalid @enderror"
                                     placeholder="Nama lengkap donatur">
+                                @error('donor_name')
+                                    <div class="invalid-feedback extra-small">{{ $message }}</div>
+                                @enderror
                                 <div class="form-check mt-2">
                                     <input class="form-check-input" type="checkbox" wire:model="is_anonymous"
                                         id="anon">
@@ -209,13 +214,21 @@ is-invalid
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-uppercase">No. WhatsApp</label>
-                                    <input type="text" wire:model="donor_phone" class="form-control"
+                                    <input type="text" wire:model="donor_phone"
+                                        class="form-control @error('donor_phone') is-invalid @enderror"
                                         placeholder="628xxx">
+                                    @error('donor_phone')
+                                        <div class="invalid-feedback extra-small">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label small fw-bold text-uppercase">Email (Opsional)</label>
-                                    <input type="email" wire:model="donor_email" class="form-control"
+                                    <input type="email" wire:model="donor_email"
+                                        class="form-control @error('donor_email') is-invalid @enderror"
                                         placeholder="email@contoh.com">
+                                    @error('donor_email')
+                                        <div class="invalid-feedback extra-small">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
@@ -274,7 +287,7 @@ is-invalid
 
                     <!-- Bukti Transfer -->
                     <div class="col-lg-5">
-                        <div class="bg-light p-4 rounded-4 h-100">
+                        <div class="bg-light p-4 rounded-4 h-100 border-0">
                             <h6 class="fw-bold mb-4 border-bottom pb-2">Bukti Transfer</h6>
 
                             <div class="mb-4">
@@ -295,7 +308,7 @@ is-invalid
                                 @if ($payment_proofs)
                                     <div class="mt-4 vstack gap-3">
                                         @foreach ($payment_proofs as $index => $proof)
-                                            <div class="card border-0  overflow-hidden">
+                                            <div class="card border-0  overflow-hidden border-0">
                                                 <div class="card-body p-3">
                                                     <div class="d-flex gap-3">
                                                         @if ($proof->isPreviewable())
@@ -324,13 +337,13 @@ is-invalid
                                                             </div>
                                                             <div
                                                                 class="d-flex justify-content-between align-items-center">
-                                                                <span class="x-small text-muted text-truncate"
+                                                                <span class="extra-small text-muted text-truncate"
                                                                     style="max-width: 150px;">
                                                                     {{ $proof->getClientOriginalName() }}
                                                                 </span>
                                                                 <button type="button"
                                                                     wire:click="$set('payment_proofs.{{ $index }}', null)"
-                                                                    class="btn btn-link text-danger btn-sm p-0 text-decoration-none x-small">
+                                                                    class="btn btn-link text-danger btn-sm p-0 text-decoration-none extra-small">
                                                                     <i class="bi bi-trash"></i> Hapus
                                                                 </button>
                                                             </div>
@@ -365,27 +378,4 @@ is-invalid
             </form>
         </div>
     </div>
-    <style>
-        .x-small {
-            font-size: 0.75rem;
-        }
-
-        .form-label {
-            color: #555;
-        }
-
-        .bg-light {
-            background-color: #f8f9fa !important;
-        }
-
-        /* Validation Style for TomSelect */
-        .is-invalid-tomselect .ts-control {
-            border-color: #dc3545 !important;
-            padding-right: calc(1.5em + 0.75rem);
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5zM6 8.2h.01'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right calc(0.375em + 0.1875rem) center;
-            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-        }
-    </style>
 </div>

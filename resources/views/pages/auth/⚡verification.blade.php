@@ -92,14 +92,14 @@ new #[Layout('layouts.app')] class extends Component {
         <div class="container-fluid px-4">
             <div class="text-center mb-5">
                 <div class="mb-4 d-inline-block">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="Logo"
-                        style="height: 48px; object-fit: contain;">
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="h-auto object-fit-contain"
+                        style="max-height: 48px;">
                 </div>
                 <h3 class="fw-bold mb-1">Verifikasi Nomor</h3>
                 <p class="text-muted small">Masukkan kode OTP yang dikirim ke WhatsApp Anda.</p>
             </div>
 
-            <form wire:submit.prevent="verify" class="mt-4" style="max-width: 400px; margin: 0 auto;">
+            <form wire:submit.prevent="verify" class="mt-4 mx-auto" style="max-width: 400px;">
                 @if (session()->has('success'))
                     <div class="alert alert-success small mb-4 border-0 bg-success bg-opacity-10 text-success">
                         <i class="bi bi-check-circle me-1"></i> {{ session('success') }}
@@ -114,15 +114,15 @@ new #[Layout('layouts.app')] class extends Component {
                             <i class="bi bi-shield-lock"></i>
                         </span>
                         <input type="text" wire:model="otp" maxlength="6"
-                            class="form-control py-3 bg-transparent border-0 shadow-none text-center fw-bold fs-4 @error('otp') is-invalid @enderror"
-                            placeholder="------" style="letter-spacing: 0.5em;">
+                            class="form-control py-3 bg-transparent border-0 shadow-none text-center fw-bold fs-4 ls-md @error('otp') is-invalid @enderror"
+                            placeholder="------">
                     </div>
                     @error('otp')
                         <div class="text-danger extra-small mt-1 px-1 fw-bold text-center">{{ $message }}</div>
                     @enderror
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 py-3 fw-bold mb-3 shadow-md rounded-pill">
+                <button type="submit" class="btn btn-primary w-100 py-3 fw-bold mb-3 shadow-auth rounded-pill">
                     <span wire:loading.remove>Verifikasi</span>
                     <span wire:loading>Memproses...</span>
                 </button>
@@ -144,21 +144,3 @@ new #[Layout('layouts.app')] class extends Component {
         </div>
     </section>
 </div>
-
-<style>
-    .font-jakarta {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    .ls-1 {
-        letter-spacing: 0.1em;
-    }
-
-    .extra-small {
-        font-size: 11px;
-    }
-
-    .shadow-md {
-        box-shadow: 0 10px 15px -3px rgba(220, 82, 7, 0.2);
-    }
-</style>

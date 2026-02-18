@@ -192,30 +192,28 @@ new class extends Component {
                                 role="button">
                                 <div class="d-flex align-items-center gap-3">
                                     {{-- Date Badge --}}
-                                    <div class="d-flex flex-column align-items-center justify-content-center bg-primary rounded-3 px-2 py-2 shadow-sm"
-                                        style="width: 50px; height: 50px;">
-                                        <span class="fw-bold text-white lh-1" style="font-size: 18px;">
+                                    <div
+                                        class="d-flex flex-column align-items-center justify-content-center bg-primary rounded-3 px-2 py-2 shadow-sm avatar-md">
+                                        <span class="fw-bold text-white lh-1 fs-5">
                                             {{ optional($update->published_at)->format('d') ?? $update->created_at->format('d') }}
                                         </span>
-                                        <span class="fw-medium text-white-50 lh-1 text-uppercase"
-                                            style="font-size: 10px;">
+                                        <span class="fw-medium text-white-50 lh-1 text-uppercase extra-small">
                                             {{ optional($update->published_at)->translatedFormat('M') ?? $update->created_at->translatedFormat('M') }}
                                         </span>
                                     </div>
 
                                     {{-- Title & Meta --}}
                                     <div class="flex-grow-1">
-                                        <h6 class="fw-bold text-dark mb-1" style="font-size: 15px;">
+                                        <h6 class="fw-bold text-dark mb-1">
                                             {{ $update->title }}</h6>
-                                        <span class="fw-bold text-black" style="font-size: 13px;">
+                                        <span class="fw-bold text-black small">
                                             <i class="bi bi-clock me-1 text-primary"></i>
                                             {{ optional($update->published_at)->diffForHumans() ?? $update->created_at->diffForHumans() }}
                                         </span>
                                     </div>
 
                                     {{-- Toggle Icon --}}
-                                    <div class="text-secondary transition-all duration-300"
-                                        :style="open ? 'transform: rotate(180deg)' : ''">
+                                    <div class="text-secondary transition-transform" :class="open ? 'rotate-180' : ''">
                                         <i class="bi bi-chevron-down"></i>
                                     </div>
                                 </div>
@@ -224,7 +222,7 @@ new class extends Component {
                             {{-- Body --}}
                             <div x-show="open" x-collapse class="border-top border-light bg-light bg-opacity-10">
                                 <div class="card-body p-3 p-md-4">
-                                    <div class="text-dark mb-3 ck-content" style="font-size: 14px; line-height: 1.6;">
+                                    <div class="text-dark mb-3 ck-content small" style="line-height: 1.6;">
                                         {!! $update->content !!}
                                     </div>
 

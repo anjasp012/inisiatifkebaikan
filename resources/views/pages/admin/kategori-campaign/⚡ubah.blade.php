@@ -132,7 +132,8 @@ new #[Layout('layouts.admin')] class extends Component {
             <form wire:submit="store">
                 <div class="row g-3 mb-3">
                     <div class="col-md-12">
-                        <label class="form-label d-block">Tipe Icon</label>
+                        <label class="form-label d-block extra-small text-uppercase fw-bold text-muted">Tipe
+                            Icon</label>
                         <div class="btn-group" role="group">
                             <input type="radio" class="btn-check" name="iconType" id="typeSelect" value="select"
                                 wire:model.live="iconType">
@@ -159,12 +160,13 @@ new #[Layout('layouts.admin')] class extends Component {
                         </div>
                     @else
                         <div class="col-md-12">
-                            <label class="form-label">Pilih Icon Bootstrap</label>
+                            <label class="form-label extra-small text-uppercase fw-bold text-muted">Pilih Icon
+                                Bootstrap</label>
                             <input type="text" class="form-control mb-3"
                                 placeholder="Cari icon (contoh: heart, user, money)..."
                                 wire:model.live.debounce.300ms="searchIcon">
 
-                            <div class="border rounded p-3 bg-light" style="max-height: 300px; overflow-y: auto;">
+                            <div class="border-0 rounded p-3 bg-light" style="max-height: 300px; overflow-y: auto;">
                                 <div class="row row-cols-auto g-2 justify-content-center justify-content-md-start">
                                     @foreach ($this->filteredIcons as $biIcon)
                                         <div class="col">
@@ -203,7 +205,8 @@ new #[Layout('layouts.admin')] class extends Component {
                     @endif
 
                     <div class="col-md-12">
-                        <label for="name" class="form-label">Nama Kategori Campaign</label>
+                        <label for="name" class="form-label extra-small text-uppercase fw-bold text-muted">Nama
+                            Kategori Campaign</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" wire:model="name"
                             id="name" placeholder="Masukan nama kategori campaign">
                         @error('name')

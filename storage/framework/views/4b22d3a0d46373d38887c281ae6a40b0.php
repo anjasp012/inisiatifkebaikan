@@ -1,6 +1,7 @@
 <?php
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use App\Models\Donation;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -81,7 +82,7 @@ use Livewire\WithPagination;
                         </button>
                     </div>
 
-                    <div wire:ignore class="d-inline-block" style="min-width: 150px;">
+                    <div wire:ignore class="d-inline-block w-150">
                         <select x-data="{
                             tom: null,
                             init() {
@@ -103,8 +104,8 @@ use Livewire\WithPagination;
                     </div>
 
                     <div class="position-relative">
-                        <input type="text" class="form-control ps-5" placeholder="Cari donatur..."
-                            wire:model.live.debounce.250ms="search" style="min-width: 250px;">
+                        <input type="text" class="form-control ps-5 w-250" placeholder="Cari donatur..."
+                            wire:model.live.debounce.250ms="search">
                         <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                     </div>
                 </div>
@@ -115,7 +116,7 @@ use Livewire\WithPagination;
             <table class="table table-borderless align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="text-center" style="width: 50px;">NO</th>
+                        <th class="text-center col-no">NO</th>
                         <th>TRANSAKSI ID</th>
                         <th>DONATUR</th>
                         <th>PROGRAM CAMPAIGN</th>
@@ -139,7 +140,7 @@ use Livewire\WithPagination;
                             </td>
                             <td>
                                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($donation->campaign): ?>
-                                    <div class="fw-semibold text-truncate" style="max-width: 200px;"
+                                    <div class="fw-semibold text-truncate max-w-200"
                                         title="<?php echo e($donation->campaign->title); ?>">
                                         <?php echo e($donation->campaign->title); ?>
 
@@ -147,16 +148,14 @@ use Livewire\WithPagination;
                                     <div class="mt-1">
                                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($donation->campaign->category): ?>
                                             <span
-                                                class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 border border-primary border-opacity-10 x-small"
-                                                style="font-size: 10px; font-weight: 600;">
+                                                class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 border border-primary border-opacity-10 extra-small fw-semibold">
                                                 <i class="bi bi-tag-fill me-1"></i>
                                                 <?php echo e($donation->campaign->category->name); ?>
 
                                             </span>
                                         <?php else: ?>
                                             <span
-                                                class="badge bg-secondary bg-opacity-10 text-secondary px-2 py-1 border border-secondary border-opacity-10 x-small"
-                                                style="font-size: 10px; font-weight: 600;">
+                                                class="badge bg-secondary bg-opacity-10 text-secondary px-2 py-1 border border-secondary border-opacity-10 extra-small fw-semibold">
                                                 -
                                             </span>
                                         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
@@ -181,7 +180,7 @@ use Livewire\WithPagination;
                                 </div>
                                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($donation->paymentProofs->count() > 0): ?>
                                     <span
-                                        class="badge bg-info bg-opacity-10 text-info x-small mt-1 px-2 border border-info border-opacity-25">
+                                        class="badge bg-info bg-opacity-10 text-info extra-small mt-1 px-2 border border-info border-opacity-25">
                                         <i class="bi bi-image me-1"></i> BUKTI
                                         (<?php echo e($donation->paymentProofs->count()); ?>)
                                     </span>
@@ -211,10 +210,6 @@ use Livewire\WithPagination;
                                         class="btn btn-sm btn-info text-white" title="Lihat Detail">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="https://wa.me/<?php echo e(preg_replace('/[^0-9]/', '', $donation->donor_phone)); ?>"
-                                        target="_blank" class="btn btn-sm btn-success text-white" title="Hubungi WA">
-                                        <i class="bi bi-whatsapp"></i>
-                                    </a>
                                     <button wire:click="destroy(<?php echo e($donation->id); ?>)"
                                         wire:confirm="Yakin ingin menghapus data donasi ini?"
                                         class="btn btn-sm btn-danger text-white" title="Hapus">
@@ -242,5 +237,4 @@ use Livewire\WithPagination;
             </div>
         </div>
     </div>
-    
 </div><?php /**PATH C:\laragon\www\inisiatif\storage\framework/views/livewire/views/4345b579.blade.php ENDPATH**/ ?>

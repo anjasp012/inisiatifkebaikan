@@ -118,7 +118,7 @@ new #[Layout('layouts.admin')] class extends Component {
                     {{-- Fundraiser & Campaign Info --}}
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
-                            <label class="text-muted x-small fw-bold text-uppercase mb-2 d-block">Pemohon</label>
+                            <label class="text-muted extra-small fw-bold text-uppercase mb-2 d-block">Pemohon</label>
                             <div class="p-3 bg-light rounded-3">
                                 <div class="fw-bold">{{ $withdrawal->requester_name }}</div>
                                 <div class="small text-muted">
@@ -127,7 +127,7 @@ new #[Layout('layouts.admin')] class extends Component {
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label class="text-muted x-small fw-bold text-uppercase mb-2 d-block">Campaign</label>
+                            <label class="text-muted extra-small fw-bold text-uppercase mb-2 d-block">Campaign</label>
                             <div class="p-3 bg-light rounded-3">
                                 <div class="fw-bold text-truncate">{{ $withdrawal->campaign->title }}</div>
                                 <div class="d-flex gap-2 align-items-center mt-1">
@@ -135,7 +135,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                         {{ number_format($withdrawal->campaign->target_amount, 0, ',', '.') }}</span>
                                     @if ($withdrawal->campaign->is_optimized)
                                         <span
-                                            class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-10 x-small">
+                                            class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-10 extra-small">
                                             <i class="bi bi-lightning-fill me-1"></i>Optimasi
                                         </span>
                                     @endif
@@ -148,19 +148,19 @@ new #[Layout('layouts.admin')] class extends Component {
                     <div class="row g-3 mb-4">
                         <div class="col-4">
                             <div class="p-3 bg-light rounded-3 text-center">
-                                <div class="x-small text-muted fw-semibold text-uppercase mb-1">PPN Ads</div>
+                                <div class="extra-small text-muted fw-semibold text-uppercase mb-1">PPN Ads</div>
                                 <div class="fw-bold text-primary">11%</div>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="p-3 bg-light rounded-3 text-center">
-                                <div class="x-small text-muted fw-semibold text-uppercase mb-1">Fee Platform</div>
+                                <div class="extra-small text-muted fw-semibold text-uppercase mb-1">Fee Platform</div>
                                 <div class="fw-bold text-primary">5%</div>
                             </div>
                         </div>
                         <div class="col-4">
                             <div class="p-3 bg-light rounded-3 text-center">
-                                <div class="x-small text-muted fw-semibold text-uppercase mb-1">Fee Optimasi</div>
+                                <div class="extra-small text-muted fw-semibold text-uppercase mb-1">Fee Optimasi</div>
                                 <div
                                     class="fw-bold {{ $withdrawal->campaign->is_optimized ? 'text-primary' : 'text-muted' }}">
                                     {{ $withdrawal->campaign->is_optimized ? '15%' : '-' }}
@@ -176,14 +176,14 @@ new #[Layout('layouts.admin')] class extends Component {
                                 :disabled="$withdrawal->status != 'pending'" />
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label x-small fw-bold text-muted text-uppercase">Biaya Merchant
+                            <label class="form-label extra-small fw-bold text-muted text-uppercase">Biaya Merchant
                                 (Otomatis)</label>
                             <div class="input-group shadow-sm">
                                 <span class="input-group-text bg-light border-end-0 small">Rp</span>
                                 <input type="text" value="{{ number_format($this->merchant_fee, 0, ',', '.') }}"
                                     class="form-control bg-light border-start-0 fw-bold text-danger" disabled>
                             </div>
-                            <div class="x-small text-muted mt-1">Dihitung dari transaksi VA & E-Wallet</div>
+                            <div class="extra-small text-muted mt-1">Dihitung dari transaksi VA & E-Wallet</div>
                         </div>
                     </div>
 
@@ -217,7 +217,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                 <tr>
                                     <td class="ps-4">
                                         <div class="small">Biaya Ads (+PPN 11%)</div>
-                                        <div class="x-small text-muted">Biaya iklan + PPN dihitung otomatis</div>
+                                        <div class="extra-small text-muted">Biaya iklan + PPN dihitung otomatis</div>
                                     </td>
                                     <td class="text-end pe-0 text-danger fw-semibold">
                                         - Rp
@@ -227,7 +227,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                 <tr>
                                     <td class="ps-4">
                                         <div class="small">Fee Platform (5%)</div>
-                                        <div class="x-small text-muted">Biaya pemeliharaan sistem</div>
+                                        <div class="extra-small text-muted">Biaya pemeliharaan sistem</div>
                                     </td>
                                     <td class="text-end pe-0 text-danger fw-semibold">
                                         - Rp {{ number_format($withdrawal->platform_fee, 0, ',', '.') }}
@@ -236,7 +236,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                 <tr>
                                     <td class="ps-4">
                                         <div class="small">Fee Optimasi (15%)</div>
-                                        <div class="x-small text-muted">Hanya campaign berlabel "Optimasi"</div>
+                                        <div class="extra-small text-muted">Hanya campaign berlabel "Optimasi"</div>
                                     </td>
                                     <td
                                         class="text-end pe-0 fw-semibold {{ $withdrawal->optimization_fee > 0 ? 'text-danger' : 'text-muted' }}">
@@ -246,7 +246,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                 <tr class="border-bottom">
                                     <td class="ps-4">
                                         <div class="small">Biaya Merchant</div>
-                                        <div class="x-small text-muted">Kalkulasi biaya admin payment gateway</div>
+                                        <div class="extra-small text-muted">Kalkulasi biaya admin payment gateway</div>
                                     </td>
                                     <td class="text-end pe-0 text-danger fw-semibold">
                                         - Rp {{ number_format($withdrawal->merchant_fee, 0, ',', '.') }}
@@ -300,7 +300,7 @@ new #[Layout('layouts.admin')] class extends Component {
             {{-- Status Card --}}
             <div class="card border-0 mb-4">
                 <div class="card-body p-4 text-center">
-                    <h6 class="text-uppercase text-muted small fw-bold mb-4">Status Pencairan</h6>
+                    <h6 class="text-uppercase text-muted extra-small fw-bold mb-4">Status Pencairan</h6>
                     @if ($withdrawal->status == 'pending')
                         <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 rounded-3 mb-3"
                             style="width: 72px; height: 72px;">
@@ -345,16 +345,16 @@ new #[Layout('layouts.admin')] class extends Component {
                     <h6 class="fw-bold mb-3 d-flex align-items-center">
                         <i class="bi bi-bank me-2 text-primary"></i> Data Rekening Tujuan
                     </h6>
-                    <div class="p-3 bg-light rounded-3 border-start border-4 border-primary">
+                    <div class="p-3 bg-light rounded-3 border-start border-4 border-primary border-0 border-start">
                         @if ($withdrawal->fundraiser)
-                            <div class="x-small text-muted mb-1">Nama Bank</div>
+                            <div class="extra-small text-muted mb-1">Nama Bank</div>
                             <div class="fw-bold mb-2">{{ $withdrawal->fundraiser->bank_name ?? 'BCA' }}</div>
 
-                            <div class="x-small text-muted mb-1">Atas Nama</div>
+                            <div class="extra-small text-muted mb-1">Atas Nama</div>
                             <div class="fw-bold mb-2">
                                 {{ $withdrawal->fundraiser->bank_account_name ?? 'YAYASAN KEBAIKAN' }}</div>
 
-                            <div class="x-small text-muted mb-1">No. Rekening</div>
+                            <div class="extra-small text-muted mb-1">No. Rekening</div>
                             <div class="fs-4 fw-bold text-primary">
                                 {{ $withdrawal->fundraiser->bank_account_number ?? '1234567890' }}</div>
                         @else
@@ -371,7 +371,7 @@ new #[Layout('layouts.admin')] class extends Component {
             {{-- Simulasi Info --}}
             <div class="card border-0 border-start border-4 border-info">
                 <div class="card-body p-4">
-                    <h6 class="fw-bold mb-3 x-small text-uppercase text-muted">
+                    <h6 class="fw-bold mb-3 extra-small text-uppercase text-muted">
                         <i class="bi bi-calculator me-1"></i> Catatan Kalkulasi
                     </h6>
                     <ul class="list-unstyled mb-0 small text-muted">
@@ -389,9 +389,4 @@ new #[Layout('layouts.admin')] class extends Component {
         </div>
     </div>
 
-    <style>
-        .x-small {
-            font-size: 0.75rem;
-        }
-    </style>
 </div>

@@ -73,7 +73,8 @@ new #[Layout('layouts.admin')] #[Title('Tambah Update')] class extends Component
                     </div>
 
                     <div class="col-md-8">
-                        <label for="title" class="form-label">Judul Update</label>
+                        <label for="title" class="form-label extra-small text-uppercase fw-bold text-muted">Judul
+                            Update</label>
                         <input type="text" class="form-control @error('title') is-invalid @enderror" id="title"
                             wire:model="title" placeholder="Masukkan judul update...">
                         @error('title')
@@ -86,7 +87,8 @@ new #[Layout('layouts.admin')] #[Title('Tambah Update')] class extends Component
                     </div>
 
                     <div class="col-md-12" wire:ignore>
-                        <label for="content" class="form-label">Konten Update</label>
+                        <label for="content" class="form-label extra-small text-uppercase fw-bold text-muted">Konten
+                            Update</label>
                         <x-admin.text-editor model="content" id="content" />
                         @error('content')
                             <div class="text-danger small mt-1">{{ $message }}</div>

@@ -1,6 +1,6 @@
 @props(['article'])
 
-<a href="#" class="card article-card" wire:navigate>
+<a href="{{ route('article.show', $article->slug) }}" class="card article-card" wire:navigate>
     <div class="position-relative">
         <img src="{{ $article->thumbnail_url }}" class="card-img-top" alt="{{ $article->title }}">
         <span class="badge article-card-badge">

@@ -84,20 +84,18 @@ new class extends Component {
                         class="card border-secondary mb-3 text-decoration-none overflow-hidden">
                         <div class="card-body p-3">
                             <div class="d-flex gap-3">
-                                <div class="rounded-3 overflow-hidden"
-                                    style="width: 80px; height: 60px; flex-shrink: 0;">
+                                <div class="rounded-3 overflow-hidden avatar-md" style="flex-shrink: 0;">
                                     <img src="{{ $donation->campaign->thumbnail_url }}"
                                         class="w-100 h-100 object-fit-cover" alt="{{ $donation->campaign->title }}">
                                 </div>
                                 <div class="flex-grow-1 overflow-hidden">
-                                    <h6 class="fw-bold text-dark mb-1 text-truncate" style="font-size: 13px;">
+                                    <h6 class="fw-bold text-dark mb-1 text-truncate small">
                                         {{ $donation->campaign->title }}</h6>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span class="text-primary fw-bold" style="font-size: 14px;">Rp
+                                        <span class="text-primary fw-bold small">Rp
                                             {{ number_format($donation->amount, 0, ',', '.') }}</span>
                                         <span
-                                            class="badge {{ $donation->status === 'success' ? 'bg-success' : ($donation->status === 'failed' ? 'bg-danger' : 'bg-warning') }} px-2 py-1"
-                                            style="font-size: 10px;">
+                                            class="badge {{ $donation->status === 'success' ? 'bg-success' : ($donation->status === 'failed' ? 'bg-danger' : 'bg-warning') }} px-2 py-1 extra-small">
                                             {{ ucfirst($donation->status) }}
                                         </span>
                                     </div>
@@ -110,7 +108,7 @@ new class extends Component {
                 @empty
                     <div class="text-center py-5">
                         <div class="mb-4">
-                            <i class="bi bi-gift text-primary opacity-25" style="font-size: 80px;"></i>
+                            <i class="bi bi-gift text-primary empty-state-icon"></i>
                         </div>
                         <h6 class="fw-bold mb-2">Belum ada donasi</h6>
                         <p class="text-muted small mb-4 px-4">
@@ -128,9 +126,3 @@ new class extends Component {
 
     <x-app.bottom-nav />
 </div>
-
-<style>
-    .extra-small {
-        font-size: 10px;
-    }
-</style>

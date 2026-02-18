@@ -51,8 +51,8 @@ new #[Layout('layouts.admin')] class extends Component {
                         <option value="rejected">Rejected</option>
                     </select>
                     <div class="position-relative">
-                        <input type="text" class="form-control ps-5" placeholder="Cari fundraiser..."
-                            wire:model.live.debounce.250ms="search" style="min-width: 250px;">
+                        <input type="text" class="form-control ps-5 w-250" placeholder="Cari fundraiser..."
+                            wire:model.live.debounce.250ms="search">
                         <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                     </div>
                 </div>
@@ -62,14 +62,14 @@ new #[Layout('layouts.admin')] class extends Component {
             <table class="table table-borderless align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="text-center">NO</th>
+                        <th class="text-center col-no">NO</th>
                         <th>LOGO</th>
                         <th>NAMA YAYASAN</th>
                         <th>USER</th>
                         <th>BANK</th>
                         <th>STATUS</th>
                         <th>DIBUAT</th>
-                        <th class="text-end">AKSI</th>
+                        <th class="text-end col-actions pe-3">AKSI</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -77,8 +77,8 @@ new #[Layout('layouts.admin')] class extends Component {
                         <tr>
                             <td class="text-center">{{ $this->fundraisers->firstItem() + $no }}</td>
                             <td>
-                                <img loading="lazy" src="{{ $fundraiser->logo_url }}" width="60px" class="rounded"
-                                    alt="{{ $fundraiser->foundation_name }}">
+                                <img loading="lazy" src="{{ $fundraiser->logo_url }}"
+                                    class="rounded avatar-lg object-fit-cover" alt="{{ $fundraiser->foundation_name }}">
                             </td>
                             <td>
                                 <div class="fw-bold">{{ $fundraiser->foundation_name ?? '-' }}</div>
@@ -113,7 +113,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                 @endif
                             </td>
                             <td>{{ $fundraiser->created_at->diffForHumans() }}</td>
-                            <td class="text-end">
+                            <td class="text-end pe-3">
                                 <div class="d-flex gap-1 align-items-center justify-content-end">
                                     <a href="{{ route('admin.fundraiser.detail', $fundraiser) }}" wire:navigate
                                         class="btn btn-sm btn-info text-white" title="Detail"><i

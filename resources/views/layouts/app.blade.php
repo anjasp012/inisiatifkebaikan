@@ -16,36 +16,6 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
 
-    <style>
-        /* CKEditor Content Fix */
-        .ck-content img {
-            max-width: 100% !important;
-            height: auto !important;
-            aspect-ratio: auto !important;
-            object-fit: contain !important;
-        }
-
-        /* Handle CKEditor Figure Resizing */
-        .ck-content figure.image {
-            max-width: 100% !important;
-            height: auto !important;
-            margin: 1.5rem auto !important;
-            display: block !important;
-        }
-
-        .ck-content figure.image img {
-            display: block;
-            margin: 0 auto;
-        }
-
-        /* General content image responsiveness */
-        .campaign-description img,
-        .distribution-content img,
-        .article-content img {
-            max-width: 100% !important;
-            height: auto !important;
-        }
-    </style>
 </head>
 
 <body class="app-layout">

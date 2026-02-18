@@ -87,7 +87,7 @@ use Livewire\WithPagination;
                         <i class="bi bi-plus-lg me-1"></i> Buat Pencairan
                     </a>
 
-                    <div wire:ignore class="d-inline-block" style="min-width: 150px;">
+                    <div wire:ignore class="d-inline-block w-150">
                         <select x-data="{
                             tom: null,
                             init() {
@@ -108,8 +108,8 @@ use Livewire\WithPagination;
                         </select>
                     </div>
                     <div class="position-relative">
-                        <input type="text" class="form-control ps-5" placeholder="Cari campaign/mitra..."
-                            wire:model.live.debounce.300ms="search" style="min-width: 250px;">
+                        <input type="text" class="form-control ps-5 w-250" placeholder="Cari campaign/mitra..."
+                            wire:model.live.debounce.300ms="search">
                         <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                     </div>
                 </div>
@@ -132,13 +132,13 @@ use Livewire\WithPagination;
                         <tr wire:click="showReceipt(<?php echo e($w->id); ?>)" style="cursor: pointer;"
                             class="transition-row">
                             <td class="ps-4">
-                                <div class="fw-bold small text-dark text-truncate" style="max-width: 280px;">
+                                <div class="fw-bold extra-small text-dark text-truncate max-w-200">
                                     <?php echo e($w->campaign->title); ?></div>
                             </td>
                             <td>
                                 <div class="small text-muted"><?php echo e($w->requester_name); ?></div>
                             </td>
-                            <td class="text-center small text-muted">
+                            <td class="text-center extra-small text-muted">
                                 <?php echo e($w->created_at->format('d-m-Y')); ?>
 
                             </td>
@@ -324,5 +324,4 @@ use Livewire\WithPagination;
         </div>
     <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-    
 </div><?php /**PATH C:\laragon\www\inisiatif\storage\framework/views/livewire/views/dacb42b4.blade.php ENDPATH**/ ?>

@@ -38,13 +38,12 @@ new #[Layout('layouts.app')] class extends Component {
         <div class="bg-white rounded-3 p-4 mb-3 d-flex align-items-center gap-3 shadow-sm border-0">
             <div class="avatar-wrapper">
                 <img src="{{ Auth::user()->avatar_url }}" alt="{{ Auth::user()->name }}"
-                    class="rounded-circle object-fit-cover" style="width: 64px; height: 64px;">
+                    class="rounded-circle object-fit-cover avatar-lg">
             </div>
             <div>
                 <h5 class="fw-bold mb-1">{{ Auth::user()->name }}</h5>
                 <p class="text-muted small mb-0">{{ Auth::user()->email }}</p>
-                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-1 mt-2"
-                    style="font-size: 10px;">
+                <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-1 mt-2 extra-small">
                     {{ Auth::user()->role === 'admin' ? 'Administrator' : (Auth::user()->role === 'fundraiser' ? 'Fundraiser' : 'Donatur') }}
                 </span>
             </div>
@@ -63,7 +62,7 @@ new #[Layout('layouts.app')] class extends Component {
                         </div>
                         <span class="fw-medium text-dark small">Edit Profil</span> <!-- Small text -->
                     </div>
-                    <i class="bi bi-chevron-right text-muted" style="font-size: 10px;"></i>
+                    <i class="bi bi-chevron-right text-muted extra-small"></i>
                 </a>
                 <a href="{{ route('donasi-saya') }}"
                     class="list-group-item list-group-item-action p-2 d-flex align-items-center justify-content-between border-bottom-0 border-light"
@@ -74,7 +73,7 @@ new #[Layout('layouts.app')] class extends Component {
                         </div>
                         <span class="fw-medium text-dark small">Riwayat Donasi</span>
                     </div>
-                    <i class="bi bi-chevron-right text-muted" style="font-size: 10px;"></i>
+                    <i class="bi bi-chevron-right text-muted extra-small"></i>
                 </a>
                 <a href="{{ route('account.password') }}"
                     class="list-group-item list-group-item-action p-2 d-flex align-items-center justify-content-between border-bottom-0 border-light"
@@ -85,7 +84,7 @@ new #[Layout('layouts.app')] class extends Component {
                         </div>
                         <span class="fw-medium text-dark small">Ganti Password</span>
                     </div>
-                    <i class="bi bi-chevron-right text-muted" style="font-size: 10px;"></i>
+                    <i class="bi bi-chevron-right text-muted extra-small"></i>
                 </a>
 
                 <div class="border-top my-1 mx-2"></div>
@@ -99,7 +98,7 @@ new #[Layout('layouts.app')] class extends Component {
                         </div>
                         <span class="fw-medium text-dark small">Tentang Kami</span>
                     </div>
-                    <i class="bi bi-chevron-right text-muted" style="font-size: 10px;"></i>
+                    <i class="bi bi-chevron-right text-muted extra-small"></i>
                 </a>
                 <a href="#"
                     class="list-group-item list-group-item-action p-2 d-flex align-items-center justify-content-between border-bottom-0 border-light">
@@ -109,7 +108,7 @@ new #[Layout('layouts.app')] class extends Component {
                         </div>
                         <span class="fw-medium text-dark small">Kebijakan Privasi</span>
                     </div>
-                    <i class="bi bi-chevron-right text-muted" style="font-size: 10px;"></i>
+                    <i class="bi bi-chevron-right text-muted extra-small"></i>
                 </a>
                 <a href="#"
                     class="list-group-item list-group-item-action p-2 d-flex align-items-center justify-content-between border-bottom-0 border-light">
@@ -119,7 +118,7 @@ new #[Layout('layouts.app')] class extends Component {
                         </div>
                         <span class="fw-medium text-dark small">Syarat & Ketentuan</span>
                     </div>
-                    <i class="bi bi-chevron-right text-muted" style="font-size: 10px;"></i>
+                    <i class="bi bi-chevron-right text-muted extra-small"></i>
                 </a>
 
                 <div class="border-top my-1 mx-2"></div>

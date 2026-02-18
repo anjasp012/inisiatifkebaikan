@@ -135,7 +135,7 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
 ?>
 
 <div>
-    <div class="card card-dashboard">
+    <div class="card card-dashboard border-0">
         <div class="card-body border-bottom">
             <div class="d-flex flex-column flex-lg-row justify-content-lg-between align-items-lg-center gap-3">
                 <div>
@@ -155,13 +155,13 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
                             <li>
                                 <button class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2 mb-1"
                                     type="button" wire:click="syncTripay" wire:loading.attr="disabled">
-                                    <div class="bg-info bg-opacity-10 text-info rounded p-1"
-                                        style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                                    <div
+                                        class="bg-info bg-opacity-10 text-info rounded p-1 avatar-sm d-flex align-items-center justify-content-center">
                                         <i class="bi bi-credit-card"></i>
                                     </div>
                                     <div class="flex-grow-1">
                                         <div class="fw-bold small">Sync Tripay</div>
-                                        <div class="text-muted" style="font-size: 10px;">Update data from Tripay API
+                                        <div class="text-muted extra-small">Update data from Tripay API
                                         </div>
                                     </div>
                                 </button>
@@ -169,13 +169,13 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
                             <li>
                                 <button class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2"
                                     type="button" wire:click="syncMidtrans" wire:loading.attr="disabled">
-                                    <div class="bg-primary bg-opacity-10 text-primary rounded p-1"
-                                        style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">
+                                    <div
+                                        class="bg-primary bg-opacity-10 text-primary rounded p-1 avatar-sm d-flex align-items-center justify-content-center">
                                         <i class="bi bi-shield-check"></i>
                                     </div>
                                     <div class="flex-grow-1">
                                         <div class="fw-bold small">Sync Midtrans</div>
-                                        <div class="text-muted" style="font-size: 10px;">Update common Midtrans channels
+                                        <div class="text-muted extra-small">Update common Midtrans channels
                                         </div>
                                     </div>
                                 </button>
@@ -186,8 +186,8 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
                         <i class="bi bi-plus-lg me-1"></i> Tambah Manual
                     </a>
                     <div class="position-relative">
-                        <input type="text" class="form-control ps-5" placeholder="Cari bank..."
-                            wire:model.live.debounce.250ms="search" style="min-width: 250px;">
+                        <input type="text" class="form-control ps-5 w-250" placeholder="Cari bank..."
+                            wire:model.live.debounce.250ms="search">
                         <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                     </div>
                 </div>
@@ -197,8 +197,8 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
             <table class="table table-borderless align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="text-center" style="width: 50px;">NO</th>
-                        <th style="width: 100px;">LOGO</th>
+                        <th class="text-center col-no">NO</th>
+                        <th class="col-thumb">LOGO</th>
                         <th>NAMA BANK</th>
                         <th>NOMOR REKENING</th>
                         <th>ATAS NAMA</th>
@@ -214,12 +214,12 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
                         <tr>
                             <td class="text-center">{{ $this->banks->firstItem() + $no }}</td>
                             <td>
-                                <img src="{{ $bank->logo_url }}" width="60px" class="rounded border"
+                                <img src="{{ $bank->logo_url }}" class="rounded border avatar-lg object-fit-cover"
                                     alt="{{ $bank->bank_name }}">
                             </td>
                             <td>
                                 <div class="fw-bold">{{ $bank->bank_name }}</div>
-                                <div class="x-small text-muted">{{ $bank->bank_code }}</div>
+                                <div class="extra-small text-muted">{{ $bank->bank_code }}</div>
                             </td>
                             <td>{{ $bank->account_number ?? '-' }}</td>
                             <td>{{ $bank->account_name ?? '-' }}</td>
@@ -236,29 +236,31 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
                                 @endif
                             </td>
                             <td class="text-center text-uppercase">
-                                <span class="badge bg-light text-dark border x-small">{{ $bank->method ?: '-' }}</span>
+                                <span
+                                    class="badge bg-light text-dark border extra-small">{{ $bank->method ?: '-' }}</span>
                             </td>
                             <td class="text-center">
                                 <span class="fw-bold">{{ number_format($bank->donations_count) }}</span>
-                                <div class="x-small text-muted">Donasi</div>
+                                <div class="extra-small text-muted">Donasi</div>
                             </td>
                             <td class="text-center">
-                                <div class="d-inline-flex align-items-center">
-                                    @php
-                                        $isActive = $bank->is_active;
-                                        $statusColor = $isActive ? 'success' : 'secondary';
-                                    @endphp
+                                @php
+                                    $isActive = $bank->is_active;
+                                    $statusColor = $isActive ? 'success' : 'secondary';
+                                @endphp
+                                <div class="d-inline-flex align-items-center justify-content-center">
                                     <label
-                                        class="badge bg-{{ $statusColor }} bg-opacity-10 text-{{ $statusColor }} py-2 px-3 border border-{{ $statusColor }} border-opacity-10 d-flex align-items-center gap-2 cursor-pointer"
+                                        class="badge bg-{{ $statusColor }} bg-opacity-10 text-{{ $statusColor }} py-2 px-3 border border-{{ $statusColor }} border-opacity-10 d-inline-flex align-items-center gap-2 cursor-pointer mb-0"
                                         for="statusSwitch{{ $bank->id }}">
-                                        <div class="form-check form-switch p-0 m-0" style="min-height: auto;">
+                                        <div class="form-check form-switch p-0 m-0 d-flex align-items-center"
+                                            style="min-height: auto;">
                                             <input class="form-check-input cursor-pointer m-0" type="checkbox"
                                                 role="switch" wire:click="toggleStatus({{ $bank->id }})"
                                                 id="statusSwitch{{ $bank->id }}" @checked($isActive)
-                                                style="width: 1.8em; height: 1em;">
+                                                style="float: none;">
                                         </div>
-                                        <span class="x-small fw-bold text-uppercase" style="letter-spacing: 0.5px;">
-                                            {{ $isActive ? 'Aktif' : 'Tersembunyi' }}
+                                        <span class="extra-small fw-bold text-uppercase ls-sm" style="margin-top: 1px;">
+                                            {{ $isActive ? 'Aktif' : 'Non-Aktif' }}
                                         </span>
                                     </label>
                                 </div>

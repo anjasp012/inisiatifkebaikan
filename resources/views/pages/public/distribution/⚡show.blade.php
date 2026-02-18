@@ -29,7 +29,7 @@ new class extends Component {
                 @if ($distribution->campaign->category)
                     <span class="detail-badge">{{ strtoupper($distribution->campaign->category->name) }}</span>
                 @endif
-                <span class="detail-badge" style="background: rgba(0,0,0,0.05); color: #666;">
+                <span class="detail-badge">
                     <i class="bi bi-calendar-event me-1"></i>
                     {{ Carbon\Carbon::parse($distribution->distribution_date)->translatedFormat('d F Y') }}
                 </span>
@@ -37,15 +37,13 @@ new class extends Component {
 
             <h1 class="detail-title">{{ $distribution->recipient_name }}</h1>
 
-            <div class="p-3 mb-4 rounded-4" style="background: #f8f9fa; border: 1px solid #eee;">
-                <div class="small text-muted mb-1"
-                    style="font-size: 11px; font-weight: 600; text-uppercase; letter-spacing: 0.5px;">Dana Disalurkan
+            <div class="p-3 mb-4 info-box-light">
+                <div class="small text-muted mb-1 uppercase fw-bold ls-md">Dana Disalurkan
                 </div>
                 <h4 class="fw-bold text-primary mb-0">Rp {{ number_format($distribution->amount, 0, ',', '.') }}</h4>
             </div>
 
-            <div class="d-flex align-items-center gap-2 p-3 rounded-4 mb-4"
-                style="background: #fff9f0; border: 1px solid #ffeeba;">
+            <div class="d-flex align-items-center gap-2 p-3 mb-4 info-box-warning">
                 <i class="bi bi-info-circle text-warning"></i>
                 <div class="small">
                     Bantuan disalurkan melalui program: <br>
@@ -65,8 +63,7 @@ new class extends Component {
                 {!! $distribution->description !!}
             </div>
 
-            <div class="card border-0 p-4 rounded-4 mt-5"
-                style="background: linear-gradient(135deg, #f0f7ff, #e0efff);">
+            <div class="card border-0 p-4 mt-5 gradient-box-primary">
                 <h6 class="fw-bold text-primary mb-2">Terima Kasih Muhsinin!</h6>
                 <p class="small text-muted mb-4">Bantuan Anda telah sampai kepada yang berhak. Teruslah membersamai kami
                     dalam menebar inisiatif kebaikan.</p>

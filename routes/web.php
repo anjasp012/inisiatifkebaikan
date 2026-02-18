@@ -20,6 +20,10 @@ Route::livewire('/donasi-saya', 'pages::public.donasi-saya.index')->name('donasi
 Route::livewire('/laporan', 'pages::public.distribution.index')->name('distribution.index');
 Route::livewire('/laporan/{distribution}', 'pages::public.distribution.show')->name('distribution.show');
 
+// Articles
+Route::livewire('/artikel', 'pages::public.article.index')->name('article.index');
+Route::livewire('/artikel/{article:slug}', 'pages::public.article.show')->name('article.show');
+
 // Account Routes
 Route::middleware('auth')->group(function () {
     Route::livewire('/akun', 'pages::public.account.index')->name('account.index');

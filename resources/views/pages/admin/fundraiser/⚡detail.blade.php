@@ -59,7 +59,7 @@ new #[Layout('layouts.admin')] class extends Component {
                 <div class="col-md-6">
                     <div class="card bg-light border-0 mb-3">
                         <div class="card-body">
-                            <h6 class="text-uppercase text-muted small fw-bold mb-3">Informasi Dasar</h6>
+                            <h6 class="text-uppercase text-muted extra-small fw-bold mb-3">Informasi Dasar</h6>
 
                             <div class="mb-3 text-center">
                                 <img src="{{ $fundraiser->logo_url }}" class="rounded " width="120" alt="Logo">
@@ -105,7 +105,7 @@ new #[Layout('layouts.admin')] class extends Component {
                     <!-- Bank Info -->
                     <div class="card border-primary border-2 mb-3">
                         <div class="card-body">
-                            <h6 class="text-uppercase text-primary small fw-bold mb-3">Informasi Rekening</h6>
+                            <h6 class="text-uppercase text-primary extra-small fw-bold mb-3">Informasi Rekening</h6>
                             <table class="table table-borderless table-sm">
                                 <tr>
                                     <td class="text-muted" width="150">Nama Bank</td>
@@ -128,11 +128,12 @@ new #[Layout('layouts.admin')] class extends Component {
                 <div class="col-md-6">
                     <div class="card bg-light border-0 mb-3">
                         <div class="card-body">
-                            <h6 class="text-uppercase text-muted small fw-bold mb-3">Dokumen Legal</h6>
+                            <h6 class="text-uppercase text-muted extra-small fw-bold mb-3">Dokumen Legal</h6>
 
                             <!-- Izin Lembaga -->
                             <div class="mb-3">
-                                <label class="form-label fw-bold small">Izin Lembaga</label>
+                                <label class="form-label fw-bold extra-small text-uppercase text-muted mb-1">Izin
+                                    Lembaga</label>
                                 @if ($fundraiser->permit_doc)
                                     <div>
                                         <a href="{{ $fundraiser->permit_doc_url }}" target="_blank"
@@ -147,7 +148,8 @@ new #[Layout('layouts.admin')] class extends Component {
 
                             <!-- SK Kumham -->
                             <div class="mb-3">
-                                <label class="form-label fw-bold small">SK Kumham</label>
+                                <label class="form-label fw-bold extra-small text-uppercase text-muted mb-1">SK
+                                    Kumham</label>
                                 @if ($fundraiser->legal_doc)
                                     <div>
                                         <a href="{{ $fundraiser->legal_doc_url }}" target="_blank"
@@ -162,7 +164,8 @@ new #[Layout('layouts.admin')] class extends Component {
 
                             <!-- Akta Notaris -->
                             <div class="mb-3">
-                                <label class="form-label fw-bold small">Akta Notaris</label>
+                                <label class="form-label fw-bold extra-small text-uppercase text-muted mb-1">Akta
+                                    Notaris</label>
                                 @if ($fundraiser->notary_doc)
                                     <div>
                                         <a href="{{ $fundraiser->notary_doc_url }}" target="_blank"
@@ -177,7 +180,8 @@ new #[Layout('layouts.admin')] class extends Component {
 
                             <!-- NPWP -->
                             <div class="mb-3">
-                                <label class="form-label fw-bold small">NPWP</label>
+                                <label
+                                    class="form-label fw-bold extra-small text-uppercase text-muted mb-1">NPWP</label>
                                 @if ($fundraiser->tax_id)
                                     <div>
                                         <a href="{{ $fundraiser->tax_id_url }}" target="_blank"
@@ -192,7 +196,8 @@ new #[Layout('layouts.admin')] class extends Component {
 
                             <!-- Office Photo -->
                             <div class="mb-3">
-                                <label class="form-label fw-bold small">Foto Kantor</label>
+                                <label class="form-label fw-bold extra-small text-uppercase text-muted mb-1">Foto
+                                    Kantor</label>
                                 @if ($fundraiser->office_image)
                                     <div>
                                         <a href="{{ $fundraiser->office_image_url }}" target="_blank">
@@ -212,7 +217,7 @@ new #[Layout('layouts.admin')] class extends Component {
             <!-- Campaigns List -->
             <div class="card bg-light border-0 mt-3">
                 <div class="card-body">
-                    <h6 class="text-uppercase text-muted small fw-bold mb-3">Campaign yang Dibuat</h6>
+                    <h6 class="text-uppercase text-muted extra-small fw-bold mb-3">Campaign yang Dibuat</h6>
                     @if ($fundraiser->campaigns->count() > 0)
                         <div class="table-responsive">
                             <table class="table table-sm">

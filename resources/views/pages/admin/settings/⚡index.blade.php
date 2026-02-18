@@ -116,44 +116,9 @@ new #[Layout('layouts.admin')] class extends Component {
 };
 ?>
 
-@push('styles')
-    <style>
-        .active-tpl {
-            background: white !important;
-            color: var(--bs-primary) !important;
-            border-left: 4px solid var(--bs-primary) !important;
-        }
-
-        .bg-lighter {
-            background-color: #f8fafc;
-        }
-
-        .extra-small {
-            font-size: 11px;
-        }
-
-        .ls-1 {
-            letter-spacing: 1px;
-        }
-
-        .shadow-micro {
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        }
-
-        [x-cloak] {
-            display: none !important;
-        }
-
-        .bd-tpl-area textarea:focus {
-            background-color: white !important;
-            border-color: var(--bs-primary) !important;
-            box-shadow: 0 0 0 4px rgba(var(--bs-primary-rgb), 0.1) !important;
-        }
-    </style>
-@endpush
 
 <div>
-    <div class="card card-dashboard border-0 overflow-hidden">
+    <div class="card card-dashboard border-0 overflow-hidden border-0">
         <form wire:submit.prevent="save">
             <div class="card-body p-0">
                 <ul class="nav nav-pills p-3 bg-white border-bottom gap-2" id="settingsTab" role="tablist">
@@ -188,7 +153,7 @@ new #[Layout('layouts.admin')] class extends Component {
                     <div class="tab-pane fade show active" id="general" role="tabpanel">
                         <div class="row g-4">
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">Logo Website</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Logo Website</label>
                                 <x-admin.file-upload model="logo" label="Logo Website" :preview="$logo
                                     ? $logo->temporaryUrl()
                                     : ($current_logo
@@ -199,23 +164,24 @@ new #[Layout('layouts.admin')] class extends Component {
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-bold small text-uppercase">Nama Website</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Nama Website</label>
                                 <input type="text" wire:model="website_name" class="form-control">
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label fw-bold small text-uppercase">Nomor WhatsApp (CS)</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Nomor WhatsApp (CS)</label>
                                 <input type="text" wire:model="whatsapp_number" class="form-control"
                                     placeholder="628xxx">
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">Deskripsi Meta (SEO)</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Deskripsi Meta
+                                    (SEO)</label>
                                 <textarea wire:model="website_description" class="form-control" rows="3"></textarea>
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">Teks Footer</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Teks Footer</label>
                                 <input type="text" wire:model="footer_text" class="form-control">
                             </div>
                         </div>
@@ -225,23 +191,23 @@ new #[Layout('layouts.admin')] class extends Component {
                     <div class="tab-pane fade" id="tripay" role="tabpanel">
                         <div class="row g-4">
                             <div class="col-md-6">
-                                <label class="form-label fw-bold small text-uppercase">Merchant Code</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Merchant Code</label>
                                 <input type="text" wire:model="tripay_merchant_code" class="form-control"
                                     placeholder="Txxxx">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-bold small text-uppercase">Mode Environment</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Mode Environment</label>
                                 <select wire:model="tripay_mode" class="form-select">
                                     <option value="sandbox">Sandbox (Testing)</option>
                                     <option value="production">Production (Live)</option>
                                 </select>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">API Key</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">API Key</label>
                                 <input type="password" wire:model="tripay_api_key" class="form-control">
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">Private Key</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Private Key</label>
                                 <input type="password" wire:model="tripay_private_key" class="form-control">
                             </div>
                         </div>
@@ -256,23 +222,23 @@ new #[Layout('layouts.admin')] class extends Component {
                     <div class="tab-pane fade" id="midtrans" role="tabpanel">
                         <div class="row g-4">
                             <div class="col-md-6">
-                                <label class="form-label fw-bold small text-uppercase">Merchant ID</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Merchant ID</label>
                                 <input type="text" wire:model="midtrans_merchant_id" class="form-control"
                                     placeholder="Gxxxx">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label fw-bold small text-uppercase">Mode Environment</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Mode Environment</label>
                                 <select wire:model="midtrans_mode" class="form-select">
                                     <option value="sandbox">Sandbox (Testing)</option>
                                     <option value="production">Production (Live)</option>
                                 </select>
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">Client Key</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Client Key</label>
                                 <input type="text" wire:model="midtrans_client_key" class="form-control">
                             </div>
                             <div class="col-12">
-                                <label class="form-label fw-bold small text-uppercase">Server Key</label>
+                                <label class="form-label fw-bold extra-small text-uppercase">Server Key</label>
                                 <input type="password" wire:model="midtrans_server_key" class="form-control">
                             </div>
                         </div>
@@ -287,9 +253,10 @@ new #[Layout('layouts.admin')] class extends Component {
                     <div class="tab-pane fade" id="whatsapp" role="tabpanel">
                         <div class="row g-4">
                             <div class="col-md-5">
-                                <div class="card border-0 bg-lighter rounded-4 p-4 h-100">
+                                <div class="card border-0 bg-light rounded-4 p-4 h-100 border-0">
                                     <h6 class="fw-bold text-dark mb-3">Konfigurasi Perangkat</h6>
-                                    <label class="form-label fw-bold extra-small text-muted text-uppercase ls-1">Device
+                                    <label
+                                        class="form-label fw-bold extra-small text-muted text-uppercase ls-sm">Device
                                         ID WhaCenter</label>
                                     <div class="input-group bg-white rounded-3 overflow-hidden border border-light">
                                         <span class="input-group-text bg-transparent border-0 pe-2">
@@ -299,7 +266,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                             class="form-control border-0 py-3 shadow-none"
                                             placeholder="Masukan Device ID Aktif">
                                     </div>
-                                    <div class="mt-3 p-3 rounded-3 bg-white border border-light shadow-micro">
+                                    <div class="mt-3 p-3 rounded-3 bg-white border border-light shadow-sm">
                                         <div class="d-flex align-items-center gap-2 mb-2">
                                             <div class="bg-success bg-opacity-10 py-1 px-2 rounded">
                                                 <i class="bi bi-check2 text-success small"></i>
@@ -400,16 +367,16 @@ new #[Layout('layouts.admin')] class extends Component {
                                                     <div class="d-flex flex-wrap gap-1">
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('created', '{donor_name}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Name</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Name</button>
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('created', '{campaign_title}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Program</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Program</button>
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('created', '{amount}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Amount</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Amount</button>
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('created', '{payment_code}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Rek/VA</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Rek/VA</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -430,13 +397,13 @@ new #[Layout('layouts.admin')] class extends Component {
                                                     <div class="d-flex flex-wrap gap-1">
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('confirmed', '{donor_name}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Name</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Name</button>
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('confirmed', '{campaign_title}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Program</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Program</button>
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('confirmed', '{amount}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Amount</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Amount</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -457,10 +424,10 @@ new #[Layout('layouts.admin')] class extends Component {
                                                     <div class="d-flex flex-wrap gap-1">
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('rejected', '{donor_name}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Name</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Name</button>
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('rejected', '{campaign_title}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Program</button>
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">Program</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -481,7 +448,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                                     <div class="d-flex flex-wrap gap-1">
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('otp_login', '{otp_code}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">OTP
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">OTP
                                                             Code</button>
                                                     </div>
                                                 </div>
@@ -503,7 +470,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                                     <div class="d-flex flex-wrap gap-1">
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('otp_register', '{otp_code}')"
-                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">OTP
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">OTP
                                                             Code</button>
                                                     </div>
                                                 </div>
@@ -519,7 +486,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                                 <div class="table-responsive">
                                                     <table class="table table-sm extra-small">
                                                         <thead>
-                                                            <tr class="text-muted text-uppercase ls-1">
+                                                            <tr class="text-muted text-uppercase ls-sm">
                                                                 <th>Waktu</th>
                                                                 <th>Tujuan</th>
                                                                 <th>Status</th>

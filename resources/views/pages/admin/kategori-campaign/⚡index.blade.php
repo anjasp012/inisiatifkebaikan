@@ -44,7 +44,7 @@ new #[Layout('layouts.admin')] class extends Component {
 ?>
 
 <div>
-    <div class="card card-dashboard">
+    <div class="card card-dashboard border-0">
         <div class="card-body border-bottom">
             <div class="d-flex flex-column flex-lg-row justify-content-lg-between align-items-lg-center gap-3">
                 <div>
@@ -58,8 +58,8 @@ new #[Layout('layouts.admin')] class extends Component {
                         <i class="bi bi-plus-lg me-1"></i> Tambah Kategori
                     </a>
                     <div class="position-relative">
-                        <input type="text" class="form-control ps-5" placeholder="Cari kategori..."
-                            wire:model.live.debounce.250ms="search" style="min-width: 250px;">
+                        <input type="text" class="form-control ps-5 w-250" placeholder="Cari kategori..."
+                            wire:model.live.debounce.250ms="search">
                         <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                     </div>
                 </div>
@@ -69,13 +69,13 @@ new #[Layout('layouts.admin')] class extends Component {
             <table class="table table-borderless align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="text-center">NO</th>
+                        <th class="text-center col-no">NO</th>
                         <th>ICON KATEGORI</th>
                         <th>NAMA KATEGORI</th>
                         <th class="text-center">CAMPAIGN</th>
                         <th>STATUS</th>
                         <th>DIBUAT</th>
-                        <th class="text-end">AKSI</th>
+                        <th class="text-end col-actions pe-3">AKSI</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,19 +84,19 @@ new #[Layout('layouts.admin')] class extends Component {
                             <td class="text-center">{{ $this->categories->firstItem() + $no }}</td>
                             <td>
                                 @if ($category->is_bootstrap_icon)
-                                    <div class="d-flex align-items-center justify-content-center bg-light rounded-1"
-                                        style="width: 50px; height: 50px;">
+                                    <div
+                                        class="d-flex align-items-center justify-content-center bg-light rounded-2 avatar-md">
                                         <i class="bi {{ $category->icon }} fs-3 text-primary"></i>
                                     </div>
                                 @else
-                                    <img loading="lazy" src="{{ $category->icon_url }}" width="50px" height="50px"
-                                        class="rounded-1 object-fit-cover" alt="{{ $category->name }}">
+                                    <img loading="lazy" src="{{ $category->icon_url }}"
+                                        class="rounded-2 object-fit-cover avatar-md" alt="{{ $category->name }}">
                                 @endif
                             </td>
                             <td>{{ $category->name }}</td>
                             <td class="text-center">
                                 <span class="fw-bold">{{ number_format($category->campaigns_count) }}</span>
-                                <div class="x-small text-muted">Program</div>
+                                <div class="extra-small text-muted">Program</div>
                             </td>
                             <td>
                                 @if ($category->is_active)
@@ -112,7 +112,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                 @endif
                             </td>
                             <td>{{ $category->created_at->diffForHumans() }}</td>
-                            <td class="text-end">
+                            <td class="text-end pe-3">
                                 <div class="d-flex justify-content-end gap-1">
                                     <a href="{{ route('admin.kategori-campaign.ubah', $category) }}" wire:navigate
                                         class="btn btn-sm btn-warning text-white" title="Ubah"><i

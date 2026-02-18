@@ -73,8 +73,8 @@ new #[Layout('layouts.admin')] #[Title('Daftar Program')] class extends Componen
                     </a>
 
                     <div class="position-relative">
-                        <input type="text" class="form-control ps-5" placeholder="Cari campaign..."
-                            wire:model.live.debounce.250ms="search" style="min-width: 250px;">
+                        <input type="text" class="form-control ps-5 w-250" placeholder="Cari campaign..."
+                            wire:model.live.debounce.250ms="search">
                         <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                     </div>
                 </div>
@@ -84,8 +84,8 @@ new #[Layout('layouts.admin')] #[Title('Daftar Program')] class extends Componen
             <table class="table table-borderless align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th class="text-center" style="width: 50px;">NO</th>
-                        <th style="width: 120px;">THUMBNAIL</th>
+                        <th class="text-center col-no">NO</th>
+                        <th class="col-thumb">THUMBNAIL</th>
                         <th>JUDUL CAMPAIGN</th>
                         <th class="text-center">VIEWS</th>
                         <th class="text-center">DONATUR</th>
@@ -100,17 +100,16 @@ new #[Layout('layouts.admin')] #[Title('Daftar Program')] class extends Componen
                         <tr>
                             <td class="text-center">{{ $this->campaigns->firstItem() + $no }}</td>
                             <td>
-                                <img loading="lazy" src="{{ $campaign->thumbnail_url }}" width="100px" class="rounded"
-                                    alt="{{ $campaign->title }}">
+                                <img loading="lazy" src="{{ $campaign->thumbnail_url }}"
+                                    class="rounded avatar-xl object-fit-cover" alt="{{ $campaign->title }}">
                             </td>
                             <td>
                                 <div class="fw-bold">{{ $campaign->title }}</div>
                                 <div class="small text-muted mb-1">
                                     {{ $campaign->fundraiser->foundation_name ?? 'Inisiatif Kebaikan' }}</div>
                                 @if ($campaign->category)
-                                    <span
-                                        class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 border border-primary border-opacity-10"
-                                        style="font-size: 10px; font-weight: 600;">
+                                    <span <span
+                                        class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 border border-primary border-opacity-10 extra-small fw-semibold">
                                         <i class="bi bi-tag-fill me-1"></i>
                                         {{ $campaign->category->name }}
                                     </span>
@@ -135,29 +134,31 @@ new #[Layout('layouts.admin')] #[Title('Daftar Program')] class extends Componen
                                         <i class="bi bi-check-circle-fill me-1"></i> Selesai
                                     </span>
                                 @else
-                                    <div class="d-inline-flex align-items-center">
-                                        @php
-                                            $isActive = $campaign->status == 'active';
-                                            $statusColor = $isActive ? 'success' : 'secondary';
-                                        @endphp
+                                    @php
+                                        $isActive = $campaign->status == 'active';
+                                        $statusColor = $isActive ? 'success' : 'secondary';
+                                    @endphp
+                                    <div class="d-inline-flex align-items-center justify-content-center">
                                         <label
-                                            class="badge bg-{{ $statusColor }} bg-opacity-10 text-{{ $statusColor }} py-2 px-3 border border-{{ $statusColor }} border-opacity-10 d-flex align-items-center gap-2 cursor-pointer"
+                                            class="badge bg-{{ $statusColor }} bg-opacity-10 text-{{ $statusColor }} py-2 px-3 border border-{{ $statusColor }} border-opacity-10 d-inline-flex align-items-center gap-2 cursor-pointer mb-0"
                                             for="statusSwitch{{ $campaign->id }}">
-                                            <div class="form-check form-switch p-0 m-0" style="min-height: auto;">
+                                            <div class="form-check form-switch p-0 m-0 d-flex align-items-center"
+                                                style="min-height: auto;">
                                                 <input class="form-check-input cursor-pointer m-0" type="checkbox"
                                                     role="switch" wire:click="toggleStatus({{ $campaign->id }})"
                                                     id="statusSwitch{{ $campaign->id }}" @checked($isActive)
-                                                    style="width: 1.8em; height: 1em;">
+                                                    style="float: none;">
                                             </div>
-                                            <span class="x-small fw-bold text-uppercase" style="letter-spacing: 0.5px;">
-                                                {{ $isActive ? 'Aktif' : 'Tersembunyi' }}
+                                            <span class="extra-small fw-bold text-uppercase ls-sm"
+                                                style="margin-top: 1px;">
+                                                {{ $isActive ? 'Aktif' : 'Non-Aktif' }}
                                             </span>
                                         </label>
                                     </div>
                                 @endif
                             </td>
                             <td class="text-center">
-                                <div class="form-check form-switch d-inline-block">
+                                <div class="form-check form-switch d-flex justify-content-center">
                                     <input class="form-check-input cursor-pointer" type="checkbox" role="switch"
                                         wire:click="toggleSlider({{ $campaign->id }})"
                                         id="sliderSwitch{{ $campaign->id }}" @checked($campaign->is_slider)>

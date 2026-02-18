@@ -115,7 +115,7 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
     <div class="row g-4">
         <!-- Main Stats & Actions -->
         <div class="col-lg-8">
-            <div class="card border-0  overflow-hidden mb-4">
+            <div class="card card-dashboard border-0 mb-4">
                 <div class="card-body border-bottom">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center gap-3">
@@ -132,11 +132,11 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <div class="p-4" style="background: linear-gradient(to right, #f8f9fa, #ffffff);">
+                    <div class="p-4 bg-light border-top">
                         <div class="row align-items-center">
                             <div class="col-md-7">
-                                <h6 class="text-uppercase text-muted small fw-bold mb-2">NOMINAL DONASI</h6>
-                                <div class="display-5 fw-bold text-primary mb-3">
+                                <h6 class="text-uppercase text-muted extra-small fw-bold mb-2 ls-sm">NOMINAL DONASI</h6>
+                                <div class="display-6 fw-bold text-primary mb-3">
                                     Rp {{ number_format($donation->amount, 0, ',', '.') }}
                                 </div>
                                 <div class="d-flex gap-2 mb-3">
@@ -169,7 +169,7 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                                     <h6 class="fw-bold mb-2 text-primary text-uppercase">
                                         {{ $donation->bank ? $donation->bank->bank_name : str_replace('_', ' ', $donation->payment_method) }}
                                     </h6>
-                                    <div class="bg-light p-2 rounded small font-monospace text-break">
+                                    <div class="bg-light p-2 rounded extra-small font-monospace text-break border">
                                         {{ $donation->bank ? ($donation->bank->account_number ? $donation->bank->account_number . ' a/n ' . $donation->bank->account_name : $donation->bank->bank_code) : $donation->payment_code }}
                                     </div>
                                 </div>
@@ -188,7 +188,7 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                                         class="list-group-item d-flex justify-content-between align-items-center bg-light bg-opacity-50">
                                         <span class="text-muted small">Nama</span>
                                         <span class="fw-semibold">{{ $donation->donor_name }}
-                                            {!! $donation->is_anonymous ? '<small class="text-muted">(Anonim)</small>' : '' !!}</span>
+                                            {!! $donation->is_anonymous ? '<small class="text-muted extra-small ms-1">(Anonim)</small>' : '' !!}</span>
                                     </div>
                                     @if ($donation->donor_email)
                                         <div class="list-group-item d-flex justify-content-between align-items-center">
@@ -226,8 +226,10 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                                 </div>
 
                                 @if ($donation->message)
-                                    <div class="mt-4 p-3 bg-light border-start border-4 border-primary rounded-3">
-                                        <h6 class="fw-bold small text-muted text-uppercase mb-2">Pesan / Doa Donatur
+                                    <div
+                                        class="mt-4 p-3 bg-light border-start border-4 border-primary rounded-3 border-0 border-start">
+                                        <h6 class="fw-bold extra-small text-muted text-uppercase mb-2">Pesan / Doa
+                                            Donatur
                                         </h6>
                                         <p class="mb-0 fst-italic">"{{ $donation->message }}"</p>
                                     </div>
@@ -237,15 +239,17 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                                 <h6 class="fw-bold mb-3 d-flex align-items-center">
                                     <i class="bi bi-megaphone-fill me-2 text-primary"></i> Campaign Terkait
                                 </h6>
-                                <div class="card border rounded-3 p-3">
+                                <div class="card border rounded-3 p-3 bg-light bg-opacity-10 border-0 shadow-sm">
                                     <div class="d-flex gap-3 mb-3">
                                         @if ($donation->campaign->thumbnail)
-                                            <img src="{{ $donation->campaign->thumbnail_url }}" class="rounded "
-                                                style="width: 80px; height: 80px; object-fit: cover;">
+                                            <img src="{{ $donation->campaign->thumbnail_url }}"
+                                                class="rounded avatar-md object-fit-cover">
                                         @endif
-                                        <div class="overflow-hidden">
-                                            <div class="fw-bold text-truncate">{{ $donation->campaign->title }}</div>
-                                            <div class="small text-muted mb-1">
+                                        <div class="overflow-hidden flex-grow-1">
+                                            <div class="fw-bold text-dark text-truncate">
+                                                {{ $donation->campaign->title }}
+                                            </div>
+                                            <div class="extra-small text-muted mb-1">
                                                 {{ $donation->campaign->category->name ?? 'Zakat & Wakaf' }}</div>
                                             <div wire:ignore class="progress" style="height: 6px;">
                                                 @php $percent = min(100, ($donation->campaign->collected_amount / max(1, $donation->campaign->target_amount)) * 100); @endphp
@@ -253,7 +257,7 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                                                     style="width: {{ $percent }}%">
                                                 </div>
                                             </div>
-                                            <div class="d-flex justify-content-between mt-1 small">
+                                            <div class="d-flex justify-content-between mt-1 extra-small">
                                                 <span class="fw-bold text-primary">Rp
                                                     {{ number_format($donation->campaign->collected_amount, 0, ',', '.') }}</span>
                                                 <span class="text-muted">Target:
@@ -278,7 +282,7 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                 $donation->payment_method == 'manual' ||
                     $donation->payment_method == 'manual_transfer' ||
                     $donation->paymentProofs->isNotEmpty())
-                <div class="card border-0  mb-4">
+                <div class="card card-dashboard border-0 mb-4">
                     <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
                         <h6 class="mb-0 fw-bold d-flex align-items-center">
                             <i class="bi bi-images me-2 text-primary"></i> Bukti Transfer
@@ -302,8 +306,8 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
 
                         <div class="table-responsive">
                             <table class="table table-sm align-middle mb-0">
-                                <thead class="bg-light">
-                                    <tr class="x-small text-muted text-uppercase fw-bold">
+                                <thead class="table-light">
+                                    <tr class="extra-small text-muted text-uppercase fw-bold">
                                         <th class="ps-3 py-2">No</th>
                                         <th class="py-2">Bukti</th>
                                         <th class="py-2">Waktu Upload</th>
@@ -323,8 +327,7 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                                             </td>
                                             <td class="text-end pe-3">
                                                 <a href="{{ $proof->file_url }}" target="_blank"
-                                                    class="btn btn-sm btn-outline-primary py-0 px-2"
-                                                    style="font-size: 0.75rem;">Lihat</a>
+                                                    class="btn btn-sm btn-outline-primary py-0 px-2 extra-small">Lihat</a>
                                             </td>
                                         </tr>
                                     @empty
@@ -344,7 +347,7 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
         <!-- Sidebar Actions -->
         <div class="col-lg-4">
             @if ($donation->status == 'pending')
-                <div class="card border-0 mb-4 shadow-sm">
+                <div class="card card-dashboard border-0 mb-4 shadow-sm">
                     <div class="card-body p-4">
                         <h5 class="fw-bold mb-3 text-primary">Tindakan Admin</h5>
                         <p class="small text-muted mb-4">Verifikasi pembayaran ini sesuai dengan bukti transfer yang
@@ -356,13 +359,15 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
 
 
 
-                            <div class="input-group">
-                                <span class="input-group-text bg-white border-0">Rp</span>
+                            <div class="input-group border rounded-3 overflow-hidden">
+                                <span
+                                    class="input-group-text bg-white border-0 extra-small fw-bold text-muted">Rp</span>
                                 <input type="number" wire:model="editAmount"
-                                    class="form-control border-0 bg-white fw-bold" placeholder="Check bukti bayar...">
+                                    class="form-control border-0 bg-white fw-bold text-primary"
+                                    placeholder="Check bukti bayar...">
                             </div>
-                            <small class="text-muted mt-2 d-block" style="font-size: 0.75rem;">
-                                Ubah nominal jika jumlah yang ditransfer berbeda.
+                            <small class="text-muted mt-2 d-block extra-small">
+                                UIbah nominal jika jumlah yang ditransfer berbeda.
                             </small>
                         </div>
 
@@ -379,13 +384,13 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                     </div>
                 </div>
             @else
-                <div class="card border-0  mb-4">
+                <div class="card card-dashboard border-0 mb-4">
                     <div class="card-body p-4">
                         <div class="text-center mb-4">
                             <div class="d-inline-flex align-items-center justify-content-center {{ $donation->status == 'success' ? 'bg-success bg-opacity-10' : 'bg-danger bg-opacity-10' }} rounded-3 mb-3"
                                 style="width: 72px; height: 72px;">
                                 <i
-                                    class="bi {{ $donation->status == 'success' ? 'bi-check-lg text-success' : 'bi-x-lg text-danger' }} fs-1"></i>
+                                    class="bi {{ $donation->status === 'success' ? 'bi-check-lg text-success' : 'bi-x-lg text-danger' }} fs-1"></i>
                             </div>
                             <h5 class="fw-bold">Donasi Telah Diproses</h5>
                             <p class="text-muted small">Status transaksi ini adalah
@@ -404,7 +409,7 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                 </div>
             @endif
 
-            <div class="card border-0 border-start border-4 border-info">
+            <div class="card card-dashboard border-0 border-start border-4 border-info">
                 <div class="card-body">
                     <h6 class="fw-bold mb-3 small opacity-75 text-uppercase">Log Notifikasi WA</h6>
                     @forelse($this->waLogs as $log)

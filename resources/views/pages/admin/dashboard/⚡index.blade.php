@@ -452,21 +452,21 @@ new #[Layout('layouts.admin')] #[Title('Dashboard')] class extends Component {
                         <h5 class="fw-bold mb-1 text-dark">Tren Donasi Masuk</h5>
                         <p class="text-muted small mb-0">Visualisasi data donasi masuk vs gagal.</p>
                     </div>
-                    <div class="d-flex align-items-center gap-1 bg-light p-1 rounded-pill border shadow-sm"
+                    <div class="d-flex align-items-center gap-1 bg-light p-1 rounded-pill border shadow-sm ls-lg"
                         style="min-width: 220px;">
                         <button type="button" @click="s = !s"
                             :class="s ? 'bg-white shadow-sm' : 'text-muted opacity-50'"
                             :style="s ? 'color: #2563eb !important' : ''"
-                            class="btn btn-sm border-0 flex-fill rounded-pill py-1-5 px-3 transition-all d-flex align-items-center justify-content-center gap-2">
-                            <span style="width: 8px; height: 8px; border-radius: 50%; background: #2563eb;"
-                                class="d-inline-block"></span>
+                            class="btn btn-sm border-0 flex-fill rounded-pill py-2 px-3 transition-200 d-flex align-items-center justify-content-center gap-2">
+                            <span class="rounded-circle d-inline-block"
+                                style="width: 8px; height: 8px; background: #2563eb;"></span>
                             <span class="extra-small fw-bold">Berhasil</span>
                         </button>
                         <button type="button" @click="f = !f"
                             :class="f ? 'bg-white shadow-sm text-danger' : 'text-muted opacity-50'"
-                            class="btn btn-sm border-0 flex-fill rounded-pill py-1-5 px-3 transition-all d-flex align-items-center justify-content-center gap-2">
-                            <span style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444;"
-                                class="d-inline-block"></span>
+                            class="btn btn-sm border-0 flex-fill rounded-pill py-2 px-3 transition-200 d-flex align-items-center justify-content-center gap-2">
+                            <span class="rounded-circle d-inline-block"
+                                style="width: 8px; height: 8px; background: #ef4444;"></span>
                             <span class="extra-small fw-bold">Gagal</span>
                         </button>
                     </div>
@@ -549,13 +549,12 @@ new #[Layout('layouts.admin')] #[Title('Dashboard')] class extends Component {
                                             <div class="fw-bold small text-dark">{{ $donation->donor_name }}</div>
                                             @if ($donation->paymentProofs->count() > 0)
                                                 <span
-                                                    class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25"
-                                                    style="font-size: 0.6rem;">
+                                                    class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 extra-small">
                                                     <i class="bi bi-image"></i>
                                                 </span>
                                             @endif
                                         </div>
-                                        <div class="text-muted x-small">
+                                        <div class="text-muted extra-small">
                                             {{ $donation->created_at->diffForHumans() }}
                                         </div>
                                     </td>
@@ -616,8 +615,8 @@ new #[Layout('layouts.admin')] #[Title('Dashboard')] class extends Component {
                                         </td>
                                         <td class="py-3">
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ $campaign->thumbnail_url }}" class="rounded me-2"
-                                                    style="width: 32px; height: 32px; object-fit: cover;">
+                                                <img src="{{ $campaign->thumbnail_url }}"
+                                                    class="rounded me-2 avatar-xs object-fit-cover">
                                                 <div class="text-truncate small fw-bold text-dark"
                                                     style="max-width: 180px;">
                                                     {{ $campaign->title }}</div>
@@ -654,8 +653,8 @@ new #[Layout('layouts.admin')] #[Title('Dashboard')] class extends Component {
                                         </td>
                                         <td class="py-3">
                                             <div class="d-flex align-items-center">
-                                                <img src="{{ $campaign->thumbnail_url }}" class="rounded me-2"
-                                                    style="width: 32px; height: 32px; object-fit: cover;">
+                                                <img src="{{ $campaign->thumbnail_url }}"
+                                                    class="rounded me-2 avatar-xs object-fit-cover">
                                                 <div class="text-truncate small fw-bold text-dark"
                                                     style="max-width: 180px;">
                                                     {{ $campaign->title }}</div>
@@ -679,17 +678,4 @@ new #[Layout('layouts.admin')] #[Title('Dashboard')] class extends Component {
         </div>
     </div>
 
-    <style>
-        .ls-widest {
-            letter-spacing: 0.1em;
-        }
-
-        .x-small {
-            font-size: 0.7rem;
-        }
-
-        .object-fit-cover {
-            object-fit: cover;
-        }
-    </style>
 </div>

@@ -161,7 +161,7 @@ new class extends Component {
                     @enderror
                 </div>
 
-                <div class="form-check form-switch p-0 d-flex justify-content-between align-items-center mb-0 bg-light px-3 py-2 cursor-pointer"
+                <div class="form-check form-switch p-0 d-flex justify-content-between align-items-center mb-0 bg-light px-3 py-2 cursor-pointer h-auto"
                     style="min-height: 50px;">
                     <label class="form-check-label ms-0 fw-bold text-dark cursor-pointer"
                         for="anonymousSwitch">Sembunyikan
@@ -188,7 +188,7 @@ new class extends Component {
     </section>
 
     {{-- Footer --}}
-    <div class="detail-cta" style="height: auto; z-index: 100;">
+    <div class="detail-cta h-auto z-100">
         <div class="w-100">
             <button wire:click="submit" class="detail-cta__button w-100 border-0 rounded-pill">
                 Pilih Metode Pembayaran <i class="bi bi-chevron-right ms-2"></i>

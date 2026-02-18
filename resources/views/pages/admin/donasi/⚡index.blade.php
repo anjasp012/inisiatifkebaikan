@@ -163,7 +163,7 @@ new #[Layout('layouts.admin')] #[Title('Daftar Donasi')] class extends Component
                         </button>
                     </div>
 
-                    <div wire:ignore class="d-inline-block" style="min-width: 150px;">
+                    <div wire:ignore class="d-inline-block w-150">
                         <select x-data="{
                             tom: null,
                             init() {
@@ -185,8 +185,8 @@ new #[Layout('layouts.admin')] #[Title('Daftar Donasi')] class extends Component
                     </div>
 
                     <div class="position-relative">
-                        <input type="text" class="form-control ps-5" placeholder="Cari donatur..."
-                            wire:model.live.debounce.250ms="search" style="min-width: 250px;">
+                        <input type="text" class="form-control ps-5 w-250" placeholder="Cari donatur..."
+                            wire:model.live.debounce.250ms="search">
                         <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                     </div>
                 </div>
@@ -197,7 +197,7 @@ new #[Layout('layouts.admin')] #[Title('Daftar Donasi')] class extends Component
             <table class="table table-borderless align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="text-center" style="width: 50px;">NO</th>
+                        <th class="text-center col-no">NO</th>
                         <th>TRANSAKSI ID</th>
                         <th>DONATUR</th>
                         <th>PROGRAM CAMPAIGN</th>
@@ -221,22 +221,20 @@ new #[Layout('layouts.admin')] #[Title('Daftar Donasi')] class extends Component
                             </td>
                             <td>
                                 @if ($donation->campaign)
-                                    <div class="fw-semibold text-truncate" style="max-width: 200px;"
+                                    <div class="fw-semibold text-truncate max-w-200"
                                         title="{{ $donation->campaign->title }}">
                                         {{ $donation->campaign->title }}
                                     </div>
                                     <div class="mt-1">
                                         @if ($donation->campaign->category)
                                             <span
-                                                class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 border border-primary border-opacity-10 x-small"
-                                                style="font-size: 10px; font-weight: 600;">
+                                                class="badge bg-primary bg-opacity-10 text-primary px-2 py-1 border border-primary border-opacity-10 extra-small fw-semibold">
                                                 <i class="bi bi-tag-fill me-1"></i>
                                                 {{ $donation->campaign->category->name }}
                                             </span>
                                         @else
                                             <span
-                                                class="badge bg-secondary bg-opacity-10 text-secondary px-2 py-1 border border-secondary border-opacity-10 x-small"
-                                                style="font-size: 10px; font-weight: 600;">
+                                                class="badge bg-secondary bg-opacity-10 text-secondary px-2 py-1 border border-secondary border-opacity-10 extra-small fw-semibold">
                                                 -
                                             </span>
                                         @endif
@@ -258,7 +256,7 @@ new #[Layout('layouts.admin')] #[Title('Daftar Donasi')] class extends Component
                                 </div>
                                 @if ($donation->paymentProofs->count() > 0)
                                     <span
-                                        class="badge bg-info bg-opacity-10 text-info x-small mt-1 px-2 border border-info border-opacity-25">
+                                        class="badge bg-info bg-opacity-10 text-info extra-small mt-1 px-2 border border-info border-opacity-25">
                                         <i class="bi bi-image me-1"></i> BUKTI
                                         ({{ $donation->paymentProofs->count() }})
                                     </span>
@@ -314,9 +312,4 @@ new #[Layout('layouts.admin')] #[Title('Daftar Donasi')] class extends Component
             </div>
         </div>
     </div>
-    <style>
-        .x-small {
-            font-size: 0.7rem;
-        }
-    </style>
 </div>

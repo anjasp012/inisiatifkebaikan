@@ -46,8 +46,8 @@ new class extends Component {
         <div class="container-fluid px-4">
             <div class="text-center mb-5">
                 <div class="mb-4 d-inline-block">
-                    <img src="{{ asset('assets/images/logo.png') }}" alt="Logo"
-                        style="height: 48px; object-fit: contain;">
+                    <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="h-auto object-fit-contain"
+                        style="max-height: 48px;">
                 </div>
                 <h3 class="fw-bold text-dark mb-1">Selamat Datang!</h3>
                 <p class="text-muted small">Masuk untuk melanjutkan kebaikanmu.</p>
@@ -88,7 +88,7 @@ new class extends Component {
                     @enderror
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 py-3 fw-bold mb-4 shadow-md rounded-pill">
+                <button type="submit" class="btn btn-primary w-100 py-3 fw-bold mb-4 shadow-auth rounded-pill">
                     <span wire:loading.remove>Masuk Sekarang</span>
                     <span wire:loading>Memproses...</span>
                 </button>
@@ -98,32 +98,14 @@ new class extends Component {
             <div class="text-center mt-5">
                 <p class="text-muted small">
                     Belum punya akun? <a href="{{ route('register') }}" wire:navigate
-                        class="fw-bold text-primary text-decoration-none border-bottom border-primary border-2 pb-0.5">Daftar
+                        class="fw-bold text-primary text-decoration-none border-bottom border-primary border-2">Daftar
                         disini</a>
                 </p>
                 <a href="{{ route('home') }}" wire:navigate
-                    class="text-muted text-decoration-none extra-small fw-bold mt-3 d-inline-block opacity-75 hover-opacity-100">
+                    class="text-muted text-decoration-none extra-small fw-bold mt-3 d-inline-block opacity-75">
                     <i class="bi bi-arrow-left me-1"></i> Kembali ke Beranda
                 </a>
             </div>
         </div>
     </section>
 </div>
-
-<style>
-    .font-jakarta {
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    .ls-1 {
-        letter-spacing: 0.1em;
-    }
-
-    .extra-small {
-        font-size: 11px;
-    }
-
-    .shadow-md {
-        box-shadow: 0 10px 15px -3px rgba(220, 82, 7, 0.2);
-    }
-</style>

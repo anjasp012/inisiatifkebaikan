@@ -67,10 +67,10 @@ new #[Layout('layouts.admin')] #[Title('Update Program')] class extends Componen
             <table class="table table-borderless align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th class="text-center" style="width: 50px;">NO</th>
-                        <th style="width: 150px;">TANGGAL</th>
+                        <th class="text-center col-no">NO</th>
+                        <th class="w-150">TANGGAL</th>
                         <th>JUDUL UPDATE</th>
-                        <th class="text-end pe-3">AKSI</th>
+                        <th class="text-end pe-3 col-actions">AKSI</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -84,7 +84,7 @@ new #[Layout('layouts.admin')] #[Title('Update Program')] class extends Componen
                             </td>
                             <td>
                                 <div class="fw-bold">{{ $item->title }}</div>
-                                <div class="small text-muted text-truncate" style="max-width: 400px;">
+                                <div class="small text-muted text-truncate max-w-200">
                                     {{ Str::limit(strip_tags($item->content), 100) }}</div>
                             </td>
                             <td class="text-end pe-3">

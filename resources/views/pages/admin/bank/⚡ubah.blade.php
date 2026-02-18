@@ -93,7 +93,7 @@ new #[Layout('layouts.admin')] #[Title('Ubah Bank')] class extends Component {
 
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Nama Bank / Channel</label>
+                            <label class="form-label fw-bold extra-small text-uppercase">Nama Bank / Channel</label>
                             <input type="text" class="form-control @error('bank_name') is-invalid @enderror"
                                 wire:model="bank_name" placeholder="Contoh: Bank Central Asia">
                             @error('bank_name')
@@ -102,7 +102,7 @@ new #[Layout('layouts.admin')] #[Title('Ubah Bank')] class extends Component {
                         </div>
 
                         <div class="mb-3 @error('method') is-invalid-tomselect @enderror">
-                            <label class="form-label fw-bold">Metode Pembayaran</label>
+                            <label class="form-label fw-bold extra-small text-uppercase">Metode Pembayaran</label>
                             <div wire:ignore>
                                 <select x-data="{
                                     tom: null,
@@ -135,7 +135,8 @@ is-invalid
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Kode Bank / Channel @if ($type == 'manual')
+                            <label class="form-label fw-bold extra-small text-uppercase">Kode Bank / Channel
+                                @if ($type == 'manual')
                                     (Opsional)
                                 @endif
                             </label>
@@ -147,7 +148,7 @@ is-invalid
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Nomor Rekening</label>
+                            <label class="form-label fw-bold extra-small text-uppercase">Nomor Rekening</label>
                             <input type="text" class="form-control @error('account_number') is-invalid @enderror"
                                 wire:model="account_number" placeholder="Masukan nomor rekening">
                             @error('account_number')
@@ -156,7 +157,7 @@ is-invalid
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">Atas Nama</label>
+                            <label class="form-label fw-bold extra-small text-uppercase">Atas Nama</label>
                             <input type="text" class="form-control @error('account_name') is-invalid @enderror"
                                 wire:model="account_name" placeholder="Masukan nama pemilik rekening">
                             @error('account_name')
@@ -185,15 +186,4 @@ is-invalid
             </form>
         </div>
     </div>
-    <style>
-        /* Validation Style for TomSelect */
-        .is-invalid-tomselect .ts-control {
-            border-color: #dc3545 !important;
-            padding-right: calc(1.5em + 0.75rem);
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5zM6 8.2h.01'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right calc(0.375em + 0.1875rem) center;
-            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-        }
-    </style>
 </div>

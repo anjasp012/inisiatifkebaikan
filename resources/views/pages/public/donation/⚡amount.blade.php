@@ -73,12 +73,12 @@ new class extends Component {
             <div class="card border-0 bg-light mb-4 overflow-hidden">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center">
-                        <img src="{{ $campaign->thumbnail_url }}" class="rounded-3 object-fit-cover flex-shrink-0"
-                            style="width: 70px; height: 70px;" alt="">
+                        <img src="{{ $campaign->thumbnail_url }}"
+                            class="rounded-3 object-fit-cover flex-shrink-0 avatar-lg" alt="{{ $campaign->title }}">
                         <div class="ms-3 overflow-hidden">
                             <h6 class="fw-bold mb-1 text-dark text-truncate">{{ $campaign->title }}</h6>
                             <div class="d-flex align-items-center small text-muted">
-                                <span class="bg-white border px-2 py-1 rounded-pill me-2" style="font-size: 0.7rem;">
+                                <span class="bg-white border px-2 py-1 rounded-pill me-2 extra-small">
                                     {{ $campaign->category->name ?? 'Umum' }}
                                 </span>
                             </div>
@@ -115,8 +115,7 @@ new class extends Component {
                     @foreach ([10000, 20000, 50000, 100000, 200000, 500000] as $preset)
                         <div class="col-6">
                             <button wire:click="selectAmount({{ $preset }})"
-                                class="btn w-100 py-3 rounded-3 fw-bold position-relative overflow-hidden {{ $amount == $preset ? 'btn-primary border-primary' : 'btn-outline-secondary border-secondary-subtle text-dark bg-white' }}"
-                                style="transition: all 0.2s;">
+                                class="btn w-100 py-3 rounded-3 fw-bold position-relative overflow-hidden transition-200 {{ $amount == $preset ? 'btn-primary border-primary' : 'btn-outline-secondary border-secondary-subtle text-dark bg-white' }}">
                                 <span class="d-block {{ $amount == $preset ? 'text-white' : 'text-dark' }}">
                                     Rp {{ number_format($preset, 0, ',', '.') }}
                                 </span>
@@ -139,7 +138,7 @@ new class extends Component {
     </section>
 
     {{-- Sticky Bottom Button --}}
-    <div class="detail-cta" style="height: auto; z-index: 100;">
+    <div class="detail-cta h-auto z-100">
         <div class="w-100">
             <button wire:click="submit" class="detail-cta__button w-100 border-0 rounded-pill"
                 @if ($amount < 10000) disabled @endif>

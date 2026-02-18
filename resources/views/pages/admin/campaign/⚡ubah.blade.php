@@ -199,7 +199,7 @@
                      </div>
 
                      <div class="col-md-12">
-                         <div class="card p-3 bg-light">
+                         <div class="card p-3 bg-light border-0">
                              <h6 class="mb-3">Opsi Tambahan</h6>
                              <div class="d-flex flex-wrap gap-4">
                                  <div class="form-check">
@@ -213,12 +213,6 @@
                                          id="is_priority">
                                      <label class="form-check-label fw-semibold" for="is_priority">Prioritas Kebaikan
                                          Hari ini</label>
-                                 </div>
-                                 <div class="form-check">
-                                     <input class="form-check-input" type="checkbox" wire:model="is_initiative"
-                                         id="is_initiative">
-                                     <label class="form-check-label fw-semibold" for="is_initiative">Program Inisiatif
-                                         Pilihan</label>
                                  </div>
                                  <div class="form-check">
                                      <input class="form-check-input" type="checkbox" wire:model="is_optimized"
@@ -249,15 +243,4 @@
              </form>
          </div>
      </div>
-     <style>
-         /* Validation Style for TomSelect */
-         .is-invalid-tomselect .ts-control {
-             border-color: #dc3545 !important;
-             padding-right: calc(1.5em + 0.75rem);
-             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5zM6 8.2h.01'/%3e%3c/svg%3e");
-             background-repeat: no-repeat;
-             background-position: right calc(0.375em + 0.1875rem) center;
-             background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
-         }
-     </style>
  </div>

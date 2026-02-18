@@ -73,18 +73,16 @@ new #[Layout('layouts.app')] class extends Component {
         <div class="text-center mb-4">
             <div class="position-relative d-inline-block">
                 @if ($new_avatar)
-                    <img src="{{ $new_avatar->temporaryUrl() }}" class="rounded-circle object-fit-cover shadow-sm"
-                        style="width: 100px; height: 100px;">
+                    <img src="{{ $new_avatar->temporaryUrl() }}"
+                        class="rounded-circle object-fit-cover shadow-sm avatar-xl">
                 @else
-                    <img src="{{ $avatar }}" class="rounded-circle object-fit-cover shadow-sm"
-                        style="width: 100px; height: 100px;">
+                    <img src="{{ $avatar }}" class="rounded-circle object-fit-cover shadow-sm avatar-xl">
                 @endif
                 <label for="avatar-upload"
-                    class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center cursor-pointer shadow-sm"
-                    style="width: 32px; height: 32px;">
+                    class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center cursor-pointer shadow-sm avatar-sm">
                     <i class="bi bi-camera-fill small" wire:loading.remove wire:target="new_avatar"></i>
-                    <div class="spinner-border spinner-border-sm text-white" style="width: 1rem; height: 1rem;"
-                        role="status" wire:loading wire:target="new_avatar">
+                    <div class="spinner-border spinner-border-sm text-white avatar-xs" role="status" wire:loading
+                        wire:target="new_avatar">
                         <span class="visually-hidden">Loading...</span>
                     </div>
                 </label>

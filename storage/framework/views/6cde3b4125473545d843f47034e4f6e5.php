@@ -1,5 +1,6 @@
 <?php
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use App\Models\Donation;
 use App\Models\PaymentProof;
 use Livewire\Component;
@@ -10,7 +11,7 @@ use Livewire\WithFileUploads;
     <div class="row g-4">
         <!-- Main Stats & Actions -->
         <div class="col-lg-8">
-            <div class="card border-0  overflow-hidden mb-4">
+            <div class="card card-dashboard border-0 mb-4">
                 <div class="card-body border-bottom">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center gap-3">
@@ -27,11 +28,11 @@ use Livewire\WithFileUploads;
                     </div>
                 </div>
                 <div class="card-body p-0">
-                    <div class="p-4" style="background: linear-gradient(to right, #f8f9fa, #ffffff);">
+                    <div class="p-4 bg-light border-top">
                         <div class="row align-items-center">
                             <div class="col-md-7">
-                                <h6 class="text-uppercase text-muted small fw-bold mb-2">NOMINAL DONASI</h6>
-                                <div class="display-5 fw-bold text-primary mb-3">
+                                <h6 class="text-uppercase text-muted extra-small fw-bold mb-2 ls-sm">NOMINAL DONASI</h6>
+                                <div class="display-6 fw-bold text-primary mb-3">
                                     Rp <?php echo e(number_format($donation->amount, 0, ',', '.')); ?>
 
                                 </div>
@@ -68,7 +69,7 @@ use Livewire\WithFileUploads;
                                         <?php echo e($donation->bank ? $donation->bank->bank_name : str_replace('_', ' ', $donation->payment_method)); ?>
 
                                     </h6>
-                                    <div class="bg-light p-2 rounded small font-monospace text-break">
+                                    <div class="bg-light p-2 rounded extra-small font-monospace text-break border">
                                         <?php echo e($donation->bank ? ($donation->bank->account_number ? $donation->bank->account_number . ' a/n ' . $donation->bank->account_name : $donation->bank->bank_code) : $donation->payment_code); ?>
 
                                     </div>
@@ -89,7 +90,7 @@ use Livewire\WithFileUploads;
                                         <span class="text-muted small">Nama</span>
                                         <span class="fw-semibold"><?php echo e($donation->donor_name); ?>
 
-                                            <?php echo $donation->is_anonymous ? '<small class="text-muted">(Anonim)</small>' : ''; ?></span>
+                                            <?php echo $donation->is_anonymous ? '<small class="text-muted extra-small ms-1">(Anonim)</small>' : ''; ?></span>
                                     </div>
                                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($donation->donor_email): ?>
                                         <div class="list-group-item d-flex justify-content-between align-items-center">
@@ -127,8 +128,10 @@ use Livewire\WithFileUploads;
                                 </div>
 
                                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($donation->message): ?>
-                                    <div class="mt-4 p-3 bg-light border-start border-4 border-primary rounded-3">
-                                        <h6 class="fw-bold small text-muted text-uppercase mb-2">Pesan / Doa Donatur
+                                    <div
+                                        class="mt-4 p-3 bg-light border-start border-4 border-primary rounded-3 border-0 border-start">
+                                        <h6 class="fw-bold extra-small text-muted text-uppercase mb-2">Pesan / Doa
+                                            Donatur
                                         </h6>
                                         <p class="mb-0 fst-italic">"<?php echo e($donation->message); ?>"</p>
                                     </div>
@@ -138,15 +141,18 @@ use Livewire\WithFileUploads;
                                 <h6 class="fw-bold mb-3 d-flex align-items-center">
                                     <i class="bi bi-megaphone-fill me-2 text-primary"></i> Campaign Terkait
                                 </h6>
-                                <div class="card border rounded-3 p-3">
+                                <div class="card border rounded-3 p-3 bg-light bg-opacity-10 border-0 shadow-sm">
                                     <div class="d-flex gap-3 mb-3">
                                         <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($donation->campaign->thumbnail): ?>
-                                            <img src="<?php echo e($donation->campaign->thumbnail_url); ?>" class="rounded "
-                                                style="width: 80px; height: 80px; object-fit: cover;">
+                                            <img src="<?php echo e($donation->campaign->thumbnail_url); ?>"
+                                                class="rounded avatar-md object-fit-cover">
                                         <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
-                                        <div class="overflow-hidden">
-                                            <div class="fw-bold text-truncate"><?php echo e($donation->campaign->title); ?></div>
-                                            <div class="small text-muted mb-1">
+                                        <div class="overflow-hidden flex-grow-1">
+                                            <div class="fw-bold text-dark text-truncate">
+                                                <?php echo e($donation->campaign->title); ?>
+
+                                            </div>
+                                            <div class="extra-small text-muted mb-1">
                                                 <?php echo e($donation->campaign->category->name ?? 'Zakat & Wakaf'); ?></div>
                                             <div wire:ignore class="progress" style="height: 6px;">
                                                 <?php $percent = min(100, ($donation->campaign->collected_amount / max(1, $donation->campaign->target_amount)) * 100); ?>
@@ -154,7 +160,7 @@ use Livewire\WithFileUploads;
                                                     style="width: <?php echo e($percent); ?>%">
                                                 </div>
                                             </div>
-                                            <div class="d-flex justify-content-between mt-1 small">
+                                            <div class="d-flex justify-content-between mt-1 extra-small">
                                                 <span class="fw-bold text-primary">Rp
                                                     <?php echo e(number_format($donation->campaign->collected_amount, 0, ',', '.')); ?></span>
                                                 <span class="text-muted">Target:
@@ -179,7 +185,7 @@ use Livewire\WithFileUploads;
                 $donation->payment_method == 'manual' ||
                     $donation->payment_method == 'manual_transfer' ||
                     $donation->paymentProofs->isNotEmpty()): ?>
-                <div class="card border-0  mb-4">
+                <div class="card card-dashboard border-0 mb-4">
                     <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
                         <h6 class="mb-0 fw-bold d-flex align-items-center">
                             <i class="bi bi-images me-2 text-primary"></i> Bukti Transfer
@@ -204,8 +210,8 @@ use Livewire\WithFileUploads;
 
                         <div class="table-responsive">
                             <table class="table table-sm align-middle mb-0">
-                                <thead class="bg-light">
-                                    <tr class="x-small text-muted text-uppercase fw-bold">
+                                <thead class="table-light">
+                                    <tr class="extra-small text-muted text-uppercase fw-bold">
                                         <th class="ps-3 py-2">No</th>
                                         <th class="py-2">Bukti</th>
                                         <th class="py-2">Waktu Upload</th>
@@ -226,8 +232,7 @@ use Livewire\WithFileUploads;
                                             </td>
                                             <td class="text-end pe-3">
                                                 <a href="<?php echo e($proof->file_url); ?>" target="_blank"
-                                                    class="btn btn-sm btn-outline-primary py-0 px-2"
-                                                    style="font-size: 0.75rem;">Lihat</a>
+                                                    class="btn btn-sm btn-outline-primary py-0 px-2 extra-small">Lihat</a>
                                             </td>
                                         </tr>
                                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>
@@ -247,7 +252,7 @@ use Livewire\WithFileUploads;
         <!-- Sidebar Actions -->
         <div class="col-lg-4">
             <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($donation->status == 'pending'): ?>
-                <div class="card border-0 mb-4 shadow-sm">
+                <div class="card card-dashboard border-0 mb-4 shadow-sm">
                     <div class="card-body p-4">
                         <h5 class="fw-bold mb-3 text-primary">Tindakan Admin</h5>
                         <p class="small text-muted mb-4">Verifikasi pembayaran ini sesuai dengan bukti transfer yang
@@ -259,13 +264,15 @@ use Livewire\WithFileUploads;
 
 
 
-                            <div class="input-group">
-                                <span class="input-group-text bg-white border-0">Rp</span>
+                            <div class="input-group border rounded-3 overflow-hidden">
+                                <span
+                                    class="input-group-text bg-white border-0 extra-small fw-bold text-muted">Rp</span>
                                 <input type="number" wire:model="editAmount"
-                                    class="form-control border-0 bg-white fw-bold" placeholder="Check bukti bayar...">
+                                    class="form-control border-0 bg-white fw-bold text-primary"
+                                    placeholder="Check bukti bayar...">
                             </div>
-                            <small class="text-muted mt-2 d-block" style="font-size: 0.75rem;">
-                                Ubah nominal jika jumlah yang ditransfer berbeda.
+                            <small class="text-muted mt-2 d-block extra-small">
+                                UIbah nominal jika jumlah yang ditransfer berbeda.
                             </small>
                         </div>
 
@@ -282,13 +289,13 @@ use Livewire\WithFileUploads;
                     </div>
                 </div>
             <?php else: ?>
-                <div class="card border-0  mb-4">
+                <div class="card card-dashboard border-0 mb-4">
                     <div class="card-body p-4">
                         <div class="text-center mb-4">
                             <div class="d-inline-flex align-items-center justify-content-center <?php echo e($donation->status == 'success' ? 'bg-success bg-opacity-10' : 'bg-danger bg-opacity-10'); ?> rounded-3 mb-3"
                                 style="width: 72px; height: 72px;">
                                 <i
-                                    class="bi <?php echo e($donation->status == 'success' ? 'bi-check-lg text-success' : 'bi-x-lg text-danger'); ?> fs-1"></i>
+                                    class="bi <?php echo e($donation->status === 'success' ? 'bi-check-lg text-success' : 'bi-x-lg text-danger'); ?> fs-1"></i>
                             </div>
                             <h5 class="fw-bold">Donasi Telah Diproses</h5>
                             <p class="text-muted small">Status transaksi ini adalah
@@ -307,7 +314,7 @@ use Livewire\WithFileUploads;
                 </div>
             <?php endif; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php endif; ?>
 
-            <div class="card border-0 border-start border-4 border-info">
+            <div class="card card-dashboard border-0 border-start border-4 border-info">
                 <div class="card-body">
                     <h6 class="fw-bold mb-3 small opacity-75 text-uppercase">Log Notifikasi WA</h6>
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__empty_1 = true; $__currentLoopData = $this->waLogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>

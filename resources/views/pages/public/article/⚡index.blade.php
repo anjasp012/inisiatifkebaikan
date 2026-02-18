@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Distribution;
+use App\Models\Article;
 use Livewire\Component;
 use Livewire\Attributes\Computed;
 use RalphJSmit\Laravel\SEO\Support\SEOData;
@@ -11,7 +11,7 @@ new class extends Component {
 
     public function mount()
     {
-        $seoData = new SEOData(title: 'Laporan Penyaluran | Inisiatif Kebaikan', description: 'Daftar rincian penyaluran bantuan dan donasi dari para muhsinin untuk para penerima manfaat.', image: asset('assets/images/og-image.jpg'));
+        $seoData = new SEOData(title: 'Artikel Terbaru | Inisiatif Kebaikan', description: 'Berita terbaru, kisah inspiratif, dan kabar kebaikan dari seluruh nusantara.', image: asset('assets/images/og-image.jpg'));
 
         View::share('seoData', $seoData);
     }
@@ -22,41 +22,41 @@ new class extends Component {
     }
 
     #[Computed]
-    public function distributions()
+    public function articles()
     {
-        return Distribution::with('campaign')->orderBy('distribution_date', 'desc')->limit($this->perPage)->get();
+        return Article::where('is_published', true)->latest()->limit($this->perPage)->get();
     }
 
     #[Computed]
     public function hasMore()
     {
-        return Distribution::count() > $this->perPage;
+        return Article::where('is_published', true)->count() > $this->perPage;
     }
 };
 ?>
 
 <div>
-    <x-app.navbar-secondary title="Laporan Penyaluran" />
+    <x-app.navbar-secondary title="Artikel & Berita" />
 
-    <section class="distribution-list-section">
+    <section class="article-list-section">
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between mb-4">
-                <h2 class="section-title">Riwayat Penyaluran</h2>
+                <h2 class="section-title">Artikel Terbaru</h2>
             </div>
 
             <div class="row g-3">
-                @forelse ($this->distributions as $distribution)
+                @forelse ($this->articles as $article)
                     <div class="col-12">
-                        <x-app.distribution-card :distribution="$distribution" />
+                        <x-app.article-card :article="$article" />
                     </div>
                 @empty
                     <div class="col-12 text-center py-5">
                         <div class="mb-4">
-                            <i class="bi bi-file-earmark-text text-primary empty-state-icon"></i>
+                            <i class="bi bi-journal-text text-primary empty-state-icon"></i>
                         </div>
-                        <h6 class="fw-bold mb-2">Belum ada laporan</h6>
+                        <h6 class="fw-bold mb-2">Belum ada artikel</h6>
                         <p class="text-muted small mb-4 px-4">
-                            Belum ada laporan penyaluran yang dipublikasikan saat ini.
+                            Belum ada artikel atau berita yang dipublikasikan saat ini.
                         </p>
                     </div>
                 @endforelse

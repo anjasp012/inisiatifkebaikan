@@ -17,8 +17,8 @@ use Livewire\WithPagination;
 
                 <div class="d-flex flex-wrap align-items-center gap-2">
                     <div class="position-relative">
-                        <input type="text" class="form-control ps-5" placeholder="Cari donatur..."
-                            wire:model.live.debounce.250ms="search" style="min-width: 250px;">
+                        <input type="text" class="form-control ps-5 w-250" placeholder="Cari donatur..."
+                            wire:model.live.debounce.250ms="search">
                         <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
                     </div>
                 </div>
@@ -28,7 +28,7 @@ use Livewire\WithPagination;
             <table class="table table-borderless align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="text-center" style="width: 50px;">NO</th>
+                        <th class="text-center col-no">NO</th>
                         <th>NAMA LENGKAP</th>
                         <th>INFO KONTAK</th>
                         <th class="text-center">STATUS</th>
@@ -43,21 +43,21 @@ use Livewire\WithPagination;
                             <td class="text-center"><?php echo e($this->users->firstItem() + $no); ?></td>
                             <td>
                                 <div class="d-flex align-items-center gap-3">
-                                    <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold"
-                                        style="width: 40px; height: 40px;">
+                                    <div
+                                        class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold avatar-md">
                                         <?php echo e(substr($item->name, 0, 1)); ?>
 
                                     </div>
                                     <div>
                                         <div class="fw-bold"><?php echo e($item->name); ?></div>
-                                        <div class="x-small text-muted">Bergabung:
+                                        <div class="extra-small text-muted">Bergabung:
                                             <?php echo e($item->created_at->format('d M Y')); ?></div>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="small fw-bold"><?php echo e($item->email); ?></div>
-                                <div class="x-small text-muted"><?php echo e($item->phone ?? '-'); ?></div>
+                                <div class="extra-small text-muted"><?php echo e($item->phone ?? '-'); ?></div>
                             </td>
                             <td class="text-center">
                                 <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php endif; ?><?php if($item->isVerified()): ?>
