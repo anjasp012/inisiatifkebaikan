@@ -31,9 +31,9 @@ class NotificationTemplate extends Model
         $waService->sendMessage($donation->donor_phone, $content, $donation->id);
     }
 
-    public static function sendOTP($user, $otp)
+    public static function sendOTP($user, $otp, $slug = 'otp-login')
     {
-        $template = self::where('slug', 'otp-login')->first();
+        $template = self::where('slug', $slug)->first();
         if (!$template) return;
 
         $waService = new \App\Services\WhacenterService();

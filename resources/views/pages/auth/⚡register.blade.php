@@ -35,7 +35,8 @@ new class extends Component {
 
         Auth::login($user);
 
-        return redirect()->route('verification');
+        session()->put('otp_type', 'otp-register');
+        $this->redirect(route('verification'), navigate: true);
     }
 };
 ?>

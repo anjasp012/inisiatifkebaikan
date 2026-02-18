@@ -27,12 +27,13 @@ new class extends Component {
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
             session()->regenerate();
 
-            if (!Auth::user()->phone_verified_at) {
-                return redirect()->route('verification');
+            if (!Auth::user()->user_verified_at) {
+                session()->put('otp_type', 'otp-login');
+                $this->redirect(route('verification'), navigate: true);
+                return;
             }
 
-            // Redirect to intended URL if available, otherwise home
-            return redirect()->intended(route('home'));
+            $this->redirect(session()->pull('url.intended', route('home')), navigate: true);
         }
 
         $this->addError('email', 'Email atau password salah.');

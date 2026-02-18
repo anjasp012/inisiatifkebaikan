@@ -34,7 +34,7 @@ new #[Layout('layouts.app')] class extends Component {
                 'otp_code' => $otp,
                 'otp_expires_at' => now()->addMinutes(5),
             ]);
-            NotificationTemplate::sendOTP($user, $otp);
+            NotificationTemplate::sendOTP($user, $otp, session('otp_type', 'otp-login'));
             session()->flash('success', 'Kode OTP baru telah dikirim ke WhatsApp Anda.');
         }
     }
@@ -47,7 +47,7 @@ new #[Layout('layouts.app')] class extends Component {
             'otp_code' => $otp,
             'otp_expires_at' => now()->addMinutes(5),
         ]);
-        NotificationTemplate::sendOTP($user, $otp);
+        NotificationTemplate::sendOTP($user, $otp, session('otp_type', 'otp-login'));
         session()->flash('success', 'Kode OTP baru telah dikirim ke WhatsApp Anda.');
     }
 
