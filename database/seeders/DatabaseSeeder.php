@@ -222,12 +222,12 @@ class DatabaseSeeder extends Seeder
     private function seedCampaigns($categories, $fundraisers, $admin)
     {
         $data = [
-            ['title' => 'Bantu Renovasi Masjid Al-Ikhlas Pelosok Jambi', 'target' => 2500000000, 'emergency' => false, 'priority' => true],
-            ['title' => 'Darurat Gempa: Bantuan Logistik Untuk Korban', 'target' => 5000000000, 'emergency' => true, 'priority' => true],
-            ['title' => 'Sedekah Quran Untuk Santri Penghafal Quran', 'target' => 500000000, 'emergency' => false, 'priority' => false],
-            ['title' => 'Beasiswa Pendidikan 100 Anak Yatim Piatu', 'target' => 1500000000, 'emergency' => false, 'priority' => true],
-            ['title' => 'Bantuan Alat Kesehatan Untuk RS Terpencil', 'target' => 3000000000, 'emergency' => false, 'priority' => false],
-            ['title' => 'Aksi Tanam 1000 Pohon Mangrove di Pesisir Jakarta', 'target' => 250000000, 'emergency' => false, 'priority' => false],
+            ['title' => 'Bantu Renovasi Masjid Al-Ikhlas Pelosok Jambi', 'target' => 250000000, 'emergency' => false, 'priority' => true],
+            ['title' => 'Darurat Gempa: Bantuan Logistik Untuk Korban', 'target' => 500000000, 'emergency' => true, 'priority' => true],
+            ['title' => 'Sedekah Quran Untuk Santri Penghafal Quran', 'target' => 50000000, 'emergency' => false, 'priority' => false],
+            ['title' => 'Beasiswa Pendidikan 100 Anak Yatim Piatu', 'target' => 150000000, 'emergency' => false, 'priority' => true],
+            ['title' => 'Bantuan Alat Kesehatan Untuk RS Terpencil', 'target' => 300000000, 'emergency' => false, 'priority' => false],
+            ['title' => 'Aksi Tanam 1000 Pohon Mangrove di Pesisir Jakarta', 'target' => 25000000, 'emergency' => false, 'priority' => false],
         ];
 
         $campaigns = [];
