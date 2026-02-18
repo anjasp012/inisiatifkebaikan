@@ -35,6 +35,8 @@ new #[Layout('layouts.admin')] class extends Component {
     public $template_donation_created;
     public $template_donation_confirmed;
     public $template_donation_rejected;
+    public $template_otp_login;
+    public $template_otp_register;
 
     public function mount()
     {
@@ -64,6 +66,8 @@ new #[Layout('layouts.admin')] class extends Component {
         $this->template_donation_created = \App\Models\NotificationTemplate::where('slug', 'donation-created')->first()?->content;
         $this->template_donation_confirmed = \App\Models\NotificationTemplate::where('slug', 'donation-confirmed')->first()?->content;
         $this->template_donation_rejected = \App\Models\NotificationTemplate::where('slug', 'donation-rejected')->first()?->content;
+        $this->template_otp_login = \App\Models\NotificationTemplate::where('slug', 'otp-login')->first()?->content;
+        $this->template_otp_register = \App\Models\NotificationTemplate::where('slug', 'otp-register')->first()?->content;
     }
 
     public function getLogsProperty()
@@ -98,6 +102,8 @@ new #[Layout('layouts.admin')] class extends Component {
         \App\Models\NotificationTemplate::updateOrCreate(['slug' => 'donation-created'], ['name' => 'Donasi Dibuat', 'content' => $this->template_donation_created]);
         \App\Models\NotificationTemplate::updateOrCreate(['slug' => 'donation-confirmed'], ['name' => 'Donasi Berhasil', 'content' => $this->template_donation_confirmed]);
         \App\Models\NotificationTemplate::updateOrCreate(['slug' => 'donation-rejected'], ['name' => 'Donasi Dibatalkan', 'content' => $this->template_donation_rejected]);
+        \App\Models\NotificationTemplate::updateOrCreate(['slug' => 'otp-login'], ['name' => 'Login OTP', 'content' => $this->template_otp_login]);
+        \App\Models\NotificationTemplate::updateOrCreate(['slug' => 'otp-register'], ['name' => 'Registrasi OTP', 'content' => $this->template_otp_register]);
 
         if ($this->logo) {
             $path = $this->logo->store('settings', 'public');
@@ -353,6 +359,20 @@ new #[Layout('layouts.admin')] class extends Component {
                                                     <i class="bi bi-chevron-right extra-small"
                                                         x-show="currentTpl === 'rejected'"></i>
                                                 </button>
+                                                <button type="button" @click="currentTpl = 'otp_login'"
+                                                    :class="currentTpl === 'otp_login' ? 'active-tpl' : 'text-muted'"
+                                                    class="list-group-item list-group-item-action border-0 py-3 px-4 small fw-bold transition-all d-flex align-items-center justify-content-between bg-transparent">
+                                                    OTP Login
+                                                    <i class="bi bi-chevron-right extra-small"
+                                                        x-show="currentTpl === 'otp_login'"></i>
+                                                </button>
+                                                <button type="button" @click="currentTpl = 'otp_register'"
+                                                    :class="currentTpl === 'otp_register' ? 'active-tpl' : 'text-muted'"
+                                                    class="list-group-item list-group-item-action border-0 py-3 px-4 small fw-bold transition-all d-flex align-items-center justify-content-between bg-transparent">
+                                                    OTP Register
+                                                    <i class="bi bi-chevron-right extra-small"
+                                                        x-show="currentTpl === 'otp_register'"></i>
+                                                </button>
                                                 <button type="button" @click="currentTpl = 'logs'"
                                                     :class="currentTpl === 'logs' ? 'active-tpl' : 'text-muted'"
                                                     class="list-group-item list-group-item-action border-0 py-3 px-4 small fw-bold transition-all d-flex align-items-center justify-content-between bg-transparent">
@@ -441,6 +461,50 @@ new #[Layout('layouts.admin')] class extends Component {
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('rejected', '{campaign_title}')"
                                                             class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">Program</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {{-- OTP Login Template --}}
+                                            <div x-show="currentTpl === 'otp_login'" x-cloak>
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <span
+                                                        class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill extra-small fw-bold border border-warning border-opacity-25">Trigger:
+                                                        Login User</span>
+                                                </div>
+                                                <textarea id="tpl_otp_login" wire:model="template_otp_login"
+                                                    class="form-control font-monospace border-light bg-light bg-opacity-25 p-3 rounded-3" rows="12"
+                                                    style="font-size: 13px; resize: none;"></textarea>
+                                                <div class="mt-4 pt-3 border-top border-light">
+                                                    <p class="extra-small fw-bold text-muted text-uppercase ls-1 mb-2">
+                                                        Klik untuk Sisipkan:</p>
+                                                    <div class="d-flex flex-wrap gap-1">
+                                                        <button type="button"
+                                                            @click.prevent="insertPlaceholder('otp_login', '{otp_code}')"
+                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">OTP
+                                                            Code</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {{-- OTP Register Template --}}
+                                            <div x-show="currentTpl === 'otp_register'" x-cloak>
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <span
+                                                        class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill extra-small fw-bold border border-info border-opacity-25">Trigger:
+                                                        Registrasi Akun</span>
+                                                </div>
+                                                <textarea id="tpl_otp_register" wire:model="template_otp_register"
+                                                    class="form-control font-monospace border-light bg-light bg-opacity-25 p-3 rounded-3" rows="12"
+                                                    style="font-size: 13px; resize: none;"></textarea>
+                                                <div class="mt-4 pt-3 border-top border-light">
+                                                    <p class="extra-small fw-bold text-muted text-uppercase ls-1 mb-2">
+                                                        Klik untuk Sisipkan:</p>
+                                                    <div class="d-flex flex-wrap gap-1">
+                                                        <button type="button"
+                                                            @click.prevent="insertPlaceholder('otp_register', '{otp_code}')"
+                                                            class="btn btn-sm btn-white border border-light shadow-micro extra-small fw-bold px-2 py-1">OTP
+                                                            Code</button>
                                                     </div>
                                                 </div>
                                             </div>
