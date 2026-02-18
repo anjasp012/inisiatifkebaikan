@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('category_id')->constrained('campaign_categories')->onDelete('cascade');
             $table->foreignId('fundraiser_id')->nullable()->constrained('fundraisers')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('title');
             $table->string('slug');
             $table->text('description');
