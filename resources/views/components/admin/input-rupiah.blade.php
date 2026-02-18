@@ -31,7 +31,7 @@
 
         // Watch for changes from Livewire to update AutoNumeric
         this.$watch('value', (newValue) => {
-            if (newValue !== this.instance.getRawValue()) {
+            if (this.instance && newValue !== this.instance.getNumericString()) {
                 this.instance.set(newValue);
             }
         });
