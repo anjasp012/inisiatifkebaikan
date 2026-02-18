@@ -19,8 +19,8 @@
         <span>Report</span>
     </a>
 
-    <a href="{{ Auth::check() ? route('account.index') : route('login') }}" wire:navigate wire:current="active"
-        class="nav-item">
+    <a href="{{ Auth::check() ? (Auth::user()->role === 'admin' ? route('admin.dashboard') : route('account.index')) : route('login') }}"
+        wire:navigate wire:current="active" class="nav-item">
         <i
             class="bi {{ request()->routeIs('account.index') || request()->routeIs('login') ? 'bi-person-fill' : 'bi-person' }}"></i>
         <span>{{ Auth::check() ? 'Akun' : 'Masuk' }}</span>
