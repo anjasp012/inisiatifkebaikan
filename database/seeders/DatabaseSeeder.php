@@ -107,7 +107,7 @@ class DatabaseSeeder extends Seeder
     {
         // Admin
         $admin = User::firstOrCreate(
-            ['email' => 'admin@inisiatif.com'],
+            ['email' => 'admin@inisiatifkebaikan.org'],
             ['name' => 'Admin Inisiatif', 'password' => Hash::make('password'), 'role' => 'admin', 'user_verified_at' => now(), 'phone' => '628111111111']
         );
 
@@ -116,7 +116,7 @@ class DatabaseSeeder extends Seeder
         $fundraisers = [];
         foreach ($fundraiserNames as $i => $name) {
             $fundraisers[] = User::firstOrCreate(
-                ['email' => 'fundraiser' . ($i + 1) . '@inisiatif.com'],
+                ['email' => 'fundraiser' . ($i + 1) . '@inisiatifkebaikan.org'],
                 ['name' => $name, 'password' => Hash::make('password'), 'role' => 'fundraiser', 'user_verified_at' => now(), 'phone' => '6282222222' . ($i + 1)]
             );
         }
