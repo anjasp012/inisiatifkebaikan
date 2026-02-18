@@ -1,6 +1,7 @@
 <?php
 
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -8,7 +9,7 @@ use App\Models\Campaign;
 use App\Models\Withdrawal;
 use App\Models\Donation;
 
-new #[Layout('layouts.admin')] class extends Component {
+new #[Layout('layouts.admin')] #[Title('Tambah Pencairan')] class extends Component {
     use WithFileUploads;
 
     public $campaign_id = '';
@@ -57,18 +58,18 @@ new #[Layout('layouts.admin')] class extends Component {
 
     public function calculateFees()
     {
-        // Simple fee defaults based on percentages if needed, or keep manual.
-        // For 'tambah', usually admin inputs the requested amount.
-        // Platform fee logic: 5% of amount
         if ($this->amount) {
-            $amountVal = (float) ($this->amount ?: 0); // Assuming amount is already numeric or handled by input-rupiah
-            // handle if input-rupiah passes raw string, though autoNumeric usually handles value.
-            // Actually input-rupiah binds to model differently. Let's assume raw value.
-            // If using x-admin.input-rupiah with defer, it might be string.
+            $amountVal = (float) $this->amount;
+            $this->platform_fee = $amountVal * 0.05;
 
-            // Let's rely on computed for final Net, but here we can pre-fill fees.
-            // $this->platform_fee = $amountVal * 0.05;
-            // $this->optimization_fee = ...
+            if ($this->selectedCampaign && $this->selectedCampaign->is_optimized) {
+                $this->optimization_fee = $amountVal * 0.15;
+            } else {
+                $this->optimization_fee = 0;
+            }
+        } else {
+            $this->platform_fee = 0;
+            $this->optimization_fee = 0;
         }
     }
 
@@ -261,12 +262,8 @@ is-invalid
                                     <textarea wire:model="notes" class="form-control" rows="3" placeholder="Catatan internal..."></textarea>
                                 </div>
                                 <div class="col-md-12">
-                                    <label class="form-label small fw-bold text-uppercase">Bukti Transfer
-                                        (Opsional)</label>
-                                    <input type="file" wire:model="proof_image" class="form-control">
-                                    @error('proof_image')
-                                        <div class="text-danger small mt-1">{{ $message }}</div>
-                                    @enderror
+                                    <x-admin.file-upload model="proof_image" label="Bukti Transfer (Opsional)"
+                                        :preview="$proof_image ? $proof_image->temporaryUrl() : null" />
                                 </div>
                             </div>
 
