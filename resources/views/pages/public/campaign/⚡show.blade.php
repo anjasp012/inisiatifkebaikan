@@ -176,7 +176,7 @@ new class extends Component {
     <section class="detail-content-section">
         <div class="container-fluid">
             @if ($activeTab === 'cerita')
-                <div class="detail-content__story">
+                <div class="detail-content__story ck-content">
                     {!! $campaign->description !!}
                 </div>
             @elseif ($activeTab === 'update')
@@ -222,7 +222,7 @@ new class extends Component {
                             {{-- Body --}}
                             <div x-show="open" x-collapse class="border-top border-light bg-light bg-opacity-10">
                                 <div class="card-body p-3 p-md-4">
-                                    <div class="text-dark mb-3" style="font-size: 14px; line-height: 1.6;">
+                                    <div class="text-dark mb-3 ck-content" style="font-size: 14px; line-height: 1.6;">
                                         {!! $update->content !!}
                                     </div>
 
