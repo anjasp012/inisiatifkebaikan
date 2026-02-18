@@ -3,7 +3,7 @@
 <div wire:ignore x-data="{
     value: @entangle($model),
     init() {
-        ClassicEditor
+        CKEDITOR.ClassicEditor
             .create($refs.editor, {
                 toolbar: [
                     'heading', '|',
@@ -20,6 +20,42 @@
                         { model: 'heading5', view: 'h5', title: 'H5', class: 'ck-heading_heading5' },
                         { model: 'heading6', view: 'h6', title: 'H6', class: 'ck-heading_heading6' }
                     ]
+                },
+                image: {
+                    toolbar: [
+                        'imageStyle:alignLeft',
+                        'imageStyle:alignCenter',
+                        'imageStyle:alignRight',
+                        '|',
+                        'toggleImageCaption',
+                        'imageTextAlternative',
+                        '|',
+                        'resizeImage:original',
+                        'resizeImage:25',
+                        'resizeImage:50',
+                        'resizeImage:75'
+                    ],
+                    resizeOptions: [{
+                            name: 'resizeImage:original',
+                            label: 'Original',
+                            value: null
+                        },
+                        {
+                            name: 'resizeImage:25',
+                            label: '25%',
+                            value: '25'
+                        },
+                        {
+                            name: 'resizeImage:50',
+                            label: '50%',
+                            value: '50'
+                        },
+                        {
+                            name: 'resizeImage:75',
+                            label: '75%',
+                            value: '75'
+                        }
+                    ],
                 }
             })
             .then(editor => {
