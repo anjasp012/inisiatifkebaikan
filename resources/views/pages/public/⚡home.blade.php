@@ -117,7 +117,7 @@ new class extends Component {
                                     {{ $campaign->category->name }}
                                 </div>
                                 <h1>{{ $campaign->title }}</h1>
-                                <p>{{ $campaign->description }}</p>
+                                {{-- <p>{{ $campaign->description }}</p> --}}
                                 <div class="d-flex gap-4 align-items-center">
                                     <a href="{{ route('campaign.show', $campaign->slug) }}" wire:navigate
                                         class="btn btn-sm btn-primary text-nowrap py-2 px-4 rounded-pill fw-semibold">Donasi
