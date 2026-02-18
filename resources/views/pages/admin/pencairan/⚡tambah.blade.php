@@ -246,12 +246,12 @@ is-invalid
                                         diklaim</div>
                                 </div>
                                 <div class="col-md-6">
-                                    <x-admin.input-rupiah model="platform_fee" label="Fee Platform (5%)"
-                                        placeholder="0" />
+                                    <x-admin.input-rupiah model="platform_fee" label="Fee Platform (5%)" placeholder="0"
+                                        readonly />
                                 </div>
                                 <div class="col-md-6">
                                     <x-admin.input-rupiah model="optimization_fee" label="Fee Optimasi (15%)"
-                                        placeholder="0" />
+                                        placeholder="0" readonly />
                                 </div>
                             </div>
 
