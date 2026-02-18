@@ -62,6 +62,13 @@
         .ck-content {
             font-size: 0.95rem;
         }
+
+        .ck-content img {
+            max-width: 100%;
+            height: auto !important;
+            aspect-ratio: auto !important;
+            object-fit: contain;
+        }
     </style>
 
     <!-- Styles / Scripts -->

@@ -14,6 +14,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
+
+    <style>
+        .ck-content img {
+            max-width: 100%;
+            height: auto !important;
+            aspect-ratio: auto !important;
+            object-fit: contain;
+        }
+
+        /* Responsive images for campaign descriptions, articles, etc. */
+        .campaign-description img,
+        .distribution-content img,
+        .article-content img {
+            max-width: 100%;
+            height: auto !important;
+        }
+    </style>
 </head>
 
 <body class="app-layout">
