@@ -12,6 +12,7 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
 
     public Donation $donation;
     public $editAmount;
+    public $editMerchantFee;
     public $newProofs = [];
 
     public function updatedNewProofs()
@@ -42,14 +43,14 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
     {
         $this->donation = $donation;
         $this->editAmount = $donation->amount;
+        $this->editMerchantFee = $donation->merchant_fee;
     }
 
     public function approve()
     {
         // Update amount if changed
-        if ($this->editAmount != $this->donation->amount) {
-            $this->donation->amount = $this->editAmount;
-        }
+        $this->donation->amount = $this->editAmount;
+        $this->donation->merchant_fee = $this->editMerchantFee;
 
         $this->donation->status = 'success';
         $this->donation->paid_at = now();
@@ -138,6 +139,12 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                                 <h6 class="text-uppercase text-muted extra-small fw-bold mb-2 ls-sm">NOMINAL DONASI</h6>
                                 <div class="display-6 fw-bold text-primary mb-3">
                                     Rp {{ number_format($donation->amount, 0, ',', '.') }}
+                                    @if ($donation->merchant_fee > 0)
+                                        <span class="ms-2 extra-small text-danger fw-normal"
+                                            style="font-size: 0.5em; vertical-align: middle;">
+                                            (Fee: -{{ number_format($donation->merchant_fee, 0, ',', '.') }})
+                                        </span>
+                                    @endif
                                 </div>
                                 <div class="d-flex gap-2 mb-3">
                                     @if ($donation->status == 'success')
@@ -354,20 +361,29 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                             diunggah donatur.</p>
 
                         <div class="bg-light p-3 rounded-3 text-dark mb-4 border">
-                            <label class="form-label fw-bold small text-primary mb-2">SESUAIKAN NOMINAL
-                                (OPSIONAL)</label>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold small text-primary mb-2">SESUAIKAN NOMINAL</label>
+                                <div class="input-group border rounded-3 overflow-hidden">
+                                    <span
+                                        class="input-group-text bg-white border-0 extra-small fw-bold text-muted">Rp</span>
+                                    <input type="number" wire:model="editAmount"
+                                        class="form-control border-0 bg-white fw-bold text-primary"
+                                        placeholder="Gross amount...">
+                                </div>
+                            </div>
 
-
-
-                            <div class="input-group border rounded-3 overflow-hidden">
-                                <span
-                                    class="input-group-text bg-white border-0 extra-small fw-bold text-muted">Rp</span>
-                                <input type="number" wire:model="editAmount"
-                                    class="form-control border-0 bg-white fw-bold text-primary"
-                                    placeholder="Check bukti bayar...">
+                            <div>
+                                <label class="form-label fw-bold small text-danger mb-2">MERCHANT FEE (BIAYA)</label>
+                                <div class="input-group border rounded-3 overflow-hidden">
+                                    <span
+                                        class="input-group-text bg-white border-0 extra-small fw-bold text-muted">Rp</span>
+                                    <input type="number" wire:model="editMerchantFee"
+                                        class="form-control border-0 bg-white fw-bold text-danger"
+                                        placeholder="Admin/Bank fee...">
+                                </div>
                             </div>
                             <small class="text-muted mt-2 d-block extra-small">
-                                UIbah nominal jika jumlah yang ditransfer berbeda.
+                                Sesuaikan jika ada biaya admin bank atau gateway.
                             </small>
                         </div>
 

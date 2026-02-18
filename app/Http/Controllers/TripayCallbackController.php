@@ -64,7 +64,8 @@ class TripayCallbackController extends Controller
                     $donation->update([
                         'status'       => 'success',
                         'paid_at'      => now(),
-                        'payment_data' => json_encode($data) // Simpan data raw tripay jika perlu untk audit (pastikan kolom ada atau hapus baris ini)
+                        'merchant_fee' => $data->total_fee ?? 0,
+                        'payment_data' => json_encode($data)
                     ]);
 
                     // Tambah amount ke campaign collected_amount

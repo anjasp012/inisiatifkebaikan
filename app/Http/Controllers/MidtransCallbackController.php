@@ -68,11 +68,11 @@ class MidtransCallbackController extends Controller
                         if ($fraudStatus == 'challenge') {
                             $donation->update(['status' => 'pending']);
                         } else {
-                            $this->markAsSuccess($donation);
+                            $this->markAsSuccess($donation, $paymentType);
                         }
                     }
                 } else if ($transactionStatus == 'settlement') {
-                    $this->markAsSuccess($donation);
+                    $this->markAsSuccess($donation, $paymentType);
                 } else if ($transactionStatus == 'pending') {
                     $donation->update(['status' => 'pending']);
                 } else if ($transactionStatus == 'deny' || $transactionStatus == 'expire' || $transactionStatus == 'cancel') {
@@ -93,12 +93,20 @@ class MidtransCallbackController extends Controller
         }
     }
 
-    private function markAsSuccess($donation)
+    private function markAsSuccess($donation, $paymentType = null)
     {
         if ($donation->status !== 'success') {
+            $merchantFee = 0;
+
+            // Calculate 2% fee only for gopay
+            if ($paymentType === 'gopay') {
+                $merchantFee = $donation->amount * 0.02;
+            }
+
             $donation->update([
                 'status' => 'success',
                 'paid_at' => now(),
+                'merchant_fee' => $merchantFee,
             ]);
 
             if ($donation->campaign_id) {
