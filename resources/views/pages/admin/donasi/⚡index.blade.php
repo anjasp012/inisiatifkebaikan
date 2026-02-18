@@ -288,10 +288,6 @@ new #[Layout('layouts.admin')] #[Title('Daftar Donasi')] class extends Component
                                         class="btn btn-sm btn-info text-white" title="Lihat Detail">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $donation->donor_phone) }}"
-                                        target="_blank" class="btn btn-sm btn-success text-white" title="Hubungi WA">
-                                        <i class="bi bi-whatsapp"></i>
-                                    </a>
                                     <button wire:click="destroy({{ $donation->id }})"
                                         wire:confirm="Yakin ingin menghapus data donasi ini?"
                                         class="btn btn-sm btn-danger text-white" title="Hapus">
