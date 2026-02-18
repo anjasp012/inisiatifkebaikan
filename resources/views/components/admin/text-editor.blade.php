@@ -23,18 +23,14 @@
                 },
                 image: {
                     toolbar: [
-                        'imageStyle:alignLeft',
-                        'imageStyle:alignCenter',
-                        'imageStyle:alignRight',
+                        'imageStyle:inline',
+                        'imageStyle:block',
+                        'imageStyle:side',
                         '|',
                         'toggleImageCaption',
                         'imageTextAlternative',
                         '|',
-                        'resizeImage:original',
-                        'resizeImage:100',
-                        'resizeImage:75',
-                        'resizeImage:50',
-                        'resizeImage:25'
+                        'resizeImage'
                     ],
                     resizeOptions: [{
                             name: 'resizeImage:original',
