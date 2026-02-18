@@ -2,7 +2,7 @@
 
 @php
     $progress =
-        $campaign->@target_amount > 0 ? min(($campaign->collected_amount / $campaign->target_amount) * 100, 100) : 0;
+        @$campaign->target_amount > 0 ? min(($campaign->collected_amount / $campaign->target_amount) * 100, 100) : 0;
     $daysLeft = max(floor(now()->diffInDays($campaign->end_date, false)), 0);
     $donorCount = $campaign->donations()->where('status', 'success')->count();
 @endphp
