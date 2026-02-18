@@ -214,7 +214,7 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
                         <tr>
                             <td class="text-center">{{ $this->banks->firstItem() + $no }}</td>
                             <td>
-                                <img src="{{ $bank->logo_url }}" class="rounded border avatar-lg object-fit-cover"
+                                <img src="{{ $bank->logo_url }}" class="rounded border avatar-lg object-fit-contain"
                                     alt="{{ $bank->bank_name }}">
                             </td>
                             <td>

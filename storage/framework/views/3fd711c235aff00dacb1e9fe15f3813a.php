@@ -87,7 +87,7 @@ use Livewire\WithPagination;
                         <tr>
                             <td class="text-center"><?php echo e($this->banks->firstItem() + $no); ?></td>
                             <td>
-                                <img src="<?php echo e($bank->logo_url); ?>" class="rounded border avatar-lg object-fit-cover"
+                                <img src="<?php echo e($bank->logo_url); ?>" class="rounded border avatar-lg object-fit-contain"
                                     alt="<?php echo e($bank->bank_name); ?>">
                             </td>
                             <td>
