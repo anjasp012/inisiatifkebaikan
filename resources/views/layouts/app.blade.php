@@ -10,6 +10,45 @@
     {!! seo($seoData ?? null) !!}
     <link rel="shortcut icon" href="{{ asset('assets/images/logo-dashboard.png') }}" type="image/png">
 
+    <!-- Tom Select CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
+
+    <!-- CKEditor 5 Superbuild -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/super-build/ckeditor.js"></script>
+
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_orange.css">
+
+    <style>
+        :root {
+            --ck-primary-color: #dc5207;
+        }
+
+        .ck-editor__editable {
+            min-height: 200px;
+            border-radius: 0 0 12px 12px !important;
+            border: 0 !important;
+            background-color: #f8fafc !important;
+        }
+
+        .ck.ck-editor__top .ck-sticky-panel .ck-toolbar {
+            border-radius: 12px 12px 0 0 !important;
+            border: 0 !important;
+            border-bottom: 1px solid #e2e8f0 !important;
+            background-color: #f1f5f9 !important;
+        }
+
+        .ck.ck-editor__main>.ck-editor__editable.ck-focused {
+            background-color: #fff !important;
+            box-shadow: 0 0 0 4px rgba(220, 82, 7, 0.05) !important;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
@@ -25,6 +64,16 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+    <!-- Tom Select JS -->
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
+
+    <!-- AutoNumeric JS -->
+    <script src="https://cdn.jsdelivr.net/npm/autonumeric@4.8.1"></script>
 
     @stack('scripts')
 </body>

@@ -98,11 +98,11 @@ new class extends Component {
 };
 ?>
 
-<div class="bg-white min-vh-100">
+<div>
     <x-app.navbar-secondary route="{{ route('donation.amount', ['campaign' => $campaign->slug, 'amount' => $amount]) }}"
         title="Isi Data Diri" />
 
-    <section class="py-3">
+    <section class="donation-data-page py-4">
         <div class="container-fluid">
             {{-- Nominal Summary --}}
             <div class="card border-0 bg-light mb-4">

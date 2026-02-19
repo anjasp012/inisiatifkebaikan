@@ -345,17 +345,17 @@ new class extends Component {
                 <div class="col-6">
                     <h6 class="footer-heading">Tentang</h6>
                     <ul class="footer-links">
-                        <li><a href="#" wire:navigate>Tentang Kami</a></li>
-                        <li><a href="#" wire:navigate>Syarat & Ketentuan</a></li>
-                        <li><a href="#" wire:navigate>Kebijakan Privasi</a></li>
+                        <li><a href="{{ route('public.about') }}" wire:navigate>Tentang Kami</a></li>
+                        <li><a href="{{ route('public.terms') }}" wire:navigate>Syarat & Ketentuan</a></li>
+                        <li><a href="{{ route('public.privacy') }}" wire:navigate>Kebijakan Privasi</a></li>
                     </ul>
                 </div>
                 <div class="col-6">
                     <h6 class="footer-heading">Dukungan</h6>
                     <ul class="footer-links">
-                        <li><a href="#" wire:navigate>Pusat Bantuan</a></li>
-                        <li><a href="#" wire:navigate>Daftar Mitra</a></li>
-                        <li><a href="#" wire:navigate>Hubungi Kami</a></li>
+                        <li><a href="{{ route('public.help') }}" wire:navigate>Pusat Bantuan</a></li>
+                        <li><a href="{{ route('public.fundraiser') }}" wire:navigate>Daftar Mitra</a></li>
+                        <li><a href="{{ route('public.contact') }}" wire:navigate>Hubungi Kami</a></li>
                     </ul>
                 </div>
             </div>

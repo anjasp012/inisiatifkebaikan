@@ -15,6 +15,7 @@ new #[Layout('layouts.admin')] class extends Component {
     public function approve()
     {
         $this->fundraiser->update(['status' => 'approved']);
+        $this->fundraiser->user->update(['role' => 'fundraiser']);
 
         session()->flash('toast', [
             'type' => 'success',

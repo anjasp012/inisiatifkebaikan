@@ -3,6 +3,7 @@
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 new class extends Component {
     #[Rule('required|email')]
@@ -24,16 +25,16 @@ new class extends Component {
     {
         $this->validate();
 
-        if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
-            session()->regenerate();
+        $credentials = ['email' => $this->email, 'password' => $this->password];
 
-            if (!Auth::user()->user_verified_at) {
-                session()->put('otp_type', 'otp-login');
-                $this->redirect(route('verification'), navigate: true);
-                return;
-            }
+        if (Auth::validate($credentials)) {
+            $user = User::where('email', $this->email)->first();
 
-            $this->redirect(session()->pull('url.intended', route('home')), navigate: true);
+            session()->put('temp_user_id', $user->id);
+            session()->put('otp_type', 'otp-login');
+
+            $this->redirect(route('verification'), navigate: true);
+            return;
         }
 
         $this->addError('email', 'Email atau password salah.');
@@ -41,10 +42,10 @@ new class extends Component {
 };
 ?>
 
-<div class="bg-white min-vh-100 d-flex flex-column font-jakarta">
-    <section class="py-5 flex-grow-1 d-flex align-items-center">
-        <div class="container-fluid px-4">
-            <div class="text-center mb-5">
+<div class="min-vh-100 d-flex align-items-center justify-content-center flex-column">
+    <section class="login-page w-100">
+        <div class="container-fluid">
+            <div class="text-center">
                 <div class="mb-4 d-inline-block">
                     <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="h-auto object-fit-contain"
                         style="max-height: 48px;">

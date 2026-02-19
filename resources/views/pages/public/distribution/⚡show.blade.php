@@ -64,13 +64,18 @@ new class extends Component {
             </div>
 
             <div class="card border-0 p-4 mt-5 gradient-box-primary">
-                <h6 class="fw-bold text-primary mb-2">Terima Kasih Muhsinin!</h6>
-                <p class="small text-muted mb-4">Bantuan Anda telah sampai kepada yang berhak. Teruslah membersamai kami
-                    dalam menebar inisiatif kebaikan.</p>
-                <a href="{{ route('campaign.show', $distribution->campaign->slug) }}" wire:navigate
-                    class="btn btn-primary fw-bold rounded-pill w-100 py-2">
-                    Donasi Lagi <i class="bi bi-heart-fill ms-2" style="font-size: 10px;"></i>
-                </a>
+                <div class="text-center mb-3">
+                    <i class="bi bi-heart-fill text-primary display-4"></i>
+                </div>
+                <h6 class="fw-bold text-primary mb-2 text-center">Terima Kasih Muhsinin!</h6>
+                <p class="small text-muted mb-4 text-center">Bantuan Anda telah sampai kepada yang berhak. Teruslah
+                    membersamai kami dalam menebar inisiatif kebaikan.</p>
+                <div class="d-grid">
+                    <a href="{{ route('campaign.show', $distribution->campaign->slug) }}" wire:navigate
+                        class="btn btn-primary fw-bold rounded-pill py-2">
+                        Donasi Lagi
+                    </a>
+                </div>
             </div>
         </div>
     </section>

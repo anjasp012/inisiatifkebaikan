@@ -38,7 +38,7 @@ new class extends Component {
 <div>
     <x-app.navbar-secondary title="Laporan Penyaluran" />
 
-    <section class="distribution-list-section">
+    <section class="distribution-index-page">
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between mb-4">
                 <h2 class="section-title">Riwayat Penyaluran</h2>

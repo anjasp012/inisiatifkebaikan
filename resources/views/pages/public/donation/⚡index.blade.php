@@ -3,6 +3,7 @@
 use Livewire\Component;
 use App\Models\Donation;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
 
 use RalphJSmit\Laravel\SEO\Support\SEOData;

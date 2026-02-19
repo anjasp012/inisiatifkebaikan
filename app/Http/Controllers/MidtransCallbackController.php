@@ -97,10 +97,19 @@ class MidtransCallbackController extends Controller
     {
         if ($donation->status !== 'success') {
             $merchantFee = 0;
+            $amount = $donation->amount;
 
-            // Calculate 2% fee only for gopay
-            if ($paymentType === 'gopay') {
-                $merchantFee = $donation->amount * 0.02;
+            // Fee Calculation
+            if (in_array($paymentType, ['bank_transfer'])) {
+                $merchantFee = 4000;
+            } elseif ($paymentType === 'shopeepay') {
+                $merchantFee = $amount * 0.02;
+            } elseif ($paymentType === 'gopay') {
+                $merchantFee = $amount * 0.02;
+            } elseif ($paymentType === 'qris') {
+                $merchantFee = $amount * 0.007;
+            } elseif ($paymentType === 'dana') {
+                $merchantFee = $amount * 0.015;
             }
 
             $donation->update([

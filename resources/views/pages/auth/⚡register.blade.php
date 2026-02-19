@@ -33,7 +33,7 @@ new class extends Component {
             'role' => 'donatur',
         ]);
 
-        Auth::login($user);
+        session()->put('temp_user_id', $user->id);
 
         session()->put('otp_type', 'otp-register');
         $this->redirect(route('verification'), navigate: true);
@@ -41,9 +41,9 @@ new class extends Component {
 };
 ?>
 
-<div class="bg-white min-vh-100 d-flex flex-column font-jakarta text-dark">
-    <section class="py-5 flex-grow-1 d-flex align-items-center">
-        <div class="container-fluid px-4">
+<div class="min-vh-100 d-flex align-items-center justify-content-center flex-column">
+    <section class="register-page w-100">
+        <div class="container-fluid">
             <div class="text-center mb-5">
                 <div class="mb-4 d-inline-block">
                     <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="h-auto object-fit-contain"

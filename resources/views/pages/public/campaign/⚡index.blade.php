@@ -68,7 +68,7 @@ new class extends Component {
 <div class="bg-white min-vh-100">
     <x-app.navbar-main />
 
-    <section class="py-5">
+    <section class="campaign-index-page">
         <div class="container-fluid">
             <!-- Header & Filter -->
             <div class="row align-items-center mb-4 g-3">

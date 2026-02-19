@@ -91,7 +91,10 @@ new class extends Component {
             } elseif (Str::contains($bank->bank_code, '_va')) {
                 $params['payment_type'] = 'bank_transfer';
                 $params['bank_transfer'] = ['bank' => str_replace('_va', '', $bank->bank_code)];
-            } elseif (in_array($bank->bank_code, ['gopay', 'shopeepay', 'qris'])) {
+            } elseif (in_array($bank->bank_code, ['atm_bersama', 'alto', 'prima'])) {
+                // Network banks usually use Permata VA as aggregator
+                $params['payment_type'] = 'permata';
+            } elseif (in_array($bank->bank_code, ['gopay', 'shopeepay', 'qris', 'dana'])) {
                 $params['payment_type'] = $bank->bank_code;
             }
 
@@ -204,7 +207,7 @@ new class extends Component {
 };
 ?>
 
-<div class="bg-white min-vh-100"
+<div
     @donation-created.window="
         (function() {
             try {
@@ -222,8 +225,8 @@ new class extends Component {
         route="{{ route('donation.data', ['campaign' => $campaign->slug, 'amount' => $donationData['amount'] ?? 0]) }}"
         title="Pembayaran" />
 
-    <section class="py-3">
-        <div class="container-fluid px-3">
+    <section class="payment-page py-4">
+        <div class="container-fluid">
 
             <div class="card border-0 bg-lighter rounded-4 mb-4 border border-light">
                 <div class="card-body p-3 d-flex justify-content-between align-items-center">

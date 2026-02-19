@@ -13,8 +13,7 @@ Route::livewire('/donasi/{campaign:slug}/nominal', 'pages::public.donation.amoun
 Route::livewire('/donasi/{campaign:slug}/data', 'pages::public.donation.data')->name('donation.data');
 Route::livewire('/donasi/{campaign:slug}/pembayaran', 'pages::public.donation.payment')->name('donation.payment');
 Route::livewire('/donasi/instruksi/{transaction_id}', 'pages::public.donation.instruction')->name('donation.instruction');
-Route::livewire('/donasi/instruksi/{transaction_id}', 'pages::public.donation.instruction')->name('donation.instruction');
-Route::livewire('/donasi-saya', 'pages::public.donasi-saya.index')->name('donasi-saya');
+Route::livewire('/donasi', 'pages::public.donation.index')->name('donation.index');
 
 // Distribution Reports
 Route::livewire('/laporan', 'pages::public.distribution.index')->name('distribution.index');
@@ -37,6 +36,14 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::livewire('/verifikasi', 'pages::auth.verification')->name('verification');
+
+// Static Pages
+Route::livewire('/tentang-kami', 'pages::public.about.index')->name('public.about');
+Route::livewire('/syarat-ketentuan', 'pages::public.terms.index')->name('public.terms');
+Route::livewire('/kebijakan-privasi', 'pages::public.privacy.index')->name('public.privacy');
+Route::livewire('/pusat-bantuan', 'pages::public.help.index')->name('public.help');
+Route::livewire('/daftar-mitra', 'pages::public.fundraiser.index')->name('public.fundraiser');
+Route::livewire('/hubungi-kami', 'pages::public.contact.index')->name('public.contact');
 
 
 

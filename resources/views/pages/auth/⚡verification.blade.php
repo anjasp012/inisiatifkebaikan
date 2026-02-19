@@ -12,22 +12,27 @@ new #[Layout('layouts.app')] class extends Component {
 
     public function mount()
     {
-        if (!Auth::check()) {
-            $this->redirect(route('login'), navigate: true);
-            return;
-        }
+        $user = $this->getUser();
 
-        if (Auth::user()->user_verified_at) {
-            $this->redirect(route('home'), navigate: true);
+        if (!$user) {
+            $this->redirect(route('login'), navigate: true);
             return;
         }
 
         $this->ensureOtpSent();
     }
 
+    protected function getUser()
+    {
+        if (session()->has('temp_user_id')) {
+            return User::find(session('temp_user_id'));
+        }
+        return Auth::user();
+    }
+
     public function ensureOtpSent()
     {
-        $user = Auth::user();
+        $user = $this->getUser();
         if (!$user->otp_code || now()->greaterThan($user->otp_expires_at)) {
             $otp = rand(100000, 999999);
             $user->update([
@@ -41,7 +46,7 @@ new #[Layout('layouts.app')] class extends Component {
 
     public function resend()
     {
-        $user = Auth::user();
+        $user = $this->getUser();
         $otp = rand(100000, 999999);
         $user->update([
             'otp_code' => $otp,
@@ -55,10 +60,9 @@ new #[Layout('layouts.app')] class extends Component {
     {
         $this->validate();
 
-        /** @var User */
-        $user = Auth::user();
+        $user = $this->getUser();
 
-        // Ensure user is authenticated
+        // Ensure user exists
         if (!$user) {
             $this->redirect(route('login'), navigate: true);
             return;
@@ -74,7 +78,14 @@ new #[Layout('layouts.app')] class extends Component {
                 $user->otp_expires_at = null;
                 $user->save();
 
-                $this->redirect(route('home'), navigate: true);
+                // Login the user strictly after OTP
+                Auth::login($user);
+                session()->forget('temp_user_id');
+                session()->regenerate();
+
+                // Check for intended URL
+                $intended = session()->pull('url.intended', route('home'));
+                $this->redirect($intended, navigate: true);
             } else {
                 $this->addError('otp', 'Kode OTP sudah kadaluarsa. Silakan minta kirim ulang.');
                 return;
@@ -87,10 +98,10 @@ new #[Layout('layouts.app')] class extends Component {
 };
 ?>
 
-<div class="bg-white min-vh-100 d-flex flex-column font-jakarta text-dark">
-    <section class="py-5 flex-grow-1 d-flex align-items-center">
-        <div class="container-fluid px-4">
-            <div class="text-center mb-5">
+<div class="min-vh-100 d-flex align-items-center justify-content-center flex-column">
+    <section class="verification-page w-100">
+        <div class="container-fluid">
+            <div class="text-center">
                 <div class="mb-4 d-inline-block">
                     <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="h-auto object-fit-contain"
                         style="max-height: 48px;">
@@ -99,7 +110,7 @@ new #[Layout('layouts.app')] class extends Component {
                 <p class="text-muted small">Masukkan kode OTP yang dikirim ke WhatsApp Anda.</p>
             </div>
 
-            <form wire:submit.prevent="verify" class="mt-4 mx-auto" style="max-width: 400px;">
+            <form wire:submit.prevent="verify" class="mt-4 mx-auto">
                 @if (session()->has('success'))
                     <div class="alert alert-success small mb-4 border-0 bg-success bg-opacity-10 text-success">
                         <i class="bi bi-check-circle me-1"></i> {{ session('success') }}
@@ -139,7 +150,13 @@ new #[Layout('layouts.app')] class extends Component {
             </form>
 
             <div class="text-center mt-5">
-                <livewire:auth.logout />
+                <button type="button" x-on:click="$dispatch('doLogout')"
+                    class="btn btn-link text-muted text-decoration-none p-0 border-0 bg-transparent">
+                    <i class="bi bi-box-arrow-left me-1"></i> Logout
+                </button>
+                <div class="d-none">
+                    <livewire:auth.logout />
+                </div>
             </div>
         </div>
     </section>

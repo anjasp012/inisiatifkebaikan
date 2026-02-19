@@ -102,16 +102,23 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
             $this->dispatch('toast', type: 'error', message: 'Server Key Midtrans belum diatur di Pengaturan ❌');
             return;
         }
-
         $channels = [
-            // ['code' => 'bca_va', 'name' => 'BCA Virtual Account', 'logo' => 'https://static.midtrans.com/v2/payment-methods/bca.png', 'method' => 'va'],
-            // ['code' => 'bni_va', 'name' => 'BNI Virtual Account', 'logo' => 'https://static.midtrans.com/v2/payment-methods/bni.png', 'method' => 'va'],
-            // ['code' => 'bri_va', 'name' => 'BRI Virtual Account', 'logo' => 'https://static.midtrans.com/v2/payment-methods/bri.png', 'method' => 'va'],
-            // ['code' => 'mandiri_va', 'name' => 'Mandiri Virtual Account', 'logo' => 'https://static.midtrans.com/v2/payment-methods/mandiri.png', 'method' => 'va'],
-            // ['code' => 'permata_va', 'name' => 'Permata Virtual Account', 'logo' => 'https://static.midtrans.com/v2/payment-methods/permata.png', 'method' => 'va'],
-            ['code' => 'gopay', 'name' => 'Gopay', 'logo' => 'https://midtrans-website.al-mp-id-p.cdn.gtflabs.io/uploads/2020/09/5038aa2e01be0c79443496e8b6112010_718692dca7079b31a47f68e149c81aff_compressed.png', 'method' => 'ewallet'],
-            // ['code' => 'shopeepay', 'name' => 'ShopeePay', 'logo' => 'https://static.midtrans.com/v2/payment-methods/shopeepay.png', 'method' => 'ewallet'],
-            // ['code' => 'qris', 'name' => 'QRIS', 'logo' => 'https://static.midtrans.com/v2/payment-methods/qris.png', 'method' => 'qris'],
+            ['code' => 'bca_va', 'name' => 'BCA Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bca.png', 'method' => 'va'],
+            ['code' => 'bni_va', 'name' => 'BNI Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bni.png', 'method' => 'va'],
+            ['code' => 'bri_va', 'name' => 'BRI Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bri.png', 'method' => 'va'],
+            ['code' => 'mandiri_va', 'name' => 'Mandiri Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/mandiri.png', 'method' => 'va'],
+            ['code' => 'permata_va', 'name' => 'Permata Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/permata.png', 'method' => 'va'],
+            ['code' => 'cimb_va', 'name' => 'CIMB Niaga Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/cimb.png', 'method' => 'va'],
+            ['code' => 'danamon_va', 'name' => 'Danamon Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/danamon.png', 'method' => 'va'],
+            ['code' => 'bsi_va', 'name' => 'BSI Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bsi.png', 'method' => 'va'],
+            ['code' => 'atm_bersama', 'name' => 'ATM Bersama', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/atm/atm-bersama.png', 'method' => 'va'],
+            ['code' => 'alto', 'name' => 'ALTO', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/atm/alto.png', 'method' => 'va'],
+            ['code' => 'prima', 'name' => 'Prima', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/atm/prima.png', 'method' => 'va'],
+
+            ['code' => 'gopay', 'name' => 'Gopay', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/ewallet/gopay.png', 'method' => 'ewallet'],
+            ['code' => 'shopeepay', 'name' => 'ShopeePay', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/ewallet/shopeepay.png', 'method' => 'ewallet'],
+            ['code' => 'dana', 'name' => 'Dana', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/ewallet/dana.png', 'method' => 'ewallet'],
+            ['code' => 'qris', 'name' => 'QRIS', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/qris/qris.png', 'method' => 'qris'],
         ];
 
         try {
