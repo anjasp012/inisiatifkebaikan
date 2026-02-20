@@ -310,4 +310,20 @@ new class extends Component {
             </div>
         </div>
     </section>
+
+    @push('scripts')
+        <script>
+            fbq('track', 'Purchase', {
+                value: {{ $donation->amount }},
+                currency: 'IDR'
+            });
+
+            @if (session('success_upload'))
+                fbq('track', 'Donate', {
+                    value: {{ $donation->amount }},
+                    currency: 'IDR'
+                });
+            @endif
+        </script>
+    @endpush
 </div>

@@ -11,6 +11,7 @@ new #[Layout('layouts.app')] class extends Component {
 
     // Form fields
     public $foundation_name = '';
+    public $about = '';
     public $legal_doc;
     public $notary_doc;
     public $tax_id;
@@ -39,6 +40,7 @@ new #[Layout('layouts.app')] class extends Component {
         if ($this->step == 1) {
             $this->validate([
                 'foundation_name' => 'required|string|max:255',
+                'about' => 'required|string|min:50',
                 'office_address' => 'required|string',
                 'logo_image' => 'required|image|max:2048',
                 'office_image' => 'required|image|max:2048',
@@ -78,15 +80,17 @@ new #[Layout('layouts.app')] class extends Component {
         Fundraiser::create([
             'user_id' => Auth::id(),
             'foundation_name' => $this->foundation_name,
-            'sk_kumham' => $legalPath,
-            'akta_notaris' => $notaryPath,
-            'npwp' => $taxPath,
+            'slug' => \Illuminate\Support\Str::slug($this->foundation_name) . '-' . rand(100, 999),
+            'about' => $this->about,
+            'legal_doc' => $legalPath,
+            'notary_doc' => $notaryPath,
+            'tax_id' => $taxPath,
             'bank_name' => $this->bank_name,
             'bank_account_name' => $this->bank_account_name,
             'bank_account_number' => $this->bank_account_number,
             'office_address' => $this->office_address,
-            'office_photo' => $officePath,
-            'logo' => $logoPath,
+            'office_image' => $officePath,
+            'logo_image' => $logoPath,
             'status' => 'pending',
         ]);
 
@@ -135,8 +139,18 @@ new #[Layout('layouts.app')] class extends Component {
 
                     <div class="mb-3">
                         <label class="form-label small fw-bold text-dark">Alamat Kantor</label>
-                        <textarea class="form-control" wire:model="office_address" rows="3" placeholder="Alamat lengkap kantor pusat"></textarea>
+                        <textarea class="form-control" wire:model="office_address" rows="2" placeholder="Alamat lengkap kantor pusat"></textarea>
                         @error('office_address')
+                            <span class="text-danger extra-small mt-1 d-block fw-medium">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-bold text-dark">Tentang Penggalang</label>
+                        <textarea class="form-control" wire:model="about" rows="4"
+                            placeholder="Ceritakan profil singkat yayasan/organisasi Anda..."></textarea>
+                        <div class="extra-small text-muted mt-1">Minimal 50 karakter.</div>
+                        @error('about')
                             <span class="text-danger extra-small mt-1 d-block fw-medium">{{ $message }}</span>
                         @enderror
                     </div>

@@ -27,6 +27,12 @@ new #[Layout('layouts.app')] class extends Component {
             return;
         }
     }
+
+    #[Livewire\Attributes\Computed]
+    public function recentDonations()
+    {
+        return $this->campaign->donations()->where('status', 'success')->latest()->limit(20)->get();
+    }
 }; ?>
 
 <div>
@@ -159,6 +165,36 @@ new #[Layout('layouts.app')] class extends Component {
             </div>
 
 
+
+            {{-- Recent Donations --}}
+            <div class="mb-4">
+                <h6 class="fw-bold text-dark mb-3 small text-uppercase ls-sm">Donatur Terbaru</h6>
+                <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+                    @forelse($this->recentDonations as $donation)
+                        <div class="p-3 border-bottom d-flex align-items-center gap-3">
+                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width: 40px; height: 40px;">
+                                <i class="bi bi-person-heart text-danger"></i>
+                            </div>
+                            <div class="flex-grow-1 overflow-hidden">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="fw-bold extra-small mb-1 text-dark">
+                                        {{ $donation->is_anonymous ? 'Hamba Allah' : $donation->donor_name }}</h6>
+                                    <span
+                                        class="fw-bold text-success small">+{{ number_format($donation->amount, 0, ',', '.') }}</span>
+                                </div>
+                                <small
+                                    class="text-muted extra-small opacity-50">{{ $donation->created_at->diffForHumans() }}</small>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="p-4 text-center">
+                            <i class="bi bi-emoji-frown text-muted fs-2 mb-2 opacity-25"></i>
+                            <p class="text-muted small mb-0">Belum ada donatur.</p>
+                        </div>
+                    @endforelse
+                </div>
+            </div>
 
             {{-- Share Card --}}
             <div class="card border-0 shadow-soft rounded-3 overflow-hidden bg-primary text-white">

@@ -73,7 +73,8 @@ new class extends Component {
                 <div class="mb-4">
                     <div class="d-flex justify-content-between align-items-center mb-2">
                         <label class="form-label fw-bold small text-muted text-uppercase ls-1 mb-0">Password</label>
-                        <a href="#" class="text-decoration-none extra-small fw-bold text-primary">Lupa
+                        <a href="{{ route('password.request') }}" wire:navigate
+                            class="text-decoration-none extra-small fw-bold text-primary">Lupa
                             Password?</a>
                     </div>
                     <div class="input-group bg-light rounded-3 overflow-hidden border-0">

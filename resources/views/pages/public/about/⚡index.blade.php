@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\View;
 new #[Layout('layouts.app')] class extends Component {
     public function mount()
     {
-        $seoData = new SEOData(title: 'Tentang Kami | Inisiatif Kebaikan', description: 'Mengenal lebih dekat Inisiatif Kebaikan.');
+        $seoData = new SEOData(title: 'Tentang Kami | ' . \App\Models\Setting::get('website_name', 'Inisiatif Kebaikan'), description: 'Mengenal lebih dekat ' . \App\Models\Setting::get('website_name', 'Inisiatif Kebaikan') . '.');
         View::share('seoData', $seoData);
     }
 };
@@ -20,9 +20,11 @@ new #[Layout('layouts.app')] class extends Component {
     <section class="about-section">
         <div class="container-fluid">
             <div class="bg-white rounded-3 p-4 shadow-sm border-0">
-                <h5 class="fw-bold mb-3">Tentang Inisiatif Kebaikan</h5>
+                <h5 class="fw-bold mb-3">Tentang {{ \App\Models\Setting::get('website_name', 'Inisiatif Kebaikan') }}
+                </h5>
                 <p class="text-muted mb-3">
-                    Inisiatif Kebaikan adalah platform gotong royong digital yang menghubungkan jutaan orang baik untuk
+                    {{ \App\Models\Setting::get('website_name', 'Inisiatif Kebaikan') }} adalah platform gotong royong
+                    digital yang menghubungkan jutaan orang baik untuk
                     saling membantu sesama. Kami percaya bahwa setiap inisiatif kecil dapat membawa perubahan besar bagi
                     mereka yang membutuhkan.
                 </p>

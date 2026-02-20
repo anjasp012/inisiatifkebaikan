@@ -5,6 +5,8 @@ use Livewire\Attributes\Layout;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DonaturExport;
 
 new #[Layout('layouts.admin')] class extends Component {
     use WithPagination;
@@ -13,6 +15,21 @@ new #[Layout('layouts.admin')] class extends Component {
     public $search;
 
     protected $queryString = ['search'];
+
+    public function export()
+    {
+        return Excel::download(new DonaturExport($this->search), 'data_donatur_' . date('Ymd_His') . '.xlsx');
+    }
+
+    public function destroy(int $id)
+    {
+        $user = User::where('role', 'donatur')->findOrFail($id);
+
+        // Let SQL cascading handle donations/etc if configured, otherwise simple delete
+        $user->delete();
+
+        $this->dispatch('toast', type: 'success', message: 'User berhasil dihapus ✅');
+    }
 
     #[Computed]
     public function users()
@@ -52,6 +69,9 @@ new #[Layout('layouts.admin')] class extends Component {
                 </div>
 
                 <div class="d-flex flex-wrap align-items-center gap-2">
+                    <button wire:click="export" class="btn btn-success text-white" title="Export Excel">
+                        <i class="bi bi-download me-1"></i> Export
+                    </button>
                     <div class="position-relative">
                         <input type="text" class="form-control ps-5 w-250" placeholder="Cari donatur..."
                             wire:model.live.debounce.250ms="search">
@@ -70,9 +90,9 @@ new #[Layout('layouts.admin')] class extends Component {
                         <th class="text-center">STATUS</th>
                         <th class="text-center">TOTAL DONASI</th>
                         <th class="text-center">JUMLAH TRANSAKSI</th>
+                        <th class="text-end pe-3">AKSI</th>
                     </tr>
                 </thead>
-                <tbody>
                 <tbody>
                     @foreach ($this->users as $no => $item)
                         <tr>
@@ -114,6 +134,12 @@ new #[Layout('layouts.admin')] class extends Component {
                                 <span class="badge bg-light text-dark border px-2 py-1">
                                     {{ number_format($item->donations_count) }} Kali
                                 </span>
+                            </td>
+                            <td class="text-end pe-3">
+                                <button wire:click="destroy({{ $item->id }})"
+                                    wire:confirm="Anda yakin menghapus user ini beserta data seluruhnya?"
+                                    class="btn btn-sm btn-danger text-white" title="Hapus"><i
+                                        class="bi bi-trash"></i></button>
                             </td>
                         </tr>
                     @endforeach

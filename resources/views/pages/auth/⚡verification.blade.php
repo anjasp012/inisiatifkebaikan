@@ -78,6 +78,12 @@ new #[Layout('layouts.app')] class extends Component {
                 $user->otp_expires_at = null;
                 $user->save();
 
+                if (session('otp_type') === 'otp-reset') {
+                    session()->put('can_reset_password', $user->id);
+                    $this->redirect(route('password.reset'), navigate: true);
+                    return;
+                }
+
                 // Login the user strictly after OTP
                 Auth::login($user);
                 session()->forget('temp_user_id');

@@ -21,8 +21,8 @@ new #[Layout('layouts.admin')] #[Title('Tambah Program')] class extends Componen
 
     public bool $is_emergency = false;
     public bool $is_priority = false;
-
     public bool $is_optimized = false;
+    public bool $is_inisiatif = false;
 
     public $categories = [];
 
@@ -71,8 +71,8 @@ new #[Layout('layouts.admin')] #[Title('Tambah Program')] class extends Componen
             'end_date' => $this->end_date,
             'is_emergency' => $this->is_emergency,
             'is_priority' => $this->is_priority,
-
             'is_optimized' => $this->is_optimized,
+            'is_inisiatif' => $this->is_inisiatif,
             'collected_amount' => 0,
         ]);
 
@@ -187,12 +187,19 @@ new #[Layout('layouts.admin')] #[Title('Tambah Program')] class extends Componen
                                     </label>
                                 </div>
 
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" wire:model="is_inisiatif"
+                                        id="is_inisiatif">
+                                    <label class="form-check-label fw-semibold text-success" for="is_inisiatif">
+                                        Program Inisiatif Pilihan
+                                    </label>
+                                </div>
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" wire:model="is_optimized"
                                         id="is_optimized">
                                     <label class="form-check-label fw-semibold text-primary" for="is_optimized">
-                                        Optimasi Iklan (Fee 15%)
+                                        Program Kebaikan (Optimasi)
                                     </label>
                                 </div>
                             </div>

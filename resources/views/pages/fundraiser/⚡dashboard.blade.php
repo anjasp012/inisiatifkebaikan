@@ -48,7 +48,7 @@ new #[Layout('layouts.app')] class extends Component {
         $this->totalAmount = Donation::whereIn('campaign_id', $campaignIds)->where('status', 'success')->sum('amount');
 
         // Recent donations
-        $this->recentDonations = Donation::whereIn('campaign_id', $campaignIds)->with('campaign')->where('status', 'success')->latest()->limit(5)->get();
+        $this->recentDonations = Donation::whereIn('campaign_id', $campaignIds)->with('campaign')->where('status', 'success')->latest()->limit(20)->get();
     }
 }; ?>
 
@@ -107,7 +107,7 @@ new #[Layout('layouts.app')] class extends Component {
         </div>
     </div>
 
-    <div class="container-fluid pt-2">
+    <div class="container-fluid">
         {{-- Status Alert --}}
         @if ($fundraiser->status !== 'approved')
             <div
@@ -173,9 +173,7 @@ new #[Layout('layouts.app')] class extends Component {
         {{-- Recent Donations Section --}}
         <div class="mb-4">
             <div class="d-flex justify-content-between align-items-center mb-3 ps-1">
-                <h6 class="fw-bold text-dark mb-0 small text-uppercase ls-sm">Donasi Masuk</h6>
-                <a href="#" class="text-primary text-decoration-none extra-small fw-bold">Lihat Semua <i
-                        class="bi bi-arrow-right ms-1"></i></a>
+                <h6 class="fw-bold text-dark mb-0 small text-uppercase ls-sm">Donasi Masuk Terbaru</h6>
             </div>
 
             <div class="card border-0 shadow-sm rounded-3 overflow-hidden mb-5">

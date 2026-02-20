@@ -77,6 +77,10 @@
             <i class="bi bi-newspaper"></i>
             Manajemen Artikel
         </x-admin.sidebar-item>
+        <x-admin.sidebar-item href="{{ route('admin.page') }}">
+            <i class="bi bi-file-earmark-text"></i>
+            Manajemen Halaman
+        </x-admin.sidebar-item>
         <x-admin.sidebar-item href="{{ route('admin.settings') }}">
             <i class="bi bi-gear"></i>
             Pengaturan

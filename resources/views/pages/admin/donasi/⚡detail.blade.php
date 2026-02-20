@@ -273,9 +273,9 @@ new #[Layout('layouts.admin')] #[Title('Detail Donasi')] class extends Component
                                         </div>
                                     </div>
                                     <div class="d-grid">
-                                        <a href="{{ route('admin.campaign.ubah', $donation->campaign_id) }}"
+                                        <a href="{{ route('admin.campaign.detail', $donation->campaign->slug) }}"
                                             wire:navigate class="btn btn-outline-primary btn-sm">
-                                            Lihat Campaign <i class="bi bi-box-arrow-up-right ms-1"></i>
+                                            Detail Campaign <i class="bi bi-box-arrow-up-right ms-1"></i>
                                         </a>
                                     </div>
                                 </div>

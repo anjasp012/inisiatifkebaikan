@@ -162,7 +162,7 @@ new #[Layout('layouts.app')] class extends Component {
 
             <div class="text-center text-muted small my-4">
                 <p class="mb-0">Versi Aplikasi 1.0.0</p>
-                <p>&copy; {{ date('Y') }} Wahdah Inisiatif Kebaikan</p>
+                <p>&copy; {{ date('Y') }} {{ \App\Models\Setting::get('website_name', 'Inisiatif Kebaikan') }}</p>
             </div>
         </div>
     </section>

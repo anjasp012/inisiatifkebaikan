@@ -47,42 +47,7 @@ new #[Layout('layouts.admin')] #[Title('Daftar Donasi')] class extends Component
 
     public function export()
     {
-        $donations = Donation::with('campaign')
-            ->when($this->search, function ($query) {
-                $query->where(function ($q) {
-                    $q->where('donor_name', 'like', '%' . $this->search . '%')
-                        ->orWhere('transaction_id', 'like', '%' . $this->search . '%')
-                        ->orWhere('donor_phone', 'like', '%' . $this->search . '%');
-                });
-            })
-            ->when($this->status !== 'all', function ($query) {
-                $query->where('status', $this->status);
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        $headers = [
-            'Content-type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename=donasi-export-' . now()->format('YmdHis') . '.csv',
-            'Pragma' => 'no-cache',
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires' => '0',
-        ];
-
-        $callback = function () use ($donations) {
-            $file = fopen('php://output', 'w');
-            fputcsv($file, ['ID Transaksi', 'Nama Donatur', 'No WA', 'Campaign', 'Nominal', 'Metode', 'Status', 'Tanggal']);
-
-            foreach ($donations as $row) {
-                $method = $row->bank ? $row->bank->bank_name : str_replace('_', ' ', $row->payment_method);
-                $channel = $row->bank ? $row->bank->type : $row->payment_channel;
-                fputcsv($file, [$row->transaction_id, $row->donor_name, $row->donor_phone, $row->campaign->title ?? '-', $row->amount, $method . ($channel ? ' (' . $channel . ')' : ''), $row->status, $row->created_at->format('Y-m-d H:i:s')]);
-            }
-
-            fclose($file);
-        };
-
-        return response()->stream($callback, 200, $headers);
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\DonasiExport($this->search, $this->status), 'data_donasi_' . date('Ymd_His') . '.xlsx');
     }
 };
 
@@ -158,7 +123,7 @@ new #[Layout('layouts.admin')] #[Title('Daftar Donasi')] class extends Component
                         <a href="{{ route('admin.donasi.tambah') }}" wire:navigate class="btn btn-primary text-white">
                             <i class="bi bi-plus-lg me-1"></i> Donasi Manual
                         </a>
-                        <button wire:click="export" class="btn btn-outline-success">
+                        <button wire:click="export" class="btn btn-success text-white">
                             <i class="bi bi-download me-1"></i> Export
                         </button>
                     </div>

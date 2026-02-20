@@ -399,4 +399,11 @@ new class extends Component {
             </div>
         </div>
     </section>
+
+    @push('scripts')
+        <script>
+            fbq('track', 'AddPaymentInfo');
+            fbq('track', 'AddToCart');
+        </script>
+    @endpush
 </div>

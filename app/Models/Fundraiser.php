@@ -44,9 +44,4 @@ class Fundraiser extends Model
     {
         return $this->tax_id ? asset('storage/' . $this->tax_id) : null;
     }
-
-    public function getPermitDocUrlAttribute()
-    {
-        return $this->permit_doc ? asset('storage/' . $this->permit_doc) : null;
-    }
 }

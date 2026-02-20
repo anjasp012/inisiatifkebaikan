@@ -31,12 +31,10 @@ new #[Layout('layouts.admin')] #[Title('Update Program')] class extends Componen
         $this->dispatch('toast', type: 'success', message: 'Update berhasil dihapus ✅');
     }
 
-    public function render()
+    #[Computed]
+    public function updates()
     {
-        $updates = $this->campaign->updates()->paginate(10);
-        return view('pages.admin.campaign.update.⚡index', [
-            'updates' => $updates,
-        ]);
+        return $this->campaign->updates()->latest('published_at')->paginate(10);
     }
 };
 ?>
@@ -74,9 +72,9 @@ new #[Layout('layouts.admin')] #[Title('Update Program')] class extends Componen
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($updates as $no => $item)
+                    @forelse ($this->updates as $no => $item)
                         <tr>
-                            <td class="text-center">{{ $updates->firstItem() + $no }}</td>
+                            <td class="text-center">{{ $this->updates->firstItem() + $no }}</td>
                             <td>
                                 <div class="fw-bold text-primary">
                                     {{ $item->published_at ? $item->published_at->format('d M Y') : '-' }}</div>
@@ -117,7 +115,7 @@ new #[Layout('layouts.admin')] #[Title('Update Program')] class extends Componen
                 </tbody>
             </table>
             <div class="card-footer bg-white border-top py-3">
-                {{ $updates->links() }}
+                {{ $this->updates->links() }}
             </div>
         </div>
     </div>

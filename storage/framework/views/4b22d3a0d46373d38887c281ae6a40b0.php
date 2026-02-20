@@ -77,7 +77,7 @@ use Livewire\WithPagination;
                         <a href="<?php echo e(route('admin.donasi.tambah')); ?>" wire:navigate class="btn btn-primary text-white">
                             <i class="bi bi-plus-lg me-1"></i> Donasi Manual
                         </a>
-                        <button wire:click="export" class="btn btn-outline-success">
+                        <button wire:click="export" class="btn btn-success text-white">
                             <i class="bi bi-download me-1"></i> Export
                         </button>
                     </div>

@@ -195,4 +195,10 @@ new class extends Component {
             </button>
         </div>
     </div>
+
+    @push('scripts')
+        <script>
+            fbq('track', 'AddPaymentInfo');
+        </script>
+    @endpush
 </div>

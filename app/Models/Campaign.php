@@ -23,6 +23,7 @@ class Campaign extends Model implements Viewable
 
         'is_priority' => 'boolean',
         'is_optimized' => 'boolean',
+        'is_inisiatif' => 'boolean',
         'is_slider' => 'boolean',
     ];
 
@@ -58,6 +59,11 @@ class Campaign extends Model implements Viewable
     public function updates()
     {
         return $this->hasMany(CampaignUpdate::class)->orderByDesc('published_at');
+    }
+
+    public function distributions()
+    {
+        return $this->hasMany(Distribution::class)->orderByDesc('distribution_date');
     }
 
     public function prayers()

@@ -15,6 +15,7 @@ Route::middleware(['admin', 'verified_user'])->group(function () {
     Route::livewire('/admin/kategori-campaign/ubah/{campaignCategory:slug}', 'pages::admin.kategori-campaign.ubah')->name('admin.kategori-campaign.ubah');
 
     Route::livewire('/admin/campaign', 'pages::admin.campaign.index')->name('admin.campaign');
+    Route::livewire('/admin/campaign/detail/{campaign:slug}', 'pages::admin.campaign.⚡detail')->name('admin.campaign.detail');
     Route::livewire('/admin/campaign/tambah', 'pages::admin.campaign.tambah')->name('admin.campaign.tambah');
     Route::livewire('/admin/campaign/ubah/{campaign:slug}', 'pages::admin.campaign.ubah')->name('admin.campaign.ubah');
     Route::livewire('/admin/campaign/{campaign:slug}/updates', 'pages::admin.campaign.update.⚡index')->name('admin.campaign.updates');
@@ -43,6 +44,10 @@ Route::middleware(['admin', 'verified_user'])->group(function () {
     Route::livewire('/admin/bank', 'pages::admin.bank.index')->name('admin.bank');
     Route::livewire('/admin/bank/tambah', 'pages::admin.bank.tambah')->name('admin.bank.tambah');
     Route::livewire('/admin/bank/ubah/{bank}', 'pages::admin.bank.ubah')->name('admin.bank.ubah');
+
+    Route::livewire('/admin/halaman', 'pages::admin.page.index')->name('admin.page');
+    Route::livewire('/admin/halaman/tambah', 'pages::admin.page.tambah')->name('admin.page.tambah');
+    Route::livewire('/admin/halaman/ubah/{page}', 'pages::admin.page.ubah')->name('admin.page.ubah');
 
     Route::livewire('/admin/settings', 'pages::admin.settings.index')->name('admin.settings');
 });

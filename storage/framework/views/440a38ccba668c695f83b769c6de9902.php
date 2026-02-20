@@ -4,6 +4,8 @@ use Livewire\Attributes\Layout;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DonaturExport;
 ?>
 
 <div>
@@ -16,6 +18,9 @@ use Livewire\WithPagination;
                 </div>
 
                 <div class="d-flex flex-wrap align-items-center gap-2">
+                    <button wire:click="export" class="btn btn-success text-white" title="Export Excel">
+                        <i class="bi bi-download me-1"></i> Export
+                    </button>
                     <div class="position-relative">
                         <input type="text" class="form-control ps-5 w-250" placeholder="Cari donatur..."
                             wire:model.live.debounce.250ms="search">
@@ -34,9 +39,9 @@ use Livewire\WithPagination;
                         <th class="text-center">STATUS</th>
                         <th class="text-center">TOTAL DONASI</th>
                         <th class="text-center">JUMLAH TRANSAKSI</th>
+                        <th class="text-end pe-3">AKSI</th>
                     </tr>
                 </thead>
-                <tbody>
                 <tbody>
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if BLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::openLoop(); ?><?php endif; ?><?php $__currentLoopData = $this->users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $no => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::startLoop($loop->index); ?><?php endif; ?>
                         <tr>
@@ -80,6 +85,12 @@ use Livewire\WithPagination;
                                 <span class="badge bg-light text-dark border px-2 py-1">
                                     <?php echo e(number_format($item->donations_count)); ?> Kali
                                 </span>
+                            </td>
+                            <td class="text-end pe-3">
+                                <button wire:click="destroy(<?php echo e($item->id); ?>)"
+                                    wire:confirm="Anda yakin menghapus user ini beserta data seluruhnya?"
+                                    class="btn btn-sm btn-danger text-white" title="Hapus"><i
+                                        class="bi bi-trash"></i></button>
                             </td>
                         </tr>
                     <?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::endLoop(); ?><?php endif; ?><?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><?php if(\Livewire\Mechanisms\ExtendBlade\ExtendBlade::isRenderingLivewireComponent()): ?><!--[if ENDBLOCK]><![endif]--><?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::closeLoop(); ?><?php endif; ?>

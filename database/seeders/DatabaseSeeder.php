@@ -43,9 +43,27 @@ class DatabaseSeeder extends Seeder
         $categories = $this->seedCategories();
         $this->command->info('✅ Campaign Categories seeded');
 
+        // 6. FUNDRAISERS
+        $fundraisers = $this->seedFundraisers($users['fundraisers']);
+        $this->command->info('✅ Fundraisers seeded');
 
+        // 7. CAMPAIGNS
+        $campaigns = $this->seedCampaigns($categories, $fundraisers);
+        $this->command->info('✅ Campaigns seeded');
 
-        // 10. ARTICLES
+        // 8. DONATIONS
+        $this->seedDonations($campaigns, $users['donatur']);
+        $this->command->info('✅ Donations seeded');
+
+        // 9. UPDATES
+        $this->seedCampaignUpdates($campaigns);
+        $this->command->info('✅ Campaign Updates seeded');
+
+        // 10. DISTRIBUTIONS
+        $this->seedDistributions($campaigns);
+        $this->command->info('✅ Distributions seeded');
+
+        // 11. ARTICLES
         $this->seedArticles($admin);
         $this->command->info('✅ Articles seeded');
     }
@@ -184,6 +202,146 @@ class DatabaseSeeder extends Seeder
             );
         }
         return $categories;
+    }
+
+    private function seedFundraisers($users)
+    {
+        $fundraisers = [];
+        $descriptions = [
+            'Wahdah Inisiatif Jakarta berfokus pada pemberdayaan yatim dan dhuafa di wilayah Jabodetabek melalui program pendidikan dan kesehatan gratis.',
+            'Relawan Kebaikan Bandung adalah komunitas sosial yang aktif membantu korban bencana alam dan pembangunan masjid di pelosok Jawa Barat.',
+            'Peduli Ummat Makassar merupakan lembaga zakat daerah yang berkomitmen mengentaskan kemiskinan melalui pemberdayaan ekonomi syariah.'
+        ];
+
+        foreach ($users as $i => $user) {
+            $fundraisers[] = Fundraiser::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'foundation_name' => $user->name,
+                    'slug' => Str::slug($user->name),
+                    'about' => $descriptions[$i] ?? 'Kami adalah lembaga yang berkomitmen melayani ummat dan menyebarkan kebaikan.',
+                    'office_address' => 'Jl. Kebaikan No. ' . ($i + 1) . ', Kota ' . ($i == 0 ? 'Jakarta' : ($i == 1 ? 'Bandung' : 'Makassar')),
+                    'status' => 'approved',
+                    'logo_image' => 'fundraisers/logos/dummy-logo-' . ($i + 1) . '.jpg',
+                ]
+            );
+        }
+        return $fundraisers;
+    }
+
+    private function seedCampaigns($categories, $fundraisers)
+    {
+        $campaigns = [];
+        $titles = [
+            'Bantu Renovasi Madrasah di Pelosok Desa',
+            'Sedekah Makan Siang untuk Relawan Medis',
+            'Emergency: Bantuan Banjir Bandang Luwu',
+            'Wakaf Mushaf Al-Quran Pelosok Nusantara',
+            'Beasiswa Pendidikan Yatim Dhuafa Hebat',
+            'Pembangunan Sumur Air Bersih Desa Kering',
+            'Tebar Hewan Qurban Hingga Pedalaman',
+            'Santunan Operasi Katarak Lansia Kurang Mampu',
+            'Patungan Motor Dakwah untuk Dai Pedalaman',
+            'Peduli Palestina: Bantuan Medis dan Pangan'
+        ];
+
+        foreach ($titles as $i => $title) {
+            $isUrgent = Str::contains($title, 'Emergency');
+            $fundraiser = $fundraisers[array_rand($fundraisers)];
+
+            $campaigns[] = Campaign::updateOrCreate(
+                ['slug' => Str::slug($title)],
+                [
+                    'title' => $title,
+                    'category_id' => $categories[array_rand($categories)]->id,
+                    'fundraiser_id' => $fundraiser->id,
+                    'target_amount' => rand(10, 500) * 1000000,
+                    'collected_amount' => 0,
+                    'start_date' => now(),
+                    'end_date' => now()->addDays(rand(30, 90)),
+                    'description' => '<h3>Tentang Program Ini</h3><p>Program ' . $title . ' dirancang untuk membantu mereka yang membutuhkan. Mari kita sebarkan kebaikan ini ke seluruh lapisan masyarakat agar manfaatnya semakin luas.</p><p>Setiap rupiah yang Anda donasikan akan sangat berarti bagi kelancaran program ini.</p>',
+                    'thumbnail' => 'campaigns/dummy-' . ($i + 1) . '.jpg',
+                    'status' => 'active',
+                    'is_emergency' => $isUrgent,
+                    'is_priority' => $i < 2,
+                    'is_optimized' => $i < 4,
+                    'is_slider' => $i < 3,
+                ]
+            );
+        }
+        return $campaigns;
+    }
+
+    private function seedDonations($campaigns, $donaturs)
+    {
+        foreach ($campaigns as $campaign) {
+            $numDonations = rand(3, 8);
+            $totalCollected = 0;
+
+            for ($i = 0; $i < $numDonations; $i++) {
+                $amount = rand(10, 500) * 10000;
+                $donatur = $donaturs[array_rand($donaturs)];
+
+                Donation::create([
+                    'transaction_id' => 'INV-' . strtoupper(Str::random(10)),
+                    'campaign_id' => $campaign->id,
+                    'user_id' => $donatur->id,
+                    'amount' => $amount,
+                    'donor_name' => $donatur->name,
+                    'donor_email' => $donatur->email,
+                    'donor_phone' => $donatur->phone,
+                    'status' => 'success',
+                    'payment_channel' => 'BSI',
+                    'payment_method' => 'manual',
+                    'payment_code' => '76000' . rand(1000, 9999),
+                    'paid_at' => now()->subDays(rand(0, 10)),
+                    'is_anonymous' => rand(0, 1) == 1,
+                    'message' => rand(0, 1) == 1 ? 'Semoga berkah dan bermanfaat.' : null,
+                ]);
+
+                $totalCollected += $amount;
+            }
+
+            $campaign->update(['collected_amount' => $totalCollected]);
+        }
+    }
+
+    private function seedCampaignUpdates($campaigns)
+    {
+        foreach ($campaigns as $campaign) {
+            if (rand(0, 1) == 1) { // 50% chance to have updates
+                $numUpdates = rand(1, 4);
+                for ($i = 0; $i < $numUpdates; $i++) {
+                    CampaignUpdate::create([
+                        'campaign_id' => $campaign->id,
+                        'title' => 'Update Kondisi Program Tahap ' . ($i + 1),
+                        'content' => '<p>Alhamdulillah, berkat dukungan para donatur, program ini terus berjalan dengan baik. Kami sedang mempersiapkan tim untuk tahap pendistribusian berikutnya.</p>',
+                        'published_at' => now()->subDays($numUpdates - $i + 5),
+                        'image' => 'campaign-updates/update-' . rand(1, 5) . '.jpg',
+                    ]);
+                }
+            }
+        }
+    }
+
+    private function seedDistributions($campaigns)
+    {
+        foreach ($campaigns as $campaign) {
+            if (rand(0, 1) == 1) { // 50% chance to have distributions
+                $numDist = rand(1, 2);
+                for ($i = 0; $i < $numDist; $i++) {
+                    $amount = rand(5, 50) * 100000;
+                    Distribution::create([
+                        'campaign_id' => $campaign->id,
+                        'amount' => $amount,
+                        'recipient_name' => 'Warga Kelurahan ' . ($i + 1) . ' Peduli',
+                        'distribution_date' => now()->subDays(rand(1, 5)),
+                        'description' => '<p>Telah disalurkan bantuan berupa paket sembako dan kebutuhan pokok senilai Rp ' . number_format($amount, 0, ',', '.') . ' kepada warga yang membutuhkan di sekitar lokasi program.</p><p>Semoga menjadi amal jariyah bagi para donatur.</p>',
+                        'file_path' => 'distributions/dist-' . rand(1, 5) . '.jpg',
+                    ]);
+                }
+            }
+        }
     }
 
     private function seedArticles($admin)

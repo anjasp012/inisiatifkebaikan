@@ -22,7 +22,7 @@
 
     <div class="card-body">
         <div class="campaign-card-organizer">
-            <span>{{ $campaign->fundraiser?->foundation_name ?? 'Inisiatif Kebaikan' }}</span>
+            <span>{{ $campaign->fundraiser?->foundation_name ?? \App\Models\Setting::get('website_name', 'Inisiatif Kebaikan') }}</span>
             <i class="bi bi-patch-check-fill"></i>
         </div>
 

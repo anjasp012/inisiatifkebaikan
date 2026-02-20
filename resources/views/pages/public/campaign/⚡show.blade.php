@@ -11,6 +11,9 @@ new class extends Component {
     public Campaign $campaign;
     public string $activeTab = 'cerita';
     public string $donorSort = 'terbaru';
+    public int $updatePerPage = 4;
+    public int $prayerPerPage = 4;
+    public int $donorPerPage = 10;
 
     public function mount(Campaign $campaign)
     {
@@ -52,25 +55,63 @@ new class extends Component {
             $query->latest();
         }
 
-        return $query->limit(10)->get();
+        return $query->take($this->donorPerPage)->get();
+    }
+
+    public function loadMoreDonors()
+    {
+        $this->donorPerPage += 10;
     }
 
     #[Computed]
     public function campaignUpdates()
     {
-        return $this->campaign->updates()->get();
+        $updates = $this->campaign->updates()->get()->map(
+            fn($u) => (object) [
+                'id' => 'upd-' . $u->id,
+                'title' => $u->title,
+                'content' => $u->content,
+                'published_at' => $u->published_at ?? $u->created_at,
+                'image_url' => $u->image_url,
+                'type' => 'update',
+            ],
+        );
+
+        $distributions = $this->campaign->distributions()->get()->map(
+            fn($d) => (object) [
+                'id' => 'dist-' . $d->id,
+                'title' => 'Laporan Penyaluran: Rp ' . number_format($d->amount, 0, ',', '.'),
+                'content' => $d->description,
+                'published_at' => \Carbon\Carbon::parse($d->distribution_date),
+                'image_url' => $d->file_url,
+                'type' => 'distribution',
+                'amount' => $d->amount,
+                'recipient' => $d->recipient_name,
+            ],
+        );
+
+        return $updates->concat($distributions)->sortByDesc('published_at')->values()->take($this->updatePerPage);
+    }
+
+    public function loadMoreUpdates()
+    {
+        $this->updatePerPage += 4;
     }
 
     #[Computed]
     public function prayers()
     {
-        return $this->campaign->prayers()->latest()->get();
+        return $this->campaign->prayers()->latest()->take($this->prayerPerPage)->get();
+    }
+
+    public function loadMorePrayers()
+    {
+        $this->prayerPerPage += 4;
     }
 
     public function switchTab(string $tab)
     {
         $this->activeTab = $tab;
-        $this->dispatch('scroll-top');
     }
 
     public function switchDonorSort(string $sort)
@@ -132,24 +173,34 @@ new class extends Component {
     {{-- Organizer --}}
     <section class="detail-organizer-section">
         <div class="container-fluid">
-            <a href="#" class="detail-organizer">
-                <div class="detail-organizer__avatar">
-                    @if ($campaign->fundraiser)
+            @if ($campaign->fundraiser)
+                <a href="{{ route('fundraiser.profile', $campaign->fundraiser->slug) }}" wire:navigate
+                    class="detail-organizer">
+                    <div class="detail-organizer__avatar">
                         <img src="{{ $campaign->fundraiser->logo_url }}"
                             alt="{{ $campaign->fundraiser->foundation_name }}">
-                    @else
+                    </div>
+                    <div class="detail-organizer__info">
+                        <span class="detail-organizer__name">{{ $campaign->fundraiser->foundation_name }}</span>
+                        <span class="detail-organizer__verified">
+                            Terverifikasi <i class="bi bi-patch-check-fill"></i>
+                        </span>
+                    </div>
+                    <i class="bi bi-chevron-right detail-organizer__arrow"></i>
+                </a>
+            @else
+                <div class="detail-organizer">
+                    <div class="detail-organizer__avatar">
                         <span class="detail-organizer__initials">IK</span>
-                    @endif
+                    </div>
+                    <div class="detail-organizer__info">
+                        <span class="detail-organizer__name">Inisiatif Kebaikan</span>
+                        <span class="detail-organizer__verified">
+                            Terverifikasi <i class="bi bi-patch-check-fill"></i>
+                        </span>
+                    </div>
                 </div>
-                <div class="detail-organizer__info">
-                    <span
-                        class="detail-organizer__name">{{ $campaign->fundraiser?->foundation_name ?? 'Inisiatif Kebaikan' }}</span>
-                    <span class="detail-organizer__verified">
-                        Terverifikasi <i class="bi bi-patch-check-fill"></i>
-                    </span>
-                </div>
-                <i class="bi bi-chevron-right detail-organizer__arrow"></i>
-            </a>
+            @endif
         </div>
     </section>
 
@@ -206,10 +257,18 @@ new class extends Component {
                                     <div class="flex-grow-1">
                                         <h6 class="fw-bold text-dark mb-1">
                                             {{ $update->title }}</h6>
-                                        <span class="fw-bold text-black small">
-                                            <i class="bi bi-clock me-1 text-primary"></i>
-                                            {{ optional($update->published_at)->diffForHumans() ?? $update->created_at->diffForHumans() }}
-                                        </span>
+                                        <div class="d-flex align-items-center gap-2">
+                                            @if (($update->type ?? '') === 'distribution')
+                                                <span
+                                                    class="badge bg-success bg-opacity-10 text-success extra-small fw-bold border border-success border-opacity-10">
+                                                    PENYALURAN
+                                                </span>
+                                            @endif
+                                            <span class="fw-bold text-black small">
+                                                <i class="bi bi-clock me-1 text-primary"></i>
+                                                {{ $update->published_at->diffForHumans() }}
+                                            </span>
+                                        </div>
                                     </div>
 
                                     {{-- Toggle Icon --}}
@@ -243,6 +302,14 @@ new class extends Component {
                             <p class="text-muted fw-medium">Belum ada update terbaru untuk program ini.</p>
                         </div>
                     @endforelse
+
+                    @if ($this->campaign->updates()->count() + $this->campaign->distributions()->count() > $this->updatePerPage)
+                        <div wire:intersect="loadMoreUpdates" class="text-center py-3">
+                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             @elseif ($activeTab === 'donatur')
                 {{-- Sub-filter tabs --}}
@@ -258,6 +325,14 @@ new class extends Component {
                 </div>
 
                 <div class="detail-content__donors" wire:loading.class="opacity-50">
+                    @if ($campaign->is_optimized)
+                        <div class="d-flex align-items-center gap-3 p-3 mb-3 rounded-3 border-0"
+                            style="background-color: rgba(73, 163, 227, 0.08); color: #49a3e3;">
+                            <i class="bi bi-megaphone-fill fs-4"></i>
+                            <div class="small fw-bold lh-sm">Program ini sedang dalam optimasi & promosi intensif untuk
+                                mempercepat pencapaian target.</div>
+                        </div>
+                    @endif
                     @forelse ($this->donors as $donation)
                         <div class="donor-item">
                             <div class="donor-item__avatar">
@@ -281,6 +356,14 @@ new class extends Component {
                             <p>Belum ada donatur untuk program ini.</p>
                         </div>
                     @endforelse
+
+                    @if ($this->donorCount > $this->donorPerPage)
+                        <div wire:intersect="loadMoreDonors" class="text-center py-3">
+                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             @elseif ($activeTab === 'doa')
                 <div class="row g-3 prayer-list">
@@ -296,6 +379,14 @@ new class extends Component {
                             <p class="text-muted fw-medium">Belum ada doa untuk program ini.</p>
                         </div>
                     @endforelse
+
+                    @if ($this->campaign->prayers()->count() > $this->prayerPerPage)
+                        <div wire:intersect="loadMorePrayers" class="text-center py-3">
+                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    @endif
                 </div>
             @endif
         </div>
@@ -308,17 +399,9 @@ new class extends Component {
         </a>
     </div>
 
-    @script
+    @push('scripts')
         <script>
-            $wire.on('scroll-top', () => {
-                const tabs = document.querySelector('.detail-tabs-section');
-                if (tabs) {
-                    tabs.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
+            fbq('track', 'ViewContent');
         </script>
-    @endscript
+    @endpush
 </div>

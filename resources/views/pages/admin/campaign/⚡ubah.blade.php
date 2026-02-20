@@ -23,7 +23,7 @@
  
      public bool $is_emergency = false;
      public bool $is_priority = false;
-     public bool $is_initiative = false;
+     public bool $is_inisiatif = false;
      public bool $is_optimized = false;
  
      public $categories = [];
@@ -41,7 +41,7 @@
  
          $this->is_emergency = (bool) $campaign->is_emergency;
          $this->is_priority = (bool) $campaign->is_priority;
-         $this->is_initiative = (bool) $campaign->is_initiative;
+         $this->is_inisiatif = (bool) $campaign->is_inisiatif;
          $this->is_optimized = (bool) $campaign->is_optimized;
  
          $this->categories = CampaignCategory::all();
@@ -93,7 +93,7 @@
              'end_date' => $this->end_date,
              'is_emergency' => $this->is_emergency,
              'is_priority' => $this->is_priority,
-             'is_initiative' => $this->is_initiative,
+             'is_inisiatif' => $this->is_inisiatif,
              'is_optimized' => $this->is_optimized,
          ]);
  
@@ -215,10 +215,16 @@
                                          Hari ini</label>
                                  </div>
                                  <div class="form-check">
+                                     <input class="form-check-input" type="checkbox" wire:model="is_inisiatif"
+                                         id="is_inisiatif">
+                                     <label class="form-check-label fw-semibold text-success" for="is_inisiatif">Program
+                                         Inisiatif Pilihan</label>
+                                 </div>
+                                 <div class="form-check">
                                      <input class="form-check-input" type="checkbox" wire:model="is_optimized"
                                          id="is_optimized">
                                      <label class="form-check-label fw-semibold text-primary" for="is_optimized">
-                                         Optimasi (Fee 15%)
+                                         Program Kebaikan (Optimasi)
                                      </label>
                                  </div>
                              </div>

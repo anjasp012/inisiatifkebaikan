@@ -16,7 +16,7 @@ new class extends Component {
 
     public function mount()
     {
-        $seoData = new SEOData(title: 'Wahdah Inisiatif Kebaikan', description: 'Platform donasi dan penghimpunan dana sosial terpercaya untuk mewujudkan inisiatif kebaikan di seluruh nusantara.', image: asset('assets/images/og-image.jpg'));
+        $seoData = new SEOData(title: \App\Models\Setting::get('website_name', 'Inisiatif Kebaikan'), description: \App\Models\Setting::get('website_description', 'Platform donasi dan penghimpunan dana sosial terpercaya.'), image: asset('assets/images/og-image.jpg'));
 
         View::share('seoData', $seoData);
     }
@@ -51,7 +51,7 @@ new class extends Component {
     #[Computed]
     public function campaignInisiatif()
     {
-        return Campaign::query()->where('fundraiser_id', null)->orderBy('created_at', 'desc')->limit(3)->get();
+        return Campaign::query()->where('is_inisiatif', true)->orderBy('created_at', 'desc')->limit(3)->get();
     }
     #[Computed]
     public function campaignChoice()
@@ -84,6 +84,17 @@ new class extends Component {
         }
 
         return $query->latest()->limit(6)->get();
+    }
+
+    #[Computed]
+    public function recommendedMoreLink()
+    {
+        if (!$this->recommendedCategory) {
+            return route('campaign.index');
+        }
+
+        $category = CampaignCategory::find($this->recommendedCategory);
+        return route('campaign.index', ['category' => $category?->slug]);
     }
 
     public function aminPrayer(int $prayerId): void
@@ -166,7 +177,7 @@ new class extends Component {
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between mb-4" bis_skin_checked="1">
                 <h2 class="section-title">Kebutuhan Darurat &amp; Mendesak</h2>
-                <a class="link-more" href="" wire:navigate>
+                <a class="link-more" href="{{ route('campaign.index', ['filter' => 'darurat']) }}" wire:navigate>
                     Lihat Semua
                     <i class="bi bi-chevron-right"></i>
                 </a>
@@ -195,7 +206,7 @@ new class extends Component {
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between mb-4" bis_skin_checked="1">
                 <h2 class="section-title">Program Inisiatif Pilihan</h2>
-                <a class="link-more" href="" wire:navigate>
+                <a class="link-more" href="{{ route('campaign.index', ['filter' => 'inisiatif']) }}" wire:navigate>
                     Lihat Semua
                     <i class="bi bi-chevron-right"></i>
                 </a>
@@ -213,7 +224,7 @@ new class extends Component {
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-between mb-4" bis_skin_checked="1">
                 <h2 class="section-title">Program Kebaikan</h2>
-                <a class="link-more" href="" wire:navigate>
+                <a class="link-more" href="{{ route('campaign.index', ['filter' => 'kebaikan']) }}" wire:navigate>
                     Lihat Semua
                     <i class="bi bi-chevron-right"></i>
                 </a>
@@ -314,7 +325,7 @@ new class extends Component {
                     </div>
                 @endforelse
                 <div class="col-12">
-                    <a href="" wire:navigate
+                    <a href="{{ $this->recommendedMoreLink }}" wire:navigate
                         class="btn btn-sm py-2 btn-outline-primary fw-bold w-100 rounded-pill mb-4">Lihat
                         Lebih
                         Banyak</a>
@@ -345,24 +356,33 @@ new class extends Component {
                 <div class="col-6">
                     <h6 class="footer-heading">Tentang</h6>
                     <ul class="footer-links">
-                        <li><a href="{{ route('public.about') }}" wire:navigate>Tentang Kami</a></li>
-                        <li><a href="{{ route('public.terms') }}" wire:navigate>Syarat & Ketentuan</a></li>
-                        <li><a href="{{ route('public.privacy') }}" wire:navigate>Kebijakan Privasi</a></li>
+                        <li><a href="{{ route('page.show', 'tentang-kami') }}" wire:navigate>Tentang Kami</a></li>
+                        <li><a href="{{ route('page.show', 'syarat-ketentuan') }}" wire:navigate>Syarat &
+                                Ketentuan</a></li>
+                        <li><a href="{{ route('page.show', 'kebijakan-privasi') }}" wire:navigate>Kebijakan
+                                Privasi</a></li>
                     </ul>
                 </div>
                 <div class="col-6">
                     <h6 class="footer-heading">Dukungan</h6>
                     <ul class="footer-links">
-                        <li><a href="{{ route('public.help') }}" wire:navigate>Pusat Bantuan</a></li>
+                        <li><a href="{{ route('page.show', 'pusat-bantuan') }}" wire:navigate>Pusat Bantuan</a></li>
                         <li><a href="{{ route('public.fundraiser') }}" wire:navigate>Daftar Mitra</a></li>
-                        <li><a href="{{ route('public.contact') }}" wire:navigate>Hubungi Kami</a></li>
+                        <li><a href="{{ route('page.show', 'hubungi-kami') }}" wire:navigate>Hubungi Kami</a></li>
                     </ul>
                 </div>
             </div>
 
             <!-- Copyright -->
             <div class="copyright text-center">
-                <p>&copy; 2026 Inisiatif Kebaikan. All rights reserved.</p>
+                <p>{!! \App\Models\Setting::get(
+                    'footer_text',
+                    '&copy; ' .
+                        date('Y') .
+                        ' ' .
+                        \App\Models\Setting::get('website_name', 'Inisiatif Kebaikan') .
+                        '. All rights reserved.',
+                ) !!}</p>
             </div>
         </div>
     </footer>

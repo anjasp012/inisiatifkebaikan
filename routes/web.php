@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::livewire('/', 'pages::public.home')->name('home');
 Route::livewire('/kategori', 'pages::public.category.index')->name('category.index');
-Route::livewire('/campaign/kategori/{category:slug}', 'pages::public.campaign.index')->name('campaign.index');
+Route::livewire('/campaign/kategori/{category?}', 'pages::public.campaign.index')->name('campaign.index');
 Route::livewire('/campaign/{campaign:slug}', 'pages::public.campaign.show')->name('campaign.show');
 
 // Donation Flow
@@ -33,17 +33,16 @@ Route::middleware('auth')->group(function () {
 Route::middleware('guest')->group(function () {
     Route::livewire('/login', 'pages::auth.login')->name('login');
     Route::livewire('/register', 'pages::auth.register')->name('register');
+    Route::livewire('/lupa-password', 'pages::auth.forgot-password')->name('password.request');
+    Route::livewire('/reset-password', 'pages::auth.reset-password')->name('password.reset');
 });
 
 Route::livewire('/verifikasi', 'pages::auth.verification')->name('verification');
 
 // Static Pages
-Route::livewire('/tentang-kami', 'pages::public.about.index')->name('public.about');
-Route::livewire('/syarat-ketentuan', 'pages::public.terms.index')->name('public.terms');
-Route::livewire('/kebijakan-privasi', 'pages::public.privacy.index')->name('public.privacy');
-Route::livewire('/pusat-bantuan', 'pages::public.help.index')->name('public.help');
+Route::livewire('/fundraiser/{fundraiser:slug}', 'pages::public.fundraiser.show')->name('fundraiser.profile');
+Route::livewire('/p/{page:slug}', 'pages::public.page.show')->name('page.show');
 Route::livewire('/daftar-mitra', 'pages::public.fundraiser.index')->name('public.fundraiser');
-Route::livewire('/hubungi-kami', 'pages::public.contact.index')->name('public.contact');
 
 
 

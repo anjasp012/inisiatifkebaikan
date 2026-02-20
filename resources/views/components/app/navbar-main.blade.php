@@ -1,8 +1,9 @@
 <nav class="navbar navbar-inisiatif" x-data="{ searchOpen: false }" x-init="$watch('searchOpen', value => document.body.style.overflow = value ? 'hidden' : '')">
     <div class="container-fluid">
         <div class="w-100 d-flex align-items-center justify-content-between">
-            <a class="navbar-brand" href="#">
-                <img src="{{ asset('assets/images/logo.png') }}" alt="Bootstrap" height="32">
+            <a class="navbar-brand" href="/">
+                <img src="{{ \App\Models\Setting::get('logo') ? asset('storage/' . \App\Models\Setting::get('logo')) : asset('assets/images/logo.png') }}"
+                    alt="{{ \App\Models\Setting::get('website_name', 'Inisiatif Kebaikan') }}" height="32">
             </a>
             <div>
                 <button class="btn btn-secondary btn-search"

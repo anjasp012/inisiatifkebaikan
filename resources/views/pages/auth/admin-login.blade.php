@@ -54,7 +54,9 @@ new #[Layout('layouts.admin-auth')] class extends Component {
     <div class="col-12 col-lg-5 d-flex align-items-center justify-content-center p-5">
         <div class="w-100" style="max-width: 420px;">
             <div class="mb-5 text-center text-lg-start">
-                <img src="{{ asset('assets/images/logo.png') }}" alt="Logo" class="mb-4" style="height: 48px;">
+                <img src="{{ \App\Models\Setting::get('logo') ? asset('storage/' . \App\Models\Setting::get('logo')) : asset('assets/images/logo.png') }}"
+                    alt="{{ \App\Models\Setting::get('website_name', 'Inisiatif Kebaikan') }}" class="mb-4"
+                    style="height: 48px;">
                 <h2 class="fw-bold mb-2 text-dark">Selamat Datang, Admin!</h2>
                 <p class="text-muted">Silakan masuk untuk mengelola kebaikan.</p>
             </div>
@@ -122,7 +124,8 @@ new #[Layout('layouts.admin-auth')] class extends Component {
             </div>
             <div
                 class="d-flex justify-content-between align-items-end small text-white-50 border-top border-white border-opacity-25 pt-4">
-                <div>&copy; {{ date('Y') }} Wahdah Inisiatif Kebaikan</div>
+                <div>&copy; {{ date('Y') }} {{ \App\Models\Setting::get('website_name', 'Inisiatif Kebaikan') }}
+                </div>
                 <div>Panel Administrator v1.0</div>
             </div>
         </div>

@@ -282,6 +282,30 @@
 <?php endif; ?>
         <?php if (isset($component)) { $__componentOriginalcbbd6fe8562b9975f1f44673965482e9 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalcbbd6fe8562b9975f1f44673965482e9 = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.sidebar-item','data' => ['href' => ''.e(route('admin.page')).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('admin.sidebar-item'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['href' => ''.e(route('admin.page')).'']); ?>
+<?php \Livewire\Features\SupportCompiledWireKeys\SupportCompiledWireKeys::processComponentKey($component); ?>
+
+            <i class="bi bi-file-earmark-text"></i>
+            Manajemen Halaman
+         <?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginalcbbd6fe8562b9975f1f44673965482e9)): ?>
+<?php $attributes = $__attributesOriginalcbbd6fe8562b9975f1f44673965482e9; ?>
+<?php unset($__attributesOriginalcbbd6fe8562b9975f1f44673965482e9); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginalcbbd6fe8562b9975f1f44673965482e9)): ?>
+<?php $component = $__componentOriginalcbbd6fe8562b9975f1f44673965482e9; ?>
+<?php unset($__componentOriginalcbbd6fe8562b9975f1f44673965482e9); ?>
+<?php endif; ?>
+        <?php if (isset($component)) { $__componentOriginalcbbd6fe8562b9975f1f44673965482e9 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalcbbd6fe8562b9975f1f44673965482e9 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.admin.sidebar-item','data' => ['href' => ''.e(route('admin.settings')).'']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('admin.sidebar-item'); ?>
 <?php if ($component->shouldRender()): ?>

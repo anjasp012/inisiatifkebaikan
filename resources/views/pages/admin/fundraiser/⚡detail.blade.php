@@ -131,22 +131,6 @@ new #[Layout('layouts.admin')] class extends Component {
                         <div class="card-body">
                             <h6 class="text-uppercase text-muted extra-small fw-bold mb-3">Dokumen Legal</h6>
 
-                            <!-- Izin Lembaga -->
-                            <div class="mb-3">
-                                <label class="form-label fw-bold extra-small text-uppercase text-muted mb-1">Izin
-                                    Lembaga</label>
-                                @if ($fundraiser->permit_doc)
-                                    <div>
-                                        <a href="{{ $fundraiser->permit_doc_url }}" target="_blank"
-                                            class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-file-earmark-pdf"></i> Lihat Dokumen
-                                        </a>
-                                    </div>
-                                @else
-                                    <p class="text-muted small">Belum upload</p>
-                                @endif
-                            </div>
-
                             <!-- SK Kumham -->
                             <div class="mb-3">
                                 <label class="form-label fw-bold extra-small text-uppercase text-muted mb-1">SK
@@ -228,6 +212,7 @@ new #[Layout('layouts.admin')] class extends Component {
                                         <th>Target</th>
                                         <th>Terkumpul</th>
                                         <th>Status</th>
+                                        <th class="text-end pe-4">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -243,6 +228,15 @@ new #[Layout('layouts.admin')] class extends Component {
                                                     <span
                                                         class="badge bg-secondary">{{ ucfirst($campaign->status) }}</span>
                                                 @endif
+                                            </td>
+                                            <td class="text-end pe-3">
+                                                <div class="d-flex justify-content-end gap-1">
+                                                    <a href="{{ route('admin.campaign.detail', $campaign->slug) }}"
+                                                        wire:navigate class="btn btn-sm btn-info text-white"
+                                                        title="Detail">
+                                                        <i class="bi bi-eye"></i>
+                                                    </a>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
