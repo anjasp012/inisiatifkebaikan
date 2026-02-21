@@ -37,6 +37,7 @@ new #[Layout('layouts.admin')] class extends Component {
     public $template_donation_rejected;
     public $template_otp_login;
     public $template_otp_register;
+    public $template_otp_reset;
 
     public function mount()
     {
@@ -68,6 +69,7 @@ new #[Layout('layouts.admin')] class extends Component {
         $this->template_donation_rejected = \App\Models\NotificationTemplate::where('slug', 'donation-rejected')->first()?->content;
         $this->template_otp_login = \App\Models\NotificationTemplate::where('slug', 'otp-login')->first()?->content;
         $this->template_otp_register = \App\Models\NotificationTemplate::where('slug', 'otp-register')->first()?->content;
+        $this->template_otp_reset = \App\Models\NotificationTemplate::where('slug', 'otp-reset')->first()?->content;
     }
 
     public function getLogsProperty()
@@ -104,6 +106,7 @@ new #[Layout('layouts.admin')] class extends Component {
         \App\Models\NotificationTemplate::updateOrCreate(['slug' => 'donation-rejected'], ['name' => 'Donasi Dibatalkan', 'content' => $this->template_donation_rejected]);
         \App\Models\NotificationTemplate::updateOrCreate(['slug' => 'otp-login'], ['name' => 'Login OTP', 'content' => $this->template_otp_login]);
         \App\Models\NotificationTemplate::updateOrCreate(['slug' => 'otp-register'], ['name' => 'Registrasi OTP', 'content' => $this->template_otp_register]);
+        \App\Models\NotificationTemplate::updateOrCreate(['slug' => 'otp-reset'], ['name' => 'Reset Password OTP', 'content' => $this->template_otp_reset]);
 
         if ($this->logo) {
             $path = $this->logo->store('settings', 'public');
@@ -340,6 +343,13 @@ new #[Layout('layouts.admin')] class extends Component {
                                                     <i class="bi bi-chevron-right extra-small"
                                                         x-show="currentTpl === 'otp_register'"></i>
                                                 </button>
+                                                <button type="button" @click="currentTpl = 'otp_reset'"
+                                                    :class="currentTpl === 'otp_reset' ? 'active-tpl' : 'text-muted'"
+                                                    class="list-group-item list-group-item-action border-0 py-3 px-4 small fw-bold transition-all d-flex align-items-center justify-content-between bg-transparent">
+                                                    OTP Lupa Password
+                                                    <i class="bi bi-chevron-right extra-small"
+                                                        x-show="currentTpl === 'otp_reset'"></i>
+                                                </button>
                                                 <button type="button" @click="currentTpl = 'logs'"
                                                     :class="currentTpl === 'logs' ? 'active-tpl' : 'text-muted'"
                                                     class="list-group-item list-group-item-action border-0 py-3 px-4 small fw-bold transition-all d-flex align-items-center justify-content-between bg-transparent">
@@ -470,6 +480,28 @@ new #[Layout('layouts.admin')] class extends Component {
                                                     <div class="d-flex flex-wrap gap-1">
                                                         <button type="button"
                                                             @click.prevent="insertPlaceholder('otp_register', '{otp_code}')"
+                                                            class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">OTP
+                                                            Code</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {{-- OTP Reset Password Template --}}
+                                            <div x-show="currentTpl === 'otp_reset'" x-cloak>
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <span
+                                                        class="badge bg-danger bg-opacity-10 text-danger px-3 py-2 rounded-pill extra-small fw-bold border border-danger border-opacity-25">Trigger:
+                                                        Lupa Password</span>
+                                                </div>
+                                                <textarea id="tpl_otp_reset" wire:model="template_otp_reset"
+                                                    class="form-control font-monospace border-light bg-light bg-opacity-25 p-3 rounded-3" rows="12"
+                                                    style="font-size: 13px; resize: none;"></textarea>
+                                                <div class="mt-4 pt-3 border-top border-light">
+                                                    <p class="extra-small fw-bold text-muted text-uppercase ls-1 mb-2">
+                                                        Klik untuk Sisipkan:</p>
+                                                    <div class="d-flex flex-wrap gap-1">
+                                                        <button type="button"
+                                                            @click.prevent="insertPlaceholder('otp_reset', '{otp_code}')"
                                                             class="btn btn-sm btn-white border border-light shadow-sm extra-small fw-bold px-2 py-1">OTP
                                                             Code</button>
                                                     </div>

@@ -367,7 +367,7 @@ new class extends Component {
                     <h6 class="footer-heading">Dukungan</h6>
                     <ul class="footer-links">
                         <li><a href="{{ route('page.show', 'pusat-bantuan') }}" wire:navigate>Pusat Bantuan</a></li>
-                        <li><a href="{{ route('public.fundraiser') }}" wire:navigate>Daftar Mitra</a></li>
+                        <li><a href="{{ route('fundraiser.daftar') }}" wire:navigate>Daftar Mitra</a></li>
                         <li><a href="{{ route('page.show', 'hubungi-kami') }}" wire:navigate>Hubungi Kami</a></li>
                     </ul>
                 </div>

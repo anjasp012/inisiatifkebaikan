@@ -101,7 +101,7 @@ new #[Layout('layouts.app')] class extends Component {
                     <div class="border-top my-1 mx-2"></div>
 
                     <!-- Footer Links as Menu Items -->
-                    <a href="{{ route('public.about') }}" wire:navigate
+                    <a href="{{ route('page.show', 'tentang-kami') }}" wire:navigate
                         class="list-group-item list-group-item-action p-2 d-flex align-items-center justify-content-between border-bottom-0 border-light">
                         <div class="d-flex align-items-center gap-2">
                             <div class="bg-secondary bg-opacity-10 text-secondary px-1 rounded-2">
@@ -111,7 +111,7 @@ new #[Layout('layouts.app')] class extends Component {
                         </div>
                         <i class="bi bi-chevron-right text-muted extra-small"></i>
                     </a>
-                    <a href="{{ route('public.privacy') }}" wire:navigate
+                    <a href="{{ route('page.show', 'kebijakan-privasi') }}" wire:navigate
                         class="list-group-item list-group-item-action p-2 d-flex align-items-center justify-content-between border-bottom-0 border-light">
                         <div class="d-flex align-items-center gap-2">
                             <div class="bg-secondary bg-opacity-10 text-secondary px-1 rounded-2">
@@ -121,7 +121,7 @@ new #[Layout('layouts.app')] class extends Component {
                         </div>
                         <i class="bi bi-chevron-right text-muted extra-small"></i>
                     </a>
-                    <a href="{{ route('public.terms') }}" wire:navigate
+                    <a href="{{ route('page.show', 'syarat-ketentuan') }}" wire:navigate
                         class="list-group-item list-group-item-action p-2 d-flex align-items-center justify-content-between border-bottom-0 border-light">
                         <div class="d-flex align-items-center gap-2">
                             <div class="bg-secondary bg-opacity-10 text-secondary px-1 rounded-2">
@@ -134,7 +134,7 @@ new #[Layout('layouts.app')] class extends Component {
 
                     <div class="border-top my-1 mx-2"></div>
 
-                    <a href="{{ route('public.contact') }}" wire:navigate
+                    <a href="{{ route('page.show', 'hubungi-kami') }}" wire:navigate
                         class="list-group-item list-group-item-action p-2 d-flex align-items-center justify-content-between border-bottom-0 border-light">
                         <div class="d-flex align-items-center gap-2">
                             <div class="bg-success bg-opacity-10 text-success px-1 rounded-2">

@@ -15,7 +15,8 @@ new #[Layout('layouts.admin-auth')] class extends Component {
     public function mount()
     {
         if (Auth::check() && Auth::user()->role === 'admin') {
-            return redirect()->route('admin.dashboard');
+            $this->redirect(route('admin.dashboard'), navigate: true);
+            return;
         }
     }
 
@@ -41,7 +42,9 @@ new #[Layout('layouts.admin-auth')] class extends Component {
                 return;
             }
 
-            return redirect()->intended(route('admin.dashboard'));
+            $intended = session()->pull('url.intended', route('admin.dashboard'));
+            $this->redirect($intended, navigate: true);
+            return;
         }
 
         $this->addError('email', 'Email atau password salah.');

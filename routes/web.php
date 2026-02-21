@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
+include 'admin.php';
+include 'fundraiser.php';
+
 Route::livewire('/', 'pages::public.home')->name('home');
 Route::livewire('/kategori', 'pages::public.category.index')->name('category.index');
 Route::livewire('/campaign/kategori/{category?}', 'pages::public.campaign.index')->name('campaign.index');
@@ -41,13 +44,8 @@ Route::livewire('/verifikasi', 'pages::auth.verification')->name('verification')
 
 // Static Pages
 Route::livewire('/fundraiser/{fundraiser:slug}', 'pages::public.fundraiser.show')->name('fundraiser.profile');
-Route::livewire('/p/{page:slug}', 'pages::public.page.show')->name('page.show');
+Route::livewire('/page/{page:slug}', 'pages::public.page.show', ['page' => null])->name('page.show');
 Route::livewire('/daftar-mitra', 'pages::public.fundraiser.index')->name('public.fundraiser');
-
-
-
-include 'admin.php';
-include 'fundraiser.php';
 
 Route::get('/storage-link', function () {
     $exitCode = Artisan::call('storage:link');

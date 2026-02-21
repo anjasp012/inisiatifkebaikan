@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 // Admin Login Route
-Route::livewire('/admin/login', 'pages::auth.admin-login')->name('admin.login');
+Route::livewire('/admin/login', 'pages::auth.⚡admin-login')->name('admin.login');
 
 // Protected Admin Routes
 Route::middleware(['admin', 'verified_user'])->group(function () {
@@ -15,12 +15,12 @@ Route::middleware(['admin', 'verified_user'])->group(function () {
     Route::livewire('/admin/kategori-campaign/ubah/{campaignCategory:slug}', 'pages::admin.kategori-campaign.ubah')->name('admin.kategori-campaign.ubah');
 
     Route::livewire('/admin/campaign', 'pages::admin.campaign.index')->name('admin.campaign');
-    Route::livewire('/admin/campaign/detail/{campaign:slug}', 'pages::admin.campaign.⚡detail')->name('admin.campaign.detail');
+    Route::livewire('/admin/campaign/detail/{campaign:slug}', 'pages::admin.campaign.detail')->name('admin.campaign.detail');
     Route::livewire('/admin/campaign/tambah', 'pages::admin.campaign.tambah')->name('admin.campaign.tambah');
     Route::livewire('/admin/campaign/ubah/{campaign:slug}', 'pages::admin.campaign.ubah')->name('admin.campaign.ubah');
-    Route::livewire('/admin/campaign/{campaign:slug}/updates', 'pages::admin.campaign.update.⚡index')->name('admin.campaign.updates');
-    Route::livewire('/admin/campaign/{campaign:slug}/updates/tambah', 'pages::admin.campaign.update.⚡tambah')->name('admin.campaign.updates.tambah');
-    Route::livewire('/admin/campaign/{campaign:slug}/updates/ubah/{update}', 'pages::admin.campaign.update.⚡ubah')->name('admin.campaign.updates.ubah');
+    Route::livewire('/admin/campaign/{campaign:slug}/updates', 'pages::admin.campaign.update.index')->name('admin.campaign.updates');
+    Route::livewire('/admin/campaign/{campaign:slug}/updates/tambah', 'pages::admin.campaign.update.tambah')->name('admin.campaign.updates.tambah');
+    Route::livewire('/admin/campaign/{campaign:slug}/updates/ubah/{update}', 'pages::admin.campaign.update.ubah')->name('admin.campaign.updates.ubah');
 
     Route::livewire('/admin/donasi', 'pages::admin.donasi.index')->name('admin.donasi');
     Route::livewire('/admin/donasi/tambah', 'pages::admin.donasi.tambah')->name('admin.donasi.tambah');
@@ -36,7 +36,7 @@ Route::middleware(['admin', 'verified_user'])->group(function () {
     Route::livewire('/admin/donatur', 'pages::admin.donatur.index')->name('admin.donatur');
 
     Route::livewire('/admin/pencairan', 'pages::admin.pencairan.index')->name('admin.pencairan');
-    Route::livewire('/admin/pencairan/tambah', 'pages::admin.pencairan.⚡tambah')->name('admin.pencairan.tambah');
+    Route::livewire('/admin/pencairan/tambah', 'pages::admin.pencairan.tambah')->name('admin.pencairan.tambah');
     Route::livewire('/admin/pencairan/{withdrawal}', 'pages::admin.pencairan.detail')->name('admin.pencairan.detail');
 
     Route::livewire('/admin/distribusi', 'pages::admin.distribusi.index')->name('admin.distribusi');

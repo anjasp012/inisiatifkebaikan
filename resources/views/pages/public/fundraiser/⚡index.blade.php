@@ -34,16 +34,11 @@ new #[Layout('layouts.app')] class extends Component {
 <div>
     <x-app.navbar-secondary title="Daftar Mitra" />
 
-    <section class="fundraiser-list-section">
+    <section class="fundraiser-list-section mb-5 pb-5">
         <div class="container-fluid">
-            <!-- Search -->
-            <div class="mb-4 position-relative">
-                <input wire:model.live.debounce.500ms="search" type="search"
-                    class="form-control py-3 ps-5 border-0 shadow-sm rounded-pill"
-                    placeholder="Cari nama mitra atau yayasan...">
-                <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+            <div class="d-flex align-items-center justify-content-between mb-4" bis_skin_checked="1">
+                <h2 class="section-title">Mitra Fundraiser</h2>
             </div>
-
             @if ($this->fundraisers->isEmpty())
                 <div class="text-center py-5">
                     <i class="bi bi-person-x display-1 text-muted opacity-25 mb-3 d-block"></i>
@@ -52,7 +47,7 @@ new #[Layout('layouts.app')] class extends Component {
             @else
                 <div class="row g-3">
                     @foreach ($this->fundraisers as $fundraiser)
-                        <div class="col-6 col-md-4 col-lg-3">
+                        <div class="col-12">
                             <div class="card border-0 shadow-sm h-100 rounded-4 overflow-hidden text-center p-3">
                                 <div class="mb-3 position-relative d-inline-block">
                                     <img src="{{ $fundraiser->avatar_url }}"

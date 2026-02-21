@@ -66,6 +66,10 @@ class DatabaseSeeder extends Seeder
         // 11. ARTICLES
         $this->seedArticles($admin);
         $this->command->info('✅ Articles seeded');
+
+        // 12. PAGES
+        $this->seedPages();
+        $this->command->info('✅ Pages seeded');
     }
 
     private function seedSettings()
@@ -83,7 +87,7 @@ class DatabaseSeeder extends Seeder
             'midtrans_client_key' => 'SB-Mid-client-xxxxxxxxxxxx',
             'midtrans_server_key' => 'SB-Mid-server-xxxxxxxxxxxx',
             'midtrans_mode' => 'sandbox',
-            'whacenter_device_id' => 'device_xxxxxxxx',
+            'whacenter_device_id' => 'f9dddb1949d18ce9d81b8e525420c4b7',
         ];
 
         foreach ($settings as $key => $value) {
@@ -113,6 +117,16 @@ class DatabaseSeeder extends Seeder
                 'slug' => 'otp-login',
                 'name' => 'Login OTP',
                 'content' => "Kode OTP Anda untuk login ke Wahdah Inisiatif Kebaikan adalah: *{otp_code}*\n\nKode ini berlaku selama 5 menit. Jangan berikan kode ini kepada siapapun termasuk pihak Wahdah Inisiatif.",
+            ],
+            [
+                'slug' => 'otp-register',
+                'name' => 'Registrasi OTP',
+                'content' => "Kode OTP Anda untuk registrasi Akun Wahdah Inisiatif Kebaikan adalah: *{otp_code}*\n\nKode ini berlaku selama 5 menit. Selesaikan pendaftaran Anda segera. Jazaakumullaahu khairan.",
+            ],
+            [
+                'slug' => 'otp-reset',
+                'name' => 'Reset Password OTP',
+                'content' => "Kode OTP Anda untuk RESET PASSWORD Akun Wahdah Inisiatif Kebaikan adalah: *{otp_code}*\n\nKode ini berlaku selama 5 menit. Jika Anda tidak merasa meminta reset password, silakan abaikan pesan ini.",
             ],
         ];
 
@@ -365,6 +379,46 @@ class DatabaseSeeder extends Seeder
                     'is_published' => true,
                 ]
             );
+        }
+    }
+
+    private function seedPages()
+    {
+        $pages = [
+            [
+                'title' => 'Tentang Kami',
+                'slug' => 'tentang-kami',
+                'content' => '<h3>Mengenal Lebih Dekat Wahdah Inisiatif Kebaikan</h3><p>Wahdah Inisiatif Kebaikan adalah platform gotong royong digital yang menghubungkan jutaan orang baik untuk saling membantu sesama. Kami percaya bahwa setiap inisiatif kecil dapat membawa perubahan besar bagi mereka yang membutuhkan.</p><p>Berdiri sejak tahun 2024, kami telah memfasilitasi ribuan kampanye sosial mulai dari bantuan medis, bencana alam, pendidikan, hingga pemberdayaan ekonomi masyarakat. Visi kami adalah menjadi jembatan kebaikan terpercaya di Indonesia yang transparan, akuntabel, dan berdampak luas.</p>',
+                'is_active' => true
+            ],
+            [
+                'title' => 'Syarat & Ketentuan',
+                'slug' => 'syarat-ketentuan',
+                'content' => '<h3>Syarat & Ketentuan Pengguna</h3><p>Selamat datang di platform Wahdah Inisiatif Kebaikan. Dengan menggunakan layanan kami, Anda dianggap telah menyetujui ketentuan berikut:</p><ul><li>Donatur wajib memberikan informasi yang benar.</li><li>Dilarang menggunakan platform untuk pencucian uang.</li><li>Laporan penyaluran akan diberikan secara berkala melalui update kampanye.</li></ul>',
+                'is_active' => true
+            ],
+            [
+                'title' => 'Kebijakan Privasi',
+                'slug' => 'kebijakan-privasi',
+                'content' => '<h3>Kebijakan Privasi Data Pengguna</h3><p>Kami sangat menghargai privasi Anda. Data yang kami kumpulkan (nama, email, nomor HP) hanya digunakan untuk keperluan layanan, verifikasi akun, dan keamanan transaksi. Kami menggunakan standar keamanan enkripsi SSL untuk melindungi data Anda dari akses tidak sah.</p>',
+                'is_active' => true
+            ],
+            [
+                'title' => 'Pusat Bantuan',
+                'slug' => 'pusat-bantuan',
+                'content' => '<h3>Pusat Bantuan & FAQ</h3><p>Punya pertanyaan seputar cara donasi atau pendaftaran mitra? Silakan hubungi Customer Service kami melalui WhatsApp atau email yang tertera di halaman Hubungi Kami.</p><ul><li>Bagaimana cara donasi? Pilih campaign, masukkan nominal, dan pilih metode pembayaran.</li><li>Kapan donasi saya terverifikasi? Otomatis 1-5 menit setelah pembayaran (kecuali transfer manual).</li></ul>',
+                'is_active' => true
+            ],
+            [
+                'title' => 'Hubungi Kami',
+                'slug' => 'hubungi-kami',
+                'content' => '<h3>Hubungi Kami</h3><p>Anda dapat menghubungi tim pusat informasi kami melalui saluran resmi berikut.</p>',
+                'is_active' => true
+            ],
+        ];
+
+        foreach ($pages as $p) {
+            \App\Models\Page::updateOrCreate(['slug' => $p['slug']], $p);
         }
     }
 }

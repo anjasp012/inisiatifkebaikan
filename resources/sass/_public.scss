@@ -205,16 +205,44 @@ body.app-layout {
                 i {
                     font-size: 20px;
                     margin-bottom: 2px;
-                    transition: transform 0.2s;
+                    transition: all 0.2s;
                     line-height: 0;
                 }
 
-                &.active,
                 &:hover {
                     color: #272b30;
 
                     i {
                         transform: translateY(-2px);
+                    }
+                }
+
+                &.active {
+                    color: #272b30;
+
+                    i {
+                        transform: translateY(-2px);
+
+                        // Force filled icons based on the base class when parent is active
+                        &.bi-heart::before {
+                            content: "\f415" !important;
+                        }
+
+                        &.bi-plus-circle::before {
+                            content: "\f4f9" !important;
+                        }
+
+                        &.bi-clock::before {
+                            content: "\f291" !important;
+                        }
+
+                        &.bi-file-earmark-bar-graph::before {
+                            content: "\f359" !important;
+                        }
+
+                        &.bi-person::before {
+                            content: "\f4da" !important;
+                        }
                     }
                 }
             }
