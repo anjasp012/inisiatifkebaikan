@@ -123,7 +123,12 @@ new #[Layout('layouts.app')] class extends Component {
                                 'color' => 'primary',
                                 'route' => route('fundraiser.campaign.ubah', $campaign->slug),
                             ],
-                            ['icon' => 'shield-check', 'label' => 'Verifikasi', 'color' => 'warning', 'route' => '#'],
+                            [
+                                'icon' => 'eye',
+                                'label' => 'Lihat Live',
+                                'color' => 'warning',
+                                'route' => route('campaign.show', $campaign->slug),
+                            ],
                             [
                                 'icon' => 'newspaper',
                                 'label' => 'Tulis Kabar',
@@ -134,9 +139,14 @@ new #[Layout('layouts.app')] class extends Component {
                                 'icon' => 'wallet2',
                                 'label' => 'Cairkan Dana',
                                 'color' => 'success',
-                                'route' => route('fundraiser.galang-dana.pencairan', $campaign->slug),
+                                'route' => route('fundraiser.pencairan.buat', ['campaign_id' => $campaign->id]),
                             ],
-                            ['icon' => 'clock-history', 'label' => 'Riwayat', 'color' => 'secondary', 'route' => '#'],
+                            [
+                                'icon' => 'clock-history',
+                                'label' => 'Riwayat Cair',
+                                'color' => 'secondary',
+                                'route' => route('fundraiser.pencairan.index'),
+                            ],
                             [
                                 'icon' => 'people',
                                 'label' => 'Donatur',
@@ -150,7 +160,7 @@ new #[Layout('layouts.app')] class extends Component {
                         <div class="col-4">
                             <a href="{{ $menu['route'] }}"
                                 class="card border-0 shadow-sm rounded-3 text-center h-100 transition-200 text-decoration-none"
-                                {{ str_contains($menu['route'], 'http') ? 'wire:navigate' : '' }}>
+                                {{ $menu['route'] !== '#' ? 'wire:navigate' : '' }}>
                                 <div class="card-body p-3 d-flex flex-column align-items-center justify-content-center">
                                     <div class="bg-{{ $menu['color'] }} bg-opacity-10 text-{{ $menu['color'] }} rounded-3 mb-2 d-flex align-items-center justify-content-center shadow-micro"
                                         style="width: 44px; height: 44px;">

@@ -122,7 +122,7 @@ new class extends Component {
 };
 ?>
 
-<div>
+<div x-init="fbq('track', 'ViewContent')">
     <x-app.navbar-secondary title="Detail Program" />
 
     {{-- Campaign Image --}}
@@ -399,9 +399,5 @@ new class extends Component {
         </a>
     </div>
 
-    @push('scripts')
-        <script>
-            fbq('track', 'ViewContent');
-        </script>
-    @endpush
+
 </div>

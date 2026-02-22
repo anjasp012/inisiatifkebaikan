@@ -6,6 +6,7 @@ use App\Models\Campaign;
 use App\Models\CampaignUpdate;
 use App\Models\Fundraiser;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Livewire\WithFileUploads;
 
 new #[Layout('layouts.app')] class extends Component {

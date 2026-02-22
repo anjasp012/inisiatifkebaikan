@@ -209,7 +209,7 @@ use Illuminate\Support\Facades\DB;
                     class="card-body border-bottom d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                     <div>
                         <h5 class="fw-bold mb-1 text-dark">Tren Donasi Masuk</h5>
-                        <p class="text-muted small mb-0">Visualisasi data donasi masuk vs gagal.</p>
+                        <p class="text-muted small mb-0">Visualisasi data donasi berhasil vs belum terbayar.</p>
                     </div>
                     <div class="d-flex align-items-center gap-1 bg-light p-1 rounded-pill border shadow-sm ls-lg"
                         style="min-width: 220px;">

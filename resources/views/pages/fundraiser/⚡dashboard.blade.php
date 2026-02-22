@@ -157,7 +157,8 @@ new #[Layout('layouts.app')] class extends Component {
                             </a>
                         </div>
                         <div class="col-4">
-                            <a href="#" class="text-decoration-none text-dark group-hover">
+                            <a href="{{ route('fundraiser.pencairan.index') }}" wire:navigate
+                                class="text-decoration-none text-dark group-hover">
                                 <div class="bg-success bg-opacity-10 text-success rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center shadow-micro transition-200"
                                     style="width: 48px; height: 48px;">
                                     <i class="bi bi-wallet2 fs-5"></i>

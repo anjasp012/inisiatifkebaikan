@@ -16,7 +16,7 @@
                 <div class="search-overlay" :class="{ 'active': searchOpen }">
                     <x-app.navbar-secondary title="Cari Program" :close-search="true" class="flex-row-reverse" />
                     <div class="container-fluid search-container">
-                        <form class="search-form" action="#" method="GET">
+                        <form class="search-form" action="{{ route('campaign.index') }}" method="GET">
                             <div class="search-input-wrapper">
                                 <i class="bi bi-search search-icon"></i>
                                 <input type="text" class="search-input" x-ref="searchInput" name="q"
@@ -26,11 +26,16 @@
                         <div class="search-suggestions">
                             <p class="suggestions-title">Pencarian Populer</p>
                             <div class="suggestions-tags">
-                                <a href="#" class="suggestion-tag">Banjir</a>
-                                <a href="#" class="suggestion-tag">Pendidikan</a>
-                                <a href="#" class="suggestion-tag">Kesehatan</a>
-                                <a href="#" class="suggestion-tag">Zakat</a>
-                                <a href="#" class="suggestion-tag">Masjid</a>
+                                <a href="{{ route('campaign.index', ['q' => 'Banjir']) }}"
+                                    class="suggestion-tag">Banjir</a>
+                                <a href="{{ route('campaign.index', ['q' => 'Pendidikan']) }}"
+                                    class="suggestion-tag">Pendidikan</a>
+                                <a href="{{ route('campaign.index', ['q' => 'Kesehatan']) }}"
+                                    class="suggestion-tag">Kesehatan</a>
+                                <a href="{{ route('campaign.index', ['q' => 'Zakat']) }}"
+                                    class="suggestion-tag">Zakat</a>
+                                <a href="{{ route('campaign.index', ['q' => 'Masjid']) }}"
+                                    class="suggestion-tag">Masjid</a>
                             </div>
                         </div>
                     </div>

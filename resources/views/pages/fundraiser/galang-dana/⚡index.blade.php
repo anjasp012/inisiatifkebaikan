@@ -55,13 +55,6 @@ new #[Layout('layouts.app')] class extends Component {
                         class="btn btn-outline-primary w-100 py-3 fw-bold mb-3 border-2 border-dashed shadow-none">
                         <i class="bi bi-plus-lg me-1"></i> Buat galang dana baru
                     </a>
-
-                    <div
-                        class="alert alert-info border-0 bg-info bg-opacity-10 d-flex align-items-center gap-2 py-3 px-3 mb-0 rounded-3">
-                        <i class="bi bi-info-circle-fill text-info fs-5"></i>
-                        <p class="mb-0 x-small text-dark fw-medium">Ingin galang danamu lebih sukses? <a href="#"
-                                class="text-primary text-decoration-none fw-bold">Lihat panduan</a></p>
-                    </div>
                 </div>
             </div>
 
@@ -103,11 +96,18 @@ new #[Layout('layouts.app')] class extends Component {
                                             <span
                                                 class="fw-bold text-dark small">Rp{{ number_format($campaign->collected_amount, 0, ',', '.') }}</span>
                                         </div>
-                                        <a href="{{ route('fundraiser.galang-dana.kelola', $campaign->slug) }}"
-                                            wire:navigate
-                                            class="btn btn-primary btn-sm rounded-pill px-3 py-2 extra-small fw-bold shadow-sm">
-                                            Kelola
-                                        </a>
+                                        <div class="d-flex gap-2">
+                                            <a href="{{ route('fundraiser.pencairan.buat', ['campaign_id' => $campaign->id]) }}"
+                                                wire:navigate
+                                                class="btn btn-outline-success btn-sm rounded-pill px-3 py-2 extra-small fw-bold border-2">
+                                                Cairkan
+                                            </a>
+                                            <a href="{{ route('fundraiser.galang-dana.kelola', $campaign->slug) }}"
+                                                wire:navigate
+                                                class="btn btn-primary btn-sm rounded-pill px-3 py-2 extra-small fw-bold shadow-sm">
+                                                Kelola
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

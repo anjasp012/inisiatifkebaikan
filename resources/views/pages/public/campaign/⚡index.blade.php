@@ -36,10 +36,12 @@ new class extends Component {
 
     #[Url]
     public $filter = '';
+    #[Url]
+    public $q = '';
 
     public function updated($property)
     {
-        if (in_array($property, ['category', 'filter'])) {
+        if (in_array($property, ['category', 'filter', 'q'])) {
             $this->resetPage();
         }
     }
@@ -49,6 +51,9 @@ new class extends Component {
     {
         return Campaign::query()
             ->where('status', 'active')
+            ->when($this->q, function ($query) {
+                $query->where('title', 'like', '%' . $this->q . '%')->orWhere('description', 'like', '%' . $this->q . '%');
+            })
             ->when($this->category, function ($query) {
                 $query->whereHas('category', function ($q) {
                     $q->where('slug', $this->category);

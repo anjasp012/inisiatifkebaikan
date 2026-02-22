@@ -10,7 +10,7 @@
                     <i class="bi bi-arrow-left"></i>
                 </a>
             @endif
-            <span class="fw-semibold">{{ $title }}</small>
+            <span class="fw-semibold">{{ $title }}</span>
         </div>
     </div>
 </nav>

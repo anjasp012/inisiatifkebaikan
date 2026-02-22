@@ -52,11 +52,11 @@ new #[Layout('layouts.app')] class extends Component {
                         <div class="card-body p-3 d-flex align-items-center gap-3">
                             <div
                                 class="avatar avatar-md rounded-circle bg-light d-flex align-items-center justify-content-center text-primary fw-bold">
-                                {{ Str::substr($donation->name, 0, 1) }}
+                                {{ Str::substr($donation->donor_name, 0, 1) }}
                             </div>
                             <div class="flex-grow-1">
                                 <h6 class="fw-bold small mb-0">
-                                    {{ $donation->is_anonymous ? 'Sahabat Inisiat' : $donation->name }}</h6>
+                                    {{ $donation->is_anonymous ? 'Sahabat Inisiat' : $donation->donor_name }}</h6>
                                 <p class="text-muted extra-small mb-0">{{ $donation->created_at->format('d M Y, H:i') }}
                                 </p>
                                 @if ($donation->message)

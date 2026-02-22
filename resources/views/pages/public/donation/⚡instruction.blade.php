@@ -91,33 +91,35 @@ new class extends Component {
 };
 ?>
 
-<div @if ($donation->status === 'pending') wire:poll.10s="refreshStatus" @endif x-data="{
-    expiry: {{ $donation->expired_at ? $donation->expired_at->timestamp : 0 }},
-    timer: { h: '00', m: '00', s: '00' },
-    activeGroup: 0,
-    init() {
-        if (this.expiry === 0) return;
-        this.update();
-        setInterval(() => this.update(), 1000);
-    },
-    update() {
-        const now = Math.floor(Date.now() / 1000);
-        const diff = this.expiry - now;
-        if (diff <= 0) {
-            this.timer = { h: '00', m: '00', s: '00' };
-            return;
+<div x-init="fbq('track', 'Purchase', { value: {{ $donation->amount }}, currency: 'IDR' });
+@if (session('success_upload')) fbq('track', 'Donate', { value: {{ $donation->amount }}, currency: 'IDR' }); @endif" @if ($donation->status === 'pending') wire:poll.10s="refreshStatus" @endif
+    x-data="{
+        expiry: {{ $donation->expired_at ? $donation->expired_at->timestamp : 0 }},
+        timer: { h: '00', m: '00', s: '00' },
+        activeGroup: 0,
+        init() {
+            if (this.expiry === 0) return;
+            this.update();
+            setInterval(() => this.update(), 1000);
+        },
+        update() {
+            const now = Math.floor(Date.now() / 1000);
+            const diff = this.expiry - now;
+            if (diff <= 0) {
+                this.timer = { h: '00', m: '00', s: '00' };
+                return;
+            }
+            const h = Math.floor(diff / 3600);
+            const m = Math.floor((diff % 3600) / 60);
+            const s = Math.floor(diff % 60);
+            this.timer.h = h.toString().padStart(2, '0');
+            this.timer.m = m.toString().padStart(2, '0');
+            this.timer.s = s.toString().padStart(2, '0');
+        },
+        copyText(text) {
+            navigator.clipboard.writeText(text).then(() => alert('Tersalin!'));
         }
-        const h = Math.floor(diff / 3600);
-        const m = Math.floor((diff % 3600) / 60);
-        const s = Math.floor(diff % 60);
-        this.timer.h = h.toString().padStart(2, '0');
-        this.timer.m = m.toString().padStart(2, '0');
-        this.timer.s = s.toString().padStart(2, '0');
-    },
-    copyText(text) {
-        navigator.clipboard.writeText(text).then(() => alert('Tersalin!'));
-    }
-}">
+    }">
 
     <x-app.navbar-secondary title="Instruksi Pembayaran" route="{{ route('home') }}" />
 
@@ -311,19 +313,5 @@ new class extends Component {
         </div>
     </section>
 
-    @push('scripts')
-        <script>
-            fbq('track', 'Purchase', {
-                value: {{ $donation->amount }},
-                currency: 'IDR'
-            });
 
-            @if (session('success_upload'))
-                fbq('track', 'Donate', {
-                    value: {{ $donation->amount }},
-                    currency: 'IDR'
-                });
-            @endif
-        </script>
-    @endpush
 </div>

@@ -18,4 +18,6 @@ Route::livewire('/fundraiser/galang-dana/{campaign:slug}/kelola', 'pages::fundra
 
 Route::livewire('/fundraiser/galang-dana/{campaign:slug}/kabar', 'pages::fundraiser.galang-dana.kabar.index')->middleware('auth')->name('fundraiser.galang-dana.kabar');
 Route::livewire('/fundraiser/galang-dana/{campaign:slug}/donatur', 'pages::fundraiser.galang-dana.donatur.index')->middleware('auth')->name('fundraiser.galang-dana.donatur');
+Route::livewire('/fundraiser/pencairan', 'pages::fundraiser.pencairan.index')->middleware('auth')->name('fundraiser.pencairan.index');
+Route::livewire('/fundraiser/pencairan/buat', 'pages::fundraiser.pencairan.buat')->middleware('auth')->name('fundraiser.pencairan.buat');
 Route::livewire('/fundraiser/galang-dana/{campaign:slug}/pencairan', 'pages::fundraiser.galang-dana.pencairan.index')->middleware('auth')->name('fundraiser.galang-dana.pencairan');

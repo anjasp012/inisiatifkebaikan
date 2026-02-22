@@ -207,7 +207,8 @@ new class extends Component {
 };
 ?>
 
-<div
+<div x-init="fbq('track', 'AddPaymentInfo');
+fbq('track', 'AddToCart');"
     @donation-created.window="
         (function() {
             try {
@@ -343,10 +344,8 @@ new class extends Component {
                                         <div>
                                             <span
                                                 class="text-start d-block fw-bold text-dark small">{{ $bank->bank_name }}</span>
-                                            <div class="text-muted extra-small">
-                                                <span class="fw-bold">{{ $bank->account_number }}</span>
-                                                <span class="px-1">•</span>
-                                                <span>a.n {{ $bank->account_name }}</span>
+                                            <div class="text-muted extra-small text-start"><span>a.n
+                                                    {{ $bank->account_name }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -400,10 +399,5 @@ new class extends Component {
         </div>
     </section>
 
-    @push('scripts')
-        <script>
-            fbq('track', 'AddPaymentInfo');
-            fbq('track', 'AddToCart');
-        </script>
-    @endpush
+
 </div>
