@@ -5,6 +5,7 @@
     'placeholder' => '0',
     'defer' => false,
     'live' => false,
+    'debounce' => 500,
     'labelClass' => 'form-label',
 ])
 
@@ -15,6 +16,8 @@
 
 <div class="mb-3" x-data="{
     instance: null,
+    isTyping: false,
+    timer: null,
     value: @entangle($model){{ $entangleType }},
     init() {
         this.instance = new AutoNumeric(this.$refs.rupiahInput, {
@@ -33,14 +36,21 @@
             this.instance.set(this.value);
         }
 
-        // Sync from input to Alpine/Livewire
+        // Sync from input to Alpine/Livewire with debounce
         this.$refs.rupiahInput.addEventListener('autoNumeric:rawValueModified', (e) => {
-            this.value = e.detail.newRawValue;
+            this.isTyping = true;
+            clearTimeout(this.timer);
+
+            this.timer = setTimeout(() => {
+                this.value = e.detail.newRawValue;
+                this.isTyping = false;
+            }, {{ $debounce }});
         });
 
         // Watch for changes from Livewire to update AutoNumeric
         this.$watch('value', (newValue) => {
-            if (this.instance && newValue !== this.instance.getNumericString()) {
+            // Only update AutoNumeric if we're NOT typing (to avoid flickering/cursor issues)
+            if (this.instance && !this.isTyping && newValue !== this.instance.getNumericString()) {
                 this.instance.set(newValue);
             }
         });
