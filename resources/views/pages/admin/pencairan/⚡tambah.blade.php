@@ -25,7 +25,7 @@ new #[Layout('layouts.admin')] #[Title('Tambah Pencairan')] class extends Compon
     {
         if (in_array($propertyName, ['campaign_id', 'amount', 'ads_fee'])) {
             if ($propertyName === 'campaign_id') {
-                $this->amount = $this->maxAmount();
+                $this->amount = $this->maxAmount;
             }
             $this->calculateFees();
         }
@@ -38,7 +38,7 @@ new #[Layout('layouts.admin')] #[Title('Tambah Pencairan')] class extends Compon
         if ($amountVal > 0) {
             $this->platform_fee = $amountVal * 0.05;
 
-            if ($this->selectedCampaign() && $this->selectedCampaign()->is_optimized) {
+            if ($this->selectedCampaign && $this->selectedCampaign->is_optimized) {
                 $this->optimization_fee = $amountVal * 0.15;
             } else {
                 $this->optimization_fee = 0;
@@ -55,7 +55,7 @@ new #[Layout('layouts.admin')] #[Title('Tambah Pencairan')] class extends Compon
 
     public function calculateMerchantFee()
     {
-        if (!$this->campaign_id || !$this->selectedCampaign() || $this->selectedCampaign()->collected_amount <= 0) {
+        if (!$this->campaign_id || !$this->selectedCampaign || $this->selectedCampaign->collected_amount <= 0) {
             $this->merchant_fee = 0;
             return;
         }
@@ -68,31 +68,34 @@ new #[Layout('layouts.admin')] #[Title('Tambah Pencairan')] class extends Compon
 
         $unclaimedFees = max(0, $totalMerchantFeesIncurred - $previousMerchantFees);
 
-        if ($this->amount && $this->maxAmount() > 0) {
+        if ($this->amount && $this->maxAmount > 0) {
             // Proportional to the amount being withdrawn relative to available balance (maxAmount)
-            $ratio = min(1, (float) $this->amount / (float) $this->maxAmount());
+            $ratio = min(1, (float) $this->amount / (float) $this->maxAmount);
             $this->merchant_fee = round($unclaimedFees * $ratio);
         } else {
             $this->merchant_fee = 0;
         }
     }
 
+    #[Computed]
     public function selectedCampaign()
     {
         return $this->campaign_id ? Campaign::find($this->campaign_id) : null;
     }
 
+    #[Computed]
     public function maxAmount()
     {
-        if (!$this->selectedCampaign()) {
+        if (!$this->selectedCampaign) {
             return 0;
         }
 
         $alreadyWithdrawn = Withdrawal::where('campaign_id', $this->campaign_id)->where('status', '!=', 'rejected')->sum('amount');
 
-        return max(0, $this->selectedCampaign()->collected_amount - $alreadyWithdrawn);
+        return max(0, $this->selectedCampaign->collected_amount - $alreadyWithdrawn);
     }
 
+    #[Computed]
     public function netAmount()
     {
         $amount = (float) ($this->amount ?: 0);
@@ -106,6 +109,7 @@ new #[Layout('layouts.admin')] #[Title('Tambah Pencairan')] class extends Compon
         return max(0, $amount - ($ads + $ads_vat + $platform + $optimization + $merchant));
     }
 
+    #[Computed]
     public function adsVat()
     {
         return (float) ($this->ads_fee ?: 0) * 0.11;
@@ -136,11 +140,11 @@ new #[Layout('layouts.admin')] #[Title('Tambah Pencairan')] class extends Compon
             'campaign_id' => $this->campaign_id,
             'amount' => $this->amount,
             'ads_fee' => $this->ads_fee ?: 0,
-            'ads_vat' => $this->adsVat(),
+            'ads_vat' => $this->adsVat,
             'platform_fee' => $this->platform_fee ?: 0,
             'optimization_fee' => $this->optimization_fee ?: 0,
             'merchant_fee' => $this->merchant_fee ?: 0,
-            'net_amount' => $this->netAmount(),
+            'net_amount' => $this->netAmount,
             'status' => 'success',
             'notes' => $this->notes,
             'proof_image' => $path,
@@ -270,27 +274,27 @@ is-invalid
                         <div class="bg-light p-4 rounded-4 h-100 border-0">
                             <h6 class="fw-bold mb-4 border-bottom pb-2">Ringkasan</h6>
 
-                            @if ($this->selectedCampaign())
+                            @if ($this->selectedCampaign)
                                 <div class="mb-4">
                                     <h6 class="text-uppercase text-muted extra-small fw-bold mb-2">Campaign</h6>
-                                    <div class="fw-bold mb-1">{{ $this->selectedCampaign()->title }}</div>
+                                    <div class="fw-bold mb-1">{{ $this->selectedCampaign->title }}</div>
                                     <div class="small text-muted mb-2">Created
-                                        {{ $this->selectedCampaign()->created_at->format('d M Y') }}</div>
+                                        {{ $this->selectedCampaign->created_at->format('d M Y') }}</div>
 
                                     <div class="p-3 bg-white rounded-3 border mb-3">
                                         <div class="d-flex justify-content-between mb-1">
                                             <span class="extra-small text-muted">Terkumpul</span>
                                             <span class="extra-small fw-bold">Rp
-                                                {{ number_format($this->selectedCampaign()->collected_amount, 0, ',', '.') }}</span>
+                                                {{ number_format($this->selectedCampaign->collected_amount, 0, ',', '.') }}</span>
                                         </div>
                                         <div class="d-flex justify-content-between">
                                             <span class="extra-small text-muted">Bisa Dicairkan</span>
                                             <span class="extra-small fw-bold text-success">Rp
-                                                {{ number_format($this->maxAmount(), 0, ',', '.') }}</span>
+                                                {{ number_format($this->maxAmount, 0, ',', '.') }}</span>
                                         </div>
                                     </div>
 
-                                    @if ($this->selectedCampaign()->is_optimized)
+                                    @if ($this->selectedCampaign->is_optimized)
                                         <div
                                             class="alert alert-info d-flex align-items-center p-2 mb-0 border-0 bg-info bg-opacity-10 text-info extra-small">
                                             <i class="bi bi-lightning-fill me-2"></i>
