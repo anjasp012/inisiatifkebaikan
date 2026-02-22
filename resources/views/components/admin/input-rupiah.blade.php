@@ -4,16 +4,18 @@
     'label' => null,
     'placeholder' => '0',
     'defer' => false,
+    'live' => false,
     'labelClass' => 'form-label',
 ])
 
 @php
     $id = $id ?? $model;
+    $entangleType = $live ? '.live' : ($defer ? '.defer' : '');
 @endphp
 
 <div class="mb-3" x-data="{
     instance: null,
-    value: @entangle($model){{ $defer ? '.defer' : '' }},
+    value: @entangle($model){{ $entangleType }},
     init() {
         this.instance = new AutoNumeric(this.$refs.rupiahInput, {
             digitGroupSeparator: '.',

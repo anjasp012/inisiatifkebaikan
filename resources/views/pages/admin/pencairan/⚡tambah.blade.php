@@ -220,7 +220,7 @@ is-invalid
 
                             {{-- Input Nominal --}}
                             <div class="mb-4">
-                                <x-admin.input-rupiah model="amount" label="Nominal Pencairan" placeholder="0" />
+                                <x-admin.input-rupiah model="amount" label="Nominal Pencairan" placeholder="0" live />
                                 <div class="d-flex justify-content-between extra-small text-muted mt-1 px-1">
                                     <span>Min: Rp 10.000</span>
                                     <span class="fw-bold text-primary">Max: Rp
@@ -234,7 +234,8 @@ is-invalid
                             <h6 class="fw-bold mb-3 small text-uppercase">Rincian Potongan & Biaya</h6>
                             <div class="row g-3 mb-4">
                                 <div class="col-md-6">
-                                    <x-admin.input-rupiah model="ads_fee" label="Biaya Iklan (Ads)" placeholder="0" />
+                                    <x-admin.input-rupiah model="ads_fee" label="Biaya Iklan (Ads)" placeholder="0"
+                                        live />
                                     <div class="form-text extra-small text-muted mt-0">PPN 11% otomatis: Rp
                                         {{ number_format($this->adsVat, 0, ',', '.') }}</div>
                                 </div>
