@@ -387,11 +387,17 @@ body.app-layout {
                     font-size: 24px;
                     color: $primary;
                     transition: all 0.3s;
+                    overflow: hidden; // Ensure image doesn't bleed out
 
                     img {
-                        width: 32px;
-                        height: 32px;
-                        object-fit: contain;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover; // Better for uploaded icon images
+                        padding: 0; // Reset padding if any
+                    }
+
+                    i {
+                        line-height: 0;
                     }
                 }
 
