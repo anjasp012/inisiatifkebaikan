@@ -56,7 +56,7 @@ new #[Layout('layouts.app')] class extends Component {
                             </div>
                             <div class="flex-grow-1">
                                 <h6 class="fw-bold small mb-0">
-                                    {{ $donation->is_anonymous ? 'Sahabat Inisiat' : $donation->donor_name }}</h6>
+                                    {{ $donation->is_anonymous ? 'Sahabat Inisiatif' : $donation->donor_name }}</h6>
                                 <p class="text-muted extra-small mb-0">{{ $donation->created_at->format('d M Y, H:i') }}
                                 </p>
                                 @if ($donation->message)

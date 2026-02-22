@@ -189,7 +189,8 @@ new #[Layout('layouts.app')] class extends Component {
                             <div class="flex-grow-1 overflow-hidden">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h6 class="fw-bold extra-small mb-1 text-dark">
-                                        {{ $donation->is_anonymous ? 'Sahabat Inisiat' : $donation->donor_name }}</h6>
+                                        {{ $donation->is_anonymous ? 'Sahabat Inisiatif' : $donation->donor_name }}
+                                    </h6>
                                     <span
                                         class="fw-bold text-success small">+{{ number_format($donation->amount, 0, ',', '.') }}</span>
                                 </div>

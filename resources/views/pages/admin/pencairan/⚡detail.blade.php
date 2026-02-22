@@ -24,7 +24,7 @@ new #[Layout('layouts.admin')] class extends Component {
 
     public function updated($propertyName)
     {
-        if (in_array($propertyName, ['ads_fee'])) {
+        if ($propertyName === 'ads_fee') {
             $this->calculate();
         }
     }

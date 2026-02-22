@@ -268,7 +268,7 @@ fbq('track', 'AddToCart');"
                     <div x-show="activeGroup === 'ewallet'" x-collapse>
                         <div class="list-group list-group-flush border-top border-light">
                             @foreach ($banks->whereIn('method', ['ewallet', 'qris']) as $bank)
-                                <button wire:click="processPayment({{ $bank->id }})"
+                                <button wire:click="processPayment({{ $bank->id }})" wire:loading.attr="disabled"
                                     class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="bank-logo-mini">
@@ -277,7 +277,10 @@ fbq('track', 'AddToCart');"
                                         </div>
                                         <span class="fw-bold text-dark small">{{ $bank->bank_name }}</span>
                                     </div>
-                                    <i class="bi bi-chevron-right text-muted extra-small"></i>
+                                    <div wire:loading wire:target="processPayment({{ $bank->id }})"
+                                        class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                                    <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
+                                        class="bi bi-chevron-right text-muted extra-small"></i>
                                 </button>
                             @endforeach
                         </div>
@@ -301,7 +304,7 @@ fbq('track', 'AddToCart');"
                     <div x-show="activeGroup === 'va'" x-collapse>
                         <div class="list-group list-group-flush border-top border-light">
                             @foreach ($banks->where('method', 'va') as $bank)
-                                <button wire:click="processPayment({{ $bank->id }})"
+                                <button wire:click="processPayment({{ $bank->id }})" wire:loading.attr="disabled"
                                     class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="bank-logo-mini">
@@ -310,7 +313,10 @@ fbq('track', 'AddToCart');"
                                         </div>
                                         <span class="fw-bold text-dark small">{{ $bank->bank_name }}</span>
                                     </div>
-                                    <i class="bi bi-chevron-right text-muted extra-small"></i>
+                                    <div wire:loading wire:target="processPayment({{ $bank->id }})"
+                                        class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                                    <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
+                                        class="bi bi-chevron-right text-muted extra-small"></i>
                                 </button>
                             @endforeach
                         </div>
@@ -334,7 +340,7 @@ fbq('track', 'AddToCart');"
                     <div x-show="activeGroup === 'manual'" x-collapse>
                         <div class="list-group list-group-flush border-top border-light">
                             @foreach ($banks->where('method', 'manual') as $bank)
-                                <button wire:click="processPayment({{ $bank->id }})"
+                                <button wire:click="processPayment({{ $bank->id }})" wire:loading.attr="disabled"
                                     class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
                                     <div class="d-flex align-items-center gap-3">
                                         <div class="bank-logo-mini">
@@ -349,7 +355,10 @@ fbq('track', 'AddToCart');"
                                             </div>
                                         </div>
                                     </div>
-                                    <i class="bi bi-chevron-right text-muted extra-small"></i>
+                                    <div wire:loading wire:target="processPayment({{ $bank->id }})"
+                                        class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                                    <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
+                                        class="bi bi-chevron-right text-muted extra-small"></i>
                                 </button>
                             @endforeach
                         </div>
@@ -375,6 +384,7 @@ fbq('track', 'AddToCart');"
                             <div class="list-group list-group-flush border-top border-light">
                                 @foreach ($banks->where('method', 'retail') as $bank)
                                     <button wire:click="processPayment({{ $bank->id }})"
+                                        wire:loading.attr="disabled"
                                         class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="bank-logo-mini">
@@ -383,7 +393,11 @@ fbq('track', 'AddToCart');"
                                             </div>
                                             <span class="fw-bold text-dark small">{{ $bank->bank_name }}</span>
                                         </div>
-                                        <i class="bi bi-chevron-right text-muted extra-small"></i>
+                                        <div wire:loading wire:target="processPayment({{ $bank->id }})"
+                                            class="spinner-border spinner-border-sm text-primary" role="status">
+                                        </div>
+                                        <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
+                                            class="bi bi-chevron-right text-muted extra-small"></i>
                                     </button>
                                 @endforeach
                             </div>

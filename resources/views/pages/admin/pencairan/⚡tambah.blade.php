@@ -37,7 +37,8 @@ new #[Layout('layouts.admin')] #[Title('Tambah Pencairan')] class extends Compon
 
     public function updatedAdsFee()
     {
-        // Recalculate if ads fee changes (VA manual override maybe?)
+        // Recalculate all fees if ads fee changes
+        $this->calculateFees();
     }
 
     public function calculateMerchantFee()
