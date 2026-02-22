@@ -89,8 +89,11 @@ new #[Layout('layouts.admin')] class extends Component {
                                         <i class="bi {{ $category->icon }} fs-3 text-primary"></i>
                                     </div>
                                 @else
-                                    <img loading="lazy" src="{{ $category->icon_url }}"
-                                        class="rounded-2 object-fit-cover avatar-md" alt="{{ $category->name }}">
+                                    <div
+                                        class="d-flex align-items-center justify-content-center bg-light rounded-2 avatar-md">
+                                        <img loading="lazy" src="{{ $category->icon_url }}"
+                                            class="rounded-2 object-fit-cover avatar-md" alt="{{ $category->name }}">
+                                    </div>
                                 @endif
                             </td>
                             <td>{{ $category->name }}</td>
