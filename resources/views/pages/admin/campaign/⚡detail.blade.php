@@ -14,129 +14,221 @@ new #[Layout('layouts.admin')] class extends Component {
 }; ?>
 
 <div>
-    <div class="row mb-4 align-items-center">
-        <div class="col-sm">
-            <h1 class="h3 mb-0 text-gray-800">Detail Campaign</h1>
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0 px-0 bg-transparent">
-                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}" wire:navigate>Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admin.campaign') }}" wire:navigate>Campaign</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Detail</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="col-sm-auto mt-3 mt-sm-0">
-            <a href="{{ route('admin.campaign') }}" wire:navigate class="btn btn-secondary">
-                <i class="bi bi-arrow-left me-1"></i> Kembali
-            </a>
-            <a href="{{ route('admin.campaign.ubah', $campaign->slug) }}" wire:navigate class="btn btn-primary">
-                <i class="bi bi-pencil me-1"></i> Edit Campaign
-            </a>
-        </div>
-    </div>
+    <div class="row g-4">
+        {{-- Header & Stats --}}
+        <div class="col-12">
+            <div class="card card-dashboard border-0 mb-0">
+                <div class="card-body border-bottom">
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                        <div>
+                            <h5 class="fw-bold mb-1">Detail Campaign</h5>
+                            <p class="text-muted small mb-0">{{ $campaign->title }}</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('admin.campaign') }}" wire:navigate class="btn btn-light border">
+                                <i class="bi bi-arrow-left me-1"></i> Kembali
+                            </a>
+                            <a href="{{ route('admin.campaign.ubah', $campaign->slug) }}" wire:navigate
+                                class="btn btn-primary text-white fw-bold">
+                                <i class="bi bi-pencil-square me-1"></i> Edit Campaign
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="p-4 bg-light bg-opacity-50">
+                        <div class="row g-4 align-items-center">
+                            <div class="col-md-7">
+                                <h6 class="text-uppercase text-muted extra-small fw-bold mb-2 ls-sm">DANA TERHIMPUN</h6>
+                                <div class="display-6 fw-bold text-primary mb-3">
+                                    Rp {{ number_format($campaign->collected_amount, 0, ',', '.') }}
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    @if ($campaign->status == 'active')
+                                        <span class="badge rounded-pill px-3 py-2 bg-success text-white">
+                                            <i class="bi bi-check-circle-fill me-1"></i> Status: Aktif
+                                        </span>
+                                    @elseif($campaign->status == 'pending')
+                                        <span class="badge rounded-pill px-3 py-2 bg-warning text-dark">
+                                            <i class="bi bi-clock-fill me-1"></i> Status: Pending
+                                        </span>
+                                    @elseif($campaign->status == 'hidden')
+                                        <span class="badge rounded-pill px-3 py-2 bg-secondary text-white">
+                                            <i class="bi bi-eye-slash-fill me-1"></i> Status: Disembunyikan
+                                        </span>
+                                    @else
+                                        <span class="badge rounded-pill px-3 py-2 bg-danger text-white">
+                                            <i class="bi bi-x-circle-fill me-1"></i> Status:
+                                            {{ ucfirst($campaign->status) }}
+                                        </span>
+                                    @endif
 
-    <div class="row">
-        <div class="col-md-4 mb-4">
-            <div class="card shadow-sm border-0">
-                <img src="{{ $campaign->thumbnail_url }}" class="card-img-top" alt="{{ $campaign->title }}">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">{{ $campaign->title }}</h5>
-                    <p class="text-muted small mb-3">Oleh:
-                        {{ $campaign->fundraiser ? $campaign->fundraiser->foundation_name : 'Inisiatif Kebaikan' }}</p>
+                                    <span class="badge rounded-pill px-3 py-2 bg-light text-dark border">
+                                        <i class="bi bi-tag-fill me-1 text-primary"></i>
+                                        {{ $campaign->category->name ?? 'Tanpa Kategori' }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="p-3 bg-white rounded-4 border shadow-sm">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="small text-muted fw-bold">Progress Capaian</span>
+                                        <span class="small fw-bold text-primary">
+                                            @if ($campaign->target_amount > 0)
+                                                {{ number_format(($campaign->collected_amount / $campaign->target_amount) * 100, 1) }}%
+                                            @else
+                                                100%
+                                            @endif
+                                        </span>
+                                    </div>
+                                    <div class="progress mb-2" style="height: 10px;">
+                                        @php $percent = $campaign->target_amount > 0 ? min(100, ($campaign->collected_amount / $campaign->target_amount) * 100) : 100; @endphp
+                                        <div class="progress-bar bg-primary" role="progressbar"
+                                            style="width: {{ $percent }}%"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between extra-small text-muted">
+                                        <span>Target: Rp
+                                            {{ number_format($campaign->target_amount, 0, ',', '.') }}</span>
+                                        <span>{{ number_format($campaign->donations_count ?? $campaign->donations()->where('status', 'success')->count(), 0, ',', '.') }}
+                                            Donatur</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                    <div class="d-flex justify-content-between mb-1">
-                        <span class="small fw-bold text-primary">Rp
-                            {{ number_format($campaign->collected_amount, 0, ',', '.') }}</span>
-                        <span class="small text-muted">Target: @if ($campaign->target_amount)
-                                Rp {{ number_format($campaign->target_amount, 0, ',', '.') }}
-                            @else
-                                Tidak Terbatas
-                            @endif
+        {{-- Main Content --}}
+        <div class="col-lg-8">
+            <div class="card card-dashboard border-0 mb-4">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-4 d-flex align-items-center">
+                        <i class="bi bi-info-circle-fill me-2 text-primary"></i> Informasi Detail
+                    </h6>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="text-muted extra-small fw-bold text-uppercase mb-2 d-block">Judul
+                                Program</label>
+                            <div class="p-3 bg-light rounded-3 fw-bold">{{ $campaign->title }}</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted extra-small fw-bold text-uppercase mb-2 d-block">Fundraiser /
+                                Mitra</label>
+                            <div class="p-3 bg-light rounded-3">
+                                <div class="fw-bold">
+                                    {{ $campaign->fundraiser ? $campaign->fundraiser->foundation_name : 'Inisiatif Kebaikan (Internal)' }}
+                                </div>
+                                <div class="small text-muted">
+                                    {{ $campaign->fundraiser ? $campaign->fundraiser->user->email : 'admin@inisiatifkebaikan.org' }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted extra-small fw-bold text-uppercase mb-2 d-block">Lokasi
+                                Penempatan</label>
+                            <div class="p-3 bg-light rounded-3">
+                                <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                                {{ $campaign->location ?? 'Nasional / Seluruh Indonesia' }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="text-muted extra-small fw-bold text-uppercase mb-2 d-block">Periode
+                                Campaign</label>
+                            <div class="p-3 bg-light rounded-3 d-flex align-items-center justify-content-between">
+                                <div>
+                                    <small class="text-muted d-block">Mulai</small>
+                                    <span
+                                        class="fw-bold">{{ $campaign->start_date ? $campaign->start_date->format('d M Y') : '-' }}</span>
+                                </div>
+                                <div class="text-end">
+                                    <small class="text-muted d-block">Berakhir</small>
+                                    <span
+                                        class="fw-bold">{{ $campaign->end_date ? $campaign->end_date->format('d M Y') : 'Tanpa Batas' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4 border-dashed">
+
+                    <h6 class="fw-bold mb-4">Deskripsi Lengkap</h6>
+                    <div class="campaign-description p-3 border rounded-4 bg-white shadow-sm"
+                        style="max-height: 500px; overflow-y: auto;">
+                        {!! $campaign->description !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- Sidebar --}}
+        <div class="col-lg-4">
+            {{-- Thumbnail Card --}}
+            <div class="card card-dashboard border-0 mb-4 overflow-hidden">
+                <div class="position-relative">
+                    <img src="{{ $campaign->thumbnail_url }}" class="card-img-top w-100"
+                        style="height: 200px; object-fit: cover;" alt="{{ $campaign->title }}">
+                    <div class="position-absolute top-0 end-0 m-3">
+                        <span class="badge bg-white text-dark shadow-sm">
+                            <i class="bi bi-image me-1"></i> Thumbnail
                         </span>
                     </div>
-
-                    @if ($campaign->target_amount)
-                        <div class="progress mb-3" style="height: 8px;">
-                            @php $percent = min(100, ($campaign->collected_amount / max(1, $campaign->target_amount)) * 100); @endphp
-                            <div class="progress-bar bg-primary" role="progressbar"
-                                style="width: {{ $percent }}%"></div>
-                        </div>
-                    @endif
-
-                    <div class="d-flex justify-content-between align-items-center mb-0 mt-3 border-top pt-3">
-                        <span class="small">Status</span>
-                        @if ($campaign->status === 'active')
-                            <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">Aktif</span>
-                        @elseif ($campaign->status === 'completed')
-                            <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3">Selesai</span>
-                        @elseif ($campaign->status === 'hidden')
-                            <span
-                                class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3">Disembunyikan</span>
-                        @elseif ($campaign->status === 'pending')
-                            <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3">Pending</span>
-                        @elseif ($campaign->status === 'rejected')
-                            <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3">Ditolak</span>
-                        @else
-                            <span
-                                class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3">{{ ucfirst($campaign->status) }}</span>
-                        @endif
-                    </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="col-md-8">
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-body">
-                    <h5 class="fw-bold mb-4 border-bottom pb-2">Informasi Campaign</h5>
-
-                    <div class="row mb-3">
-                        <div class="col-sm-4 text-muted">Kategori</div>
-                        <div class="col-sm-8 fw-semibold">{{ $campaign->category->name ?? '-' }}</div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-sm-4 text-muted">Lokasi / Penempatan</div>
-                        <div class="col-sm-8">{{ $campaign->location ?? '-' }}</div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-sm-4 text-muted">Tanggal Mulai</div>
-                        <div class="col-sm-8">
-                            {{ $campaign->start_date ? $campaign->start_date->format('d M Y') : '-' }}</div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-sm-4 text-muted">Tanggal Selesai</div>
-                        <div class="col-sm-8">
-                            {{ $campaign->end_date ? $campaign->end_date->format('d M Y') : 'Tidak Terbatas' }}</div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-sm-4 text-muted">Visibilitas</div>
-                        <div class="col-sm-8">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-3 small text-uppercase text-muted ls-sm">PROPERTI & VISIBILITAS</h6>
+                    <div class="list-group list-group-flush border rounded-3 overflow-hidden">
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="small text-muted">Prioritas</span>
                             @if ($campaign->is_priority)
                                 <span
-                                    class="badge bg-info bg-opacity-10 text-info rounded-pill px-2 me-1">Prioritas</span>
+                                    class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Ya</span>
+                            @else
+                                <span class="badge bg-light text-muted border rounded-pill">Tidak</span>
                             @endif
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="small text-muted">Optimasi Admin</span>
                             @if ($campaign->is_optimized)
                                 <span
-                                    class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-2 me-1">Optimasi</span>
+                                    class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill">Ya</span>
+                            @else
+                                <span class="badge bg-light text-muted border rounded-pill">Tidak</span>
                             @endif
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <span class="small text-muted">Tampil di Slider</span>
                             @if ($campaign->is_slider)
                                 <span
-                                    class="badge bg-success bg-opacity-10 text-success rounded-pill px-2">Slider</span>
+                                    class="badge bg-info-subtle text-info border border-info-subtle rounded-pill">Ya</span>
+                            @else
+                                <span class="badge bg-light text-muted border rounded-pill">Tidak</span>
                             @endif
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h5 class="fw-bold mb-4 border-bottom pb-2">Deskripsi</h5>
-                    <div class="campaign-description">
-                        {!! $campaign->description !!}
+            {{-- Quick Stats Sidebar --}}
+            <div class="card card-dashboard border-0 border-start border-4 border-primary">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-3 extra-small text-uppercase text-muted">
+                        <i class="bi bi-graph-up-arrow me-1"></i> Statistik Penarikan
+                    </h6>
+                    @php
+                        $totalWithdrawn = \App\Models\Withdrawal::where('campaign_id', $campaign->id)
+                            ->where('status', 'success')
+                            ->sum('amount');
+                        $available = $campaign->collected_amount - $totalWithdrawn;
+                    @endphp
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Dana Belum Dicairkan</small>
+                        <h4 class="fw-bold text-success mb-0">Rp {{ number_format($available, 0, ',', '.') }}</h4>
+                    </div>
+                    <div class="mb-0">
+                        <small class="text-muted d-block">Total Pernah Dicairkan</small>
+                        <h6 class="fw-bold text-dark">Rp {{ number_format($totalWithdrawn, 0, ',', '.') }}</h6>
                     </div>
                 </div>
             </div>
