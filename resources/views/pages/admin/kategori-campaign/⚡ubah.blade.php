@@ -18,6 +18,7 @@ new #[Layout('layouts.admin')] class extends Component {
     public $searchIcon = '';
 
     public string $name = '';
+    public bool $is_active = true;
 
     public function mount(CampaignCategory $campaignCategory)
     {
@@ -38,6 +39,7 @@ new #[Layout('layouts.admin')] class extends Component {
         } else {
             $this->iconType = 'upload';
         }
+        $this->is_active = $campaignCategory->is_active;
     }
 
     public function updatedIconType()
@@ -54,6 +56,7 @@ new #[Layout('layouts.admin')] class extends Component {
     {
         $rules = [
             'name' => 'required|string|max:100',
+            'is_active' => 'boolean',
         ];
 
         if ($this->iconType === 'upload') {
@@ -93,6 +96,7 @@ new #[Layout('layouts.admin')] class extends Component {
             'icon' => $finalIcon,
             'name' => $validated['name'],
             'slug' => Str::slug($validated['name']),
+            'is_active' => $this->is_active,
         ]);
 
         session()->flash('toast', [
@@ -214,6 +218,15 @@ new #[Layout('layouts.admin')] class extends Component {
                                 {{ $message }}
                             </div>
                         @enderror
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-check form-switch mt-2">
+                            <input class="form-check-input" type="checkbox" role="switch" id="is_active"
+                                wire:model="is_active">
+                            <label class="form-check-label fw-bold small" for="is_active">Kategori Aktif (Muncul di
+                                Website)</label>
+                        </div>
                     </div>
                 </div>
                 <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-4">

@@ -35,19 +35,27 @@ new #[Layout('layouts.app')] class extends Component {
         $this->withdrawals = Withdrawal::where('campaign_id', $this->campaign->id)->latest()->get();
     }
 
+    #[Livewire\Attributes\Computed]
+    public function maxAmount()
+    {
+        $alreadyWithdrawn = Withdrawal::where('campaign_id', $this->campaign->id)->where('status', '!=', 'rejected')->sum('amount');
+
+        return max(0, $this->campaign->collected_amount - $alreadyWithdrawn);
+    }
+
     public function requestWithdrawal()
     {
         $this->validate([
-            'amount' => 'required|numeric|min:10000|max:' . $this->campaign->collected_amount,
+            'amount' => 'required|numeric|min:10000|max:' . $this->maxAmount,
             'notes' => 'required|string|max:255',
-            'proof' => 'required|image|max:2048', // Proof of need or just ID? Let's say Proof of Request Document
+            'proof' => 'required|image|max:2048',
         ]);
 
         $withdrawal = new Withdrawal();
         $withdrawal->campaign_id = $this->campaign->id;
         $withdrawal->fundraiser_id = $this->campaign->fundraiser_id;
         $withdrawal->amount = $this->amount;
-        $withdrawal->net_amount = $this->amount; // Preliminary, admin adjusts fees
+        $withdrawal->net_amount = 0; // Admin will calculate fees later
         $withdrawal->status = 'pending';
         $withdrawal->notes = $this->notes;
 
@@ -57,7 +65,7 @@ new #[Layout('layouts.app')] class extends Component {
 
         $withdrawal->save();
 
-        session()->flash('success', 'Permintaan pencairan dana berhasil dikirim!');
+        session()->flash('success', 'Permintaan pencairan dana berhasil dikirim! ✅');
         $this->reset(['amount', 'notes', 'proof']);
         $this->loadWithdrawals();
     }
@@ -72,7 +80,7 @@ new #[Layout('layouts.app')] class extends Component {
             <div class="card border-0 shadow-sm rounded-3 mb-4 bg-primary text-white">
                 <div class="card-body p-3 text-center">
                     <h6 class="extra-small opacity-75 mb-1">Saldo Dapat Dicairkan</h6>
-                    <h5 class="fw-bold mb-0">Rp {{ number_format($campaign->collected_amount, 0, ',', '.') }}</h5>
+                    <h5 class="fw-bold mb-0">Rp {{ number_format($this->maxAmount, 0, ',', '.') }}</h5>
                     <small class="d-block mt-2 opacity-50 extra-small">*Biaya admin & platform akan dipotong saat
                         pencairan disetujui.</small>
                 </div>
@@ -92,10 +100,17 @@ new #[Layout('layouts.app')] class extends Component {
                     <form wire:submit="requestWithdrawal">
                         <div class="mb-3">
                             <label class="form-label extra-small text-muted mb-1">Nominal Pencairan</label>
-                            <input type="number" wire:model="amount" class="form-control form-control-sm rounded-3"
-                                placeholder="Min. Rp 10.000">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light border-end-0">Rp</span>
+                                <input type="number" wire:model="amount"
+                                    class="form-control border-start-0 ps-0 fw-bold" placeholder="Min. 10.000">
+                            </div>
+                            <div class="extra-small text-muted mt-1 px-1 d-flex justify-content-between">
+                                <span>Min: Rp 10rb</span>
+                                <span>Maks: Rp {{ number_format($this->maxAmount, 0, ',', '.') }}</span>
+                            </div>
                             @error('amount')
-                                <span class="text-danger extra-small">{{ $message }}</span>
+                                <span class="text-danger extra-small mt-1 d-block">{{ $message }}</span>
                             @enderror
                         </div>
 

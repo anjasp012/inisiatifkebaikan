@@ -210,7 +210,7 @@ new #[Layout('layouts.admin')] #[Title('Tambah Pencairan')] class extends Compon
                                             });
                                         }
                                     }"
-                                        class="form-select @error('campaign_id')
+                                        class="form-select bg-white @error('campaign_id')
 is-invalid
 @enderror">
                                         <option value=""></option>
