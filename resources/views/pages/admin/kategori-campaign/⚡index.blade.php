@@ -83,7 +83,7 @@ new #[Layout('layouts.admin')] class extends Component {
                         <tr>
                             <td class="text-center">{{ $this->categories->firstItem() + $no }}</td>
                             <td>
-                                @if (str_starts_with($category->icon, 'bi-'))
+                                @if (str_starts_with($category->icon, 'bi'))
                                     <div
                                         class="d-flex align-items-center justify-content-center bg-light rounded-2 avatar-md">
                                         <i class="bi {{ $category->icon }} fs-3 text-primary"></i>

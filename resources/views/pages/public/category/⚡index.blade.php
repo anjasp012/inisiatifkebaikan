@@ -36,7 +36,7 @@ new class extends Component {
                     <div class="col-3">
                         <a href="{{ route('campaign.index', ['category' => $category->slug]) }}" class="category-item">
                             <div class="category-icon">
-                                @if (str_starts_with($category->icon, 'bi-'))
+                                @if (str_starts_with($category->icon, 'bi'))
                                     <i class="bi {{ $category->icon }}"></i>
                                 @else
                                     <img src="{{ $category->icon_url }}" alt="{{ $category->name }}">
