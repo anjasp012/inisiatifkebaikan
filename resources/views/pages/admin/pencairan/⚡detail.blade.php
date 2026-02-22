@@ -183,7 +183,7 @@ new #[Layout('layouts.admin')] class extends Component {
                     <div class="row g-3 mb-4">
                         <div class="col-md-6">
                             <x-admin.input-rupiah model="ads_fee" label="Biaya Ads (Manual)" placeholder="0"
-                                :disabled="$withdrawal->status != 'pending'" />
+                                :disabled="$withdrawal->status != 'pending'" live />
                         </div>
                         <div class="col-md-6">
                             <label class="form-label extra-small fw-bold text-muted text-uppercase">Biaya Merchant
