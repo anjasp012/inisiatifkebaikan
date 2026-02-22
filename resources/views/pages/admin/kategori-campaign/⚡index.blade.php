@@ -31,7 +31,7 @@ new #[Layout('layouts.admin')] class extends Component {
             return;
         }
 
-        if (!$campaignCategory->is_bootstrap_icon && $campaignCategory->icon && file_exists(public_path('storage/' . $campaignCategory->icon))) {
+        if (!str_starts_with($campaignCategory->icon, 'bi-') && $campaignCategory->icon && file_exists(public_path('storage/' . $campaignCategory->icon))) {
             unlink(public_path('storage/' . $campaignCategory->icon));
         }
 
@@ -83,7 +83,7 @@ new #[Layout('layouts.admin')] class extends Component {
                         <tr>
                             <td class="text-center">{{ $this->categories->firstItem() + $no }}</td>
                             <td>
-                                @if ($category->is_bootstrap_icon)
+                                @if (str_starts_with($category->icon, 'bi-'))
                                     <div
                                         class="d-flex align-items-center justify-content-center bg-light rounded-2 avatar-md">
                                         <i class="bi {{ $category->icon }} fs-3 text-primary"></i>

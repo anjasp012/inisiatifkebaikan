@@ -155,7 +155,7 @@ new class extends Component {
                         <a wire:navigate href="{{ route('campaign.index', ['category' => $category->slug]) }}"
                             class="category-item">
                             <div class="category-icon">
-                                @if ($category->is_bootstrap_icon)
+                                @if (str_starts_with($category->icon, 'bi-'))
                                     <i class="bi {{ $category->icon }}"></i>
                                 @else
                                     <img src="{{ $category->icon_url }}" alt="{{ $category->name }}">

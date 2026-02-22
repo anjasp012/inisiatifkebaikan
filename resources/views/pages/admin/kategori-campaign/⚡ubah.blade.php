@@ -33,7 +33,7 @@ new #[Layout('layouts.admin')] class extends Component {
         }
 
         // Determine icon type
-        if ($campaignCategory->is_bootstrap_icon) {
+        if (str_starts_with($campaignCategory->icon, 'bi-')) {
             $this->iconType = 'select';
             $this->selectedIcon = str_replace('bi-', '', $campaignCategory->icon);
         } else {
@@ -79,7 +79,7 @@ new #[Layout('layouts.admin')] class extends Component {
         if ($this->iconType === 'upload') {
             if ($this->icon) {
                 // Delete old if it was an upload
-                if (!$this->campaignCategory->is_bootstrap_icon && $this->campaignCategory->icon && file_exists(public_path('storage/' . $this->campaignCategory->icon))) {
+                if (!str_starts_with($this->campaignCategory->icon, 'bi-') && $this->campaignCategory->icon && file_exists(public_path('storage/' . $this->campaignCategory->icon))) {
                     unlink(public_path('storage/' . $this->campaignCategory->icon));
                 }
                 $finalIcon = $this->icon->store('campaign-category', 'public');
@@ -87,7 +87,7 @@ new #[Layout('layouts.admin')] class extends Component {
         } else {
             $finalIcon = 'bi-' . $this->selectedIcon;
             // If switching from upload to icon, delete old file
-            if (!$this->campaignCategory->is_bootstrap_icon && $this->campaignCategory->icon && file_exists(public_path('storage/' . $this->campaignCategory->icon))) {
+            if (!str_starts_with($this->campaignCategory->icon, 'bi-') && $this->campaignCategory->icon && file_exists(public_path('storage/' . $this->campaignCategory->icon))) {
                 unlink(public_path('storage/' . $this->campaignCategory->icon));
             }
         }
