@@ -42,18 +42,26 @@ new #[Layout('layouts.admin')] #[Title('Tambah Pencairan')] class extends Compon
 
     public function calculateMerchantFee()
     {
-        if (!$this->campaign_id) {
+        if (!$this->campaign_id || !$this->selectedCampaign || $this->selectedCampaign->collected_amount <= 0) {
             $this->merchant_fee = 0;
             return;
         }
 
-        // Logic from detail page: Sum all merchant fees from successful donations
+        // Logic: Sum all merchant fees from successful donations
         $totalMerchantFeesIncurred = Donation::where('campaign_id', $this->campaign_id)->where('status', 'success')->sum('merchant_fee');
 
         // Subtract merchant fees already accounted for in previous APPROVED withdrawals
         $previousMerchantFees = Withdrawal::where('campaign_id', $this->campaign_id)->where('status', 'success')->sum('merchant_fee');
 
-        $this->merchant_fee = max(0, $totalMerchantFeesIncurred - $previousMerchantFees);
+        $unclaimedFees = max(0, $totalMerchantFeesIncurred - $previousMerchantFees);
+
+        if ($this->amount && $this->maxAmount > 0) {
+            // Proportional to the amount being withdrawn relative to available balance (maxAmount)
+            $ratio = min(1, (float) $this->amount / (float) $this->maxAmount);
+            $this->merchant_fee = round($unclaimedFees * $ratio);
+        } else {
+            $this->merchant_fee = 0;
+        }
     }
 
     public function calculateFees()
@@ -67,9 +75,13 @@ new #[Layout('layouts.admin')] #[Title('Tambah Pencairan')] class extends Compon
             } else {
                 $this->optimization_fee = 0;
             }
+
+            // Also update merchant fee
+            $this->calculateMerchantFee();
         } else {
             $this->platform_fee = 0;
             $this->optimization_fee = 0;
+            $this->merchant_fee = 0;
         }
     }
 

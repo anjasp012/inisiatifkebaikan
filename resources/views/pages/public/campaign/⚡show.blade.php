@@ -340,7 +340,7 @@ new class extends Component {
                             </div>
                             <div class="donor-item__info">
                                 <span class="donor-item__name">
-                                    {{ $donation->is_anonymous ? 'Hamba Allah' : $donation->donor_name ?? 'Anonim' }}
+                                    {{ $donation->is_anonymous ? 'Sahabat Inisiat' : $donation->donor_name ?? 'Anonim' }}
                                 </span>
                                 <span class="donor-item__amount">
                                     Rp {{ number_format($donation->amount, 0, ',', '.') }}

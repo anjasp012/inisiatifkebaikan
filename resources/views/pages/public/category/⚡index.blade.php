@@ -36,7 +36,11 @@ new class extends Component {
                     <div class="col-3">
                         <a href="{{ route('campaign.index', ['category' => $category->slug]) }}" class="category-item">
                             <div class="category-icon">
-                                <i class="{{ $category->icon }}"></i>
+                                @if ($category->is_bootstrap_icon)
+                                    <i class="{{ $category->icon }}"></i>
+                                @else
+                                    <img src="{{ $category->icon_url }}" alt="{{ $category->name }}">
+                                @endif
                             </div>
                             <span>{{ $category->name }}</span>
                         </a>

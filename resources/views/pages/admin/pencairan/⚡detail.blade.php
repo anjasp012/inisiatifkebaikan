@@ -40,7 +40,17 @@ new #[Layout('layouts.admin')] class extends Component {
         // Check for merchant fees already deducted in previous successful withdrawals
         $previousMerchantFees = Withdrawal::where('campaign_id', $campaign->id)->where('status', 'success')->where('id', '!=', $this->withdrawal->id)->sum('merchant_fee');
 
-        $this->merchant_fee = max(0, $totalMerchantFeesIncurred - $previousMerchantFees);
+        $unclaimedFees = max(0, $totalMerchantFeesIncurred - $previousMerchantFees);
+
+        $stats = $this->campaignStats;
+        $availableBalance = $stats['availableBalance'];
+
+        if ($availableBalance > 0) {
+            $ratio = min(1, (float) $this->withdrawal->amount / (float) $availableBalance);
+            $this->merchant_fee = round($unclaimedFees * $ratio);
+        } else {
+            $this->merchant_fee = $unclaimedFees;
+        }
 
         $ads_vat = $this->ads_fee * 0.11;
         $platform_fee = $this->withdrawal->amount * 0.05;

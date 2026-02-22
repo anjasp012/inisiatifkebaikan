@@ -165,7 +165,7 @@ new class extends Component {
                     style="min-height: 50px;">
                     <label class="form-check-label ms-0 fw-bold text-dark cursor-pointer"
                         for="anonymousSwitch">Sembunyikan
-                        Nama (Hamba Allah)</label>
+                        Nama (Sahabat Inisiat)</label>
                     <input class="form-check-input ms-0 fs-5 cursor-pointer" type="checkbox" role="switch"
                         id="anonymousSwitch" wire:model="is_anonymous">
                 </div>

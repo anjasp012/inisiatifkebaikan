@@ -178,8 +178,8 @@ is-invalid
                                 <div class="form-check mt-2">
                                     <input class="form-check-input" type="checkbox" wire:model="is_anonymous"
                                         id="anon">
-                                    <label class="form-check-label small" for="anon">Sembunyikan nama (Hamba
-                                        Allah)</label>
+                                    <label class="form-check-label small" for="anon">Sembunyikan nama (Sahabat
+                                        Inisiat)</label>
                                 </div>
                             </div>
 

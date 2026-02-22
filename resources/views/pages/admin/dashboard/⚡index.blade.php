@@ -85,13 +85,13 @@ new #[Layout('layouts.admin')] #[Title('Dashboard')] class extends Component {
         $this->totalDonations = $query->count();
         $this->successDonations = (clone $query)->where('status', 'success')->count();
         $this->pendingDonations = (clone $query)->where('status', 'pending')->count();
-        $this->failedDonations = (clone $query)->where('status', 'failed')->count();
+        $this->failedDonations = (clone $query)->whereIn('status', ['pending', 'failed'])->count();
 
         // Sum amounts by status
         $this->totalAmount = $query->sum('amount');
         $this->successAmount = (clone $query)->where('status', 'success')->sum('amount');
         $this->pendingAmount = (clone $query)->where('status', 'pending')->sum('amount');
-        $this->failedAmount = (clone $query)->where('status', 'failed')->sum('amount');
+        $this->failedAmount = (clone $query)->whereIn('status', ['pending', 'failed'])->sum('amount');
 
         // Point 17 Calculations
         $this->totalFundraisers = Fundraiser::count();
@@ -243,10 +243,10 @@ new #[Layout('layouts.admin')] #[Title('Dashboard')] class extends Component {
 
         $successCount[] = (int) ($s->count ?? 0);
         $pendingCount[] = (int) ($p->count ?? 0);
-        $failedCount[] = (int) ($f->count ?? 0);
+        $failedCount[] = (int) ($p->count ?? 0) + (int) ($f->count ?? 0);
         $successSum[] = (float) ($s->sum ?? 0);
         $pendingSum[] = (float) ($p->sum ?? 0);
-        $failedSum[] = (float) ($f->sum ?? 0);
+        $failedSum[] = (float) ($p->sum ?? 0) + (float) ($f->sum ?? 0);
     }
 };
 ?>
@@ -450,7 +450,7 @@ new #[Layout('layouts.admin')] #[Title('Dashboard')] class extends Component {
                     class="card-body border-bottom d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                     <div>
                         <h5 class="fw-bold mb-1 text-dark">Tren Donasi Masuk</h5>
-                        <p class="text-muted small mb-0">Visualisasi data donasi masuk vs gagal.</p>
+                        <p class="text-muted small mb-0">Visualisasi data donasi berhasil vs belum terbayar.</p>
                     </div>
                     <div class="d-flex align-items-center gap-1 bg-light p-1 rounded-pill border shadow-sm ls-lg"
                         style="min-width: 220px;">
