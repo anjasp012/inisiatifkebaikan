@@ -708,8 +708,13 @@ body.app-layout {
 }
 
 .avatar-md {
-    width: 28px;
-    height: 28px;
+    width: 48px;
+    height: 48px;
+
+    img {
+        width: 28px;
+        height: 28px;
+    }
 }
 
 .avatar-lg {
