@@ -84,7 +84,23 @@ class TripayCallbackController extends Controller
                     break;
 
                 case 'EXPIRED':
+                    $donation->update([
+                        'status' => 'failed',
+                        'payment_data' => json_encode($data)
+                    ]);
+
+                    // Kirim Notifikasi Gagal/Batal
+                    \App\Models\NotificationTemplate::sendStatusNotification($donation, 'donation-rejected');
+                    break;
                 case 'FAILED':
+                    $donation->update([
+                        'status' => 'failed',
+                        'payment_data' => json_encode($data)
+                    ]);
+
+                    // Kirim Notifikasi Gagal/Batal
+                    \App\Models\NotificationTemplate::sendStatusNotification($donation, 'donation-rejected');
+                    break;
                 case 'REFUND':
                     $donation->update([
                         'status' => 'failed',

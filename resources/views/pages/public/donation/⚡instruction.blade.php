@@ -91,7 +91,11 @@ new class extends Component {
 };
 ?>
 
-<div x-init="fbq('track', 'Purchase', { value: {{ $donation->amount }}, currency: 'IDR' });
+<div x-init="fbq('track', 'InitiateCheckout');
+fbq('track', 'Purchase', {
+    value: {{ $donation->amount }},
+    currency: 'IDR'
+});
 @if (session('success_upload')) fbq('track', 'Donate', { value: {{ $donation->amount }}, currency: 'IDR' }); @endif" @if ($donation->status === 'pending') wire:poll.10s="refreshStatus" @endif
     x-data="{
         expiry: {{ $donation->expired_at ? $donation->expired_at->timestamp : 0 }},
