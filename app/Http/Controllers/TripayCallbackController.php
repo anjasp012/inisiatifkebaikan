@@ -41,6 +41,11 @@ class TripayCallbackController extends Controller
             $merchantRef = $data->merchant_ref; // ID Transaksi kita (MAN-XXXX)
             $status = strtoupper((string) $data->status); // PAID, EXPIRED, FAILED, REFUND
 
+            \Illuminate\Support\Facades\Log::info("Tripay Callback Received: {$merchantRef}", [
+                'status' => $status,
+                'payload' => $data
+            ]);
+
             // Cari donasi berdasarkan reference
             $donation = Donation::where('transaction_id', $merchantRef)->first();
 
@@ -64,7 +69,7 @@ class TripayCallbackController extends Controller
                     $donation->update([
                         'status'       => 'success',
                         'paid_at'      => now(),
-                        'merchant_fee' => $data->total_fee ?? 0,
+                        'merchant_fee' => $data->total_fee ?? ($data->fee_merchant ?? 0),
                         'payment_data' => json_encode($data)
                     ]);
 

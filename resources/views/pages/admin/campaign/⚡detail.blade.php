@@ -38,8 +38,7 @@ new #[Layout('layouts.admin')] class extends Component {
     <div class="row">
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm border-0">
-                <img src="{{ Str::startsWith($campaign->image, ['http://', 'https://']) ? $campaign->image : asset('storage/' . $campaign->image) }}"
-                    class="card-img-top" alt="{{ $campaign->title }}">
+                <img src="{{ $campaign->thumbnail_url }}" class="card-img-top" alt="{{ $campaign->title }}">
                 <div class="card-body">
                     <h5 class="card-title fw-bold">{{ $campaign->title }}</h5>
                     <p class="text-muted small mb-3">Oleh:
