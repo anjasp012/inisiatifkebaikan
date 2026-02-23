@@ -4,7 +4,6 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use App\Models\Campaign;
-use Combindma\FacebookPixel\Facades\MetaPixel;
 
 new class extends Component {
     public Campaign $campaign;
@@ -16,8 +15,6 @@ new class extends Component {
 
     public function mount(Campaign $campaign)
     {
-        MetaPixel::track('PageView');
-        MetaPixel::track('AddPaymentInfo');
         $this->campaign = $campaign;
     }
 
@@ -67,7 +64,7 @@ new class extends Component {
 };
 ?>
 
-<div>
+<div x-init="fbq('track', 'AddPaymentInfo')">
     <x-app.navbar-secondary route="{{ route('campaign.show', $campaign->slug) }}" title="Masukan Nominal" />
 
     <section class="donation-amount-page py-4">

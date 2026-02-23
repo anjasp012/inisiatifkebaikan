@@ -6,7 +6,6 @@ use Livewire\Attributes\Rule;
 use Livewire\Attributes\Url;
 use App\Models\Campaign;
 use Illuminate\Support\Facades\Auth;
-use Combindma\FacebookPixel\Facades\MetaPixel;
 
 new class extends Component {
     public Campaign $campaign;
@@ -30,7 +29,6 @@ new class extends Component {
 
     public function mount(Campaign $campaign)
     {
-        MetaPixel::track('PageView');
         $this->campaign = $campaign;
 
         // If amount is invalid, redirect back
@@ -100,7 +98,7 @@ new class extends Component {
 };
 ?>
 
-<div>
+<div x-init="fbq('track', 'AddPaymentInfo')">
     <x-app.navbar-secondary route="{{ route('donation.amount', ['campaign' => $campaign->slug, 'amount' => $amount]) }}"
         title="Isi Data Diri" />
 
