@@ -26,10 +26,6 @@
         }(window, document, 'script',
             'https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '889773993189166');
-
-        document.addEventListener('livewire:navigated', function() {
-            fbq('track', 'PageView');
-        });
     </script>
     <noscript>
         <img height="1" width="1" style="display:none"
@@ -86,7 +82,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-
+    @stack('styles')
 </head>
 
 <body class="app-layout">

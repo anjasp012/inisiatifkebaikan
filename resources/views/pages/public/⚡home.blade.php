@@ -393,6 +393,14 @@ new class extends Component {
     <x-app.bottom-nav />
 </div>
 
+@push('styles')
+    <script>
+        document.addEventListener('livewire:navigated', function() {
+            fbq('track', 'PageView');
+        });
+    </script>
+@endpush
+
 @push('scripts')
     <script>
         $('.owl-hero').owlCarousel({

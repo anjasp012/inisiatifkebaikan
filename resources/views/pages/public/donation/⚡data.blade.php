@@ -98,6 +98,15 @@ new class extends Component {
 };
 ?>
 
+@push('styles')
+    <script>
+        document.addEventListener('livewire:navigated', function() {
+            fbq('track', 'AddPaymentInfo');
+        });
+    </script>
+@endpush
+
+
 <div>
     <x-app.navbar-secondary route="{{ route('donation.amount', ['campaign' => $campaign->slug, 'amount' => $amount]) }}"
         title="Isi Data Diri" />

@@ -207,7 +207,15 @@ new class extends Component {
 };
 ?>
 
-<div x-init="fbq('track', 'AddPaymentInfo');"
+@push('styles')
+    <script>
+        document.addEventListener('livewire:navigated', function() {
+            fbq('track', 'AddPaymentInfo');
+        });
+    </script>
+@endpush
+
+<div
     @donation-created.window="
         (function() {
             try {
