@@ -27,10 +27,7 @@
             'https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '889773993189166');
         fbq('init', '956852468822918');
-
-        document.addEventListener('livewire:navigated', function() {
-            fbq('track', 'PageView');
-        });
+        fbq('track', 'PageView');
     </script>
     <noscript>
         <img height="1" width="1" style="display:none"
