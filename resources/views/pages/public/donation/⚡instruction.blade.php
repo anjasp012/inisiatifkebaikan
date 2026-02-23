@@ -5,6 +5,7 @@ use Livewire\WithFileUploads;
 use App\Models\Donation;
 use App\Models\PaymentProof;
 use Illuminate\Support\Str;
+use Combindma\FacebookPixel\Facades\MetaPixel;
 
 new class extends Component {
     use WithFileUploads;
@@ -17,6 +18,8 @@ new class extends Component {
 
     public function mount($transaction_id)
     {
+        MetaPixel::track('PageView');
+        MetaPixel::track('InitiateCheckout');
         $this->donation = Donation::with(['campaign', 'bank', 'paymentProofs'])
             ->where('transaction_id', $transaction_id)
             ->firstOrFail();

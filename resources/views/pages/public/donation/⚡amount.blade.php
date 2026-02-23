@@ -4,6 +4,7 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Rule;
 use App\Models\Campaign;
+use Combindma\FacebookPixel\Facades\MetaPixel;
 
 new class extends Component {
     public Campaign $campaign;
@@ -15,6 +16,9 @@ new class extends Component {
 
     public function mount(Campaign $campaign)
     {
+        MetaPixel::track('PageView');
+        MetaPixel::track('AddPaymentInfo');
+        MetaPixel::track('AddToCart');
         $this->campaign = $campaign;
     }
 

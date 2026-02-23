@@ -8,6 +8,7 @@ use App\Models\Bank;
 use App\Models\Donation;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Combindma\FacebookPixel\Facades\MetaPixel;
 
 new class extends Component {
     public Campaign $campaign;
@@ -16,6 +17,9 @@ new class extends Component {
 
     public function mount(Campaign $campaign)
     {
+        MetaPixel::track('PageView');
+        MetaPixel::track('AddPaymentInfo');
+        MetaPixel::track('AddToCart');
         $this->campaign = $campaign;
         $this->donationData = session('donation_data');
 

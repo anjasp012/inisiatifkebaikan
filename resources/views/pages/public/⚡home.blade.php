@@ -17,6 +17,7 @@ new class extends Component {
 
     public function mount()
     {
+        MetaPixel::track('PageView');
         MetaPixel::track('ViewContent');
         $seoData = new SEOData(title: \App\Models\Setting::get('website_name', 'Inisiatif Kebaikan'), description: \App\Models\Setting::get('website_description', 'Platform donasi dan penghimpunan dana sosial terpercaya.'), image: asset('assets/images/og-image.jpg'));
 

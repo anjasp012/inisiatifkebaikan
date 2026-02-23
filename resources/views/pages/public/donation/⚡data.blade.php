@@ -6,6 +6,7 @@ use Livewire\Attributes\Rule;
 use Livewire\Attributes\Url;
 use App\Models\Campaign;
 use Illuminate\Support\Facades\Auth;
+use Combindma\FacebookPixel\Facades\MetaPixel;
 
 new class extends Component {
     public Campaign $campaign;
@@ -29,6 +30,8 @@ new class extends Component {
 
     public function mount(Campaign $campaign)
     {
+        MetaPixel::track('PageView');
+        MetaPixel::track('AddPaymentInfo');
         $this->campaign = $campaign;
 
         // If amount is invalid, redirect back
