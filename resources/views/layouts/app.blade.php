@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Facebook Pixel Code -->
-    <script>
+    <script data-navigate-once>
         ! function(f, b, e, v, n, t, s) {
             if (f.fbq) return;
             n = f.fbq = function() {
@@ -25,10 +25,10 @@
             s.parentNode.insertBefore(t, s)
         }(window, document, 'script',
             'https://connect.facebook.net/en_US/fbevents.js');
+
+        fbq('set', 'autoConfig', false, '889773993189166');
         fbq('init', '889773993189166');
 
-        // Handle PageView on Livewire SPA navigation
-        // Use a guard to prevent double tracking on the same URL
         let lastTrackedUrl = null;
         document.addEventListener('livewire:navigated', () => {
             if (lastTrackedUrl === window.location.href) return;
