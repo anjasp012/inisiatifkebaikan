@@ -111,7 +111,7 @@ new class extends Component {
 };
 ?>
 
-<div>
+<div x-init="fbq('track', 'PageView');">
     <x-app.navbar-main />
     <section class="hero-section">
         <div class="container-fluid">
