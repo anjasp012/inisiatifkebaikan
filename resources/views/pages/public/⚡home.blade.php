@@ -10,12 +10,14 @@ use Livewire\Attributes\Computed;
 
 use RalphJSmit\Laravel\SEO\Support\SEOData;
 use Illuminate\Support\Facades\View;
+use Combindma\FacebookPixel\Facades\MetaPixel;
 
 new class extends Component {
     public ?int $recommendedCategory = null;
 
     public function mount()
     {
+        MetaPixel::track('ViewContent');
         $seoData = new SEOData(title: \App\Models\Setting::get('website_name', 'Inisiatif Kebaikan'), description: \App\Models\Setting::get('website_description', 'Platform donasi dan penghimpunan dana sosial terpercaya.'), image: asset('assets/images/og-image.jpg'));
 
         View::share('seoData', $seoData);
