@@ -31,7 +31,6 @@ new class extends Component {
     public function mount(Campaign $campaign)
     {
         MetaPixel::track('PageView');
-        MetaPixel::track('AddPaymentInfo');
         $this->campaign = $campaign;
 
         // If amount is invalid, redirect back

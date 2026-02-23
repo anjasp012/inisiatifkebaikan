@@ -18,7 +18,6 @@ new class extends Component {
     public function mount(Campaign $campaign)
     {
         MetaPixel::track('PageView');
-        MetaPixel::track('AddPaymentInfo');
         MetaPixel::track('AddToCart');
         $this->campaign = $campaign;
         $this->donationData = session('donation_data');

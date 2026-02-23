@@ -18,7 +18,6 @@ new class extends Component {
     {
         MetaPixel::track('PageView');
         MetaPixel::track('AddPaymentInfo');
-        MetaPixel::track('AddToCart');
         $this->campaign = $campaign;
     }
 
