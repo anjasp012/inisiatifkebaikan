@@ -111,7 +111,7 @@ new class extends Component {
 };
 ?>
 
-<div>
+<div x-init="fbq('track', 'ViewContent')">
     <x-app.navbar-main />
     <section class="hero-section">
         <div class="container-fluid">
@@ -393,13 +393,7 @@ new class extends Component {
     <x-app.bottom-nav />
 </div>
 
-@push('styles')
-    <script>
-        document.addEventListener('livewire:navigated', function() {
-            fbq('track', 'ViewContent');
-        });
-    </script>
-@endpush
+
 
 @push('scripts')
     <script>

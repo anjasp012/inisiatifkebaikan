@@ -63,15 +63,9 @@ new class extends Component {
     }
 };
 ?>
-@push('styles')
-    <script>
-        document.addEventListener('livewire:navigated', function() {
-            fbq('track', 'AddPaymentInfo');
-        });
-    </script>
-@endpush
 
-<div>
+
+<div x-init="fbq('track', 'InitiateCheckout')">
     <x-app.navbar-secondary route="{{ route('campaign.show', $campaign->slug) }}" title="Masukan Nominal" />
 
     <section class="donation-amount-page py-4">

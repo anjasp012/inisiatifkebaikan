@@ -26,6 +26,15 @@
         }(window, document, 'script',
             'https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '889773993189166');
+
+        // Handle PageView on Livewire SPA navigation
+        // Use a guard to prevent double tracking on the same URL
+        let lastTrackedUrl = null;
+        document.addEventListener('livewire:navigated', () => {
+            if (lastTrackedUrl === window.location.href) return;
+            lastTrackedUrl = window.location.href;
+            fbq('track', 'PageView');
+        });
     </script>
     <noscript>
         <img height="1" width="1" style="display:none"
