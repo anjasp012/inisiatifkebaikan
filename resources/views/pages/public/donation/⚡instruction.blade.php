@@ -91,8 +91,7 @@ new class extends Component {
 };
 ?>
 
-<div x-init="fbq('track', 'InitiateCheckout');
-fbq('track', 'Purchase', {
+<div x-init="fbq('track', 'Purchase', {
     value: {{ $donation->amount }},
     currency: 'IDR'
 });

@@ -207,8 +207,7 @@ new class extends Component {
 };
 ?>
 
-<div x-init="fbq('track', 'AddPaymentInfo');
-fbq('track', 'AddToCart');"
+<div x-init="fbq('track', 'AddPaymentInfo');"
     @donation-created.window="
         (function() {
             try {
