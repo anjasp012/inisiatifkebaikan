@@ -396,7 +396,7 @@ new class extends Component {
 @push('styles')
     <script>
         document.addEventListener('livewire:navigated', function() {
-            fbq('track', 'PageView');
+            fbq('track', 'ViewContent');
         });
     </script>
 @endpush
