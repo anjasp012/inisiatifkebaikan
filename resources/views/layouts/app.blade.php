@@ -27,15 +27,25 @@
             }(window, document, 'script',
                 'https://connect.facebook.net/en_US/fbevents.js');
 
+            fbq.disablePushState = true; // Disable automatic SPA tracking by Meta
             fbq('set', 'autoConfig', false, '889773993189166');
             fbq('init', '889773993189166');
 
-            window.lastFbTrackedUrl = null;
+            // 1. Initial manual PageView on script load
+            fbq('track', 'PageView');
+            window.lastFbTrackedUrl = window.location.href;
+
+            // 2. Listener for subsequent navigations (and its load-time fire will be blocked by rule 1)
             document.addEventListener('livewire:navigated', () => {
-                if (window.lastFbTrackedUrl === window.location.href) return;
-                window.lastFbTrackedUrl = window.location.href;
+                const currentUrl = window.location.href;
+                if (window.lastFbTrackedUrl === currentUrl) {
+                    console.log('Meta Pixel: PageView skipped (duplicate URL)');
+                    return;
+                }
+
+                window.lastFbTrackedUrl = currentUrl;
                 fbq('track', 'PageView');
-                console.log('Meta Pixel: PageView tracked for ' + window.location.href);
+                console.log('Meta Pixel: PageView tracked for ' + currentUrl);
             });
 
             window.metaPixelInitialized = true;
