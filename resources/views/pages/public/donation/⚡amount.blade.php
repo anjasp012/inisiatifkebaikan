@@ -64,7 +64,7 @@ new class extends Component {
 };
 ?>
 
-<div x-init="fbq('track', 'AddPaymentInfo')">
+<div>
     <x-app.navbar-secondary route="{{ route('campaign.show', $campaign->slug) }}" title="Masukan Nominal" />
 
     <section class="donation-amount-page py-4">
