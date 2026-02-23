@@ -6,35 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Facebook Pixel Code -->
-    <script data-navigate-once>
-        ! function(f, b, e, v, n, t, s) {
-            if (f.fbq) return;
-            n = f.fbq = function() {
-                n.callMethod ?
-                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
-            };
-            if (!f._fbq) f._fbq = n;
-            n.push = n;
-            n.loaded = !0;
-            n.version = '2.0';
-            n.queue = [];
-            t = b.createElement(e);
-            t.async = !0;
-            t.src = v;
-            s = b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t, s)
-        }(window, document, 'script',
-            'https://connect.facebook.net/en_US/fbevents.js');
+    <script>
+        if (!window.metaPixelInitialized) {
+            ! function(f, b, e, v, n, t, s) {
+                if (f.fbq) return;
+                n = f.fbq = function() {
+                    n.callMethod ?
+                        n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+                };
+                if (!f._fbq) f._fbq = n;
+                n.push = n;
+                n.loaded = !0;
+                n.version = '2.0';
+                n.queue = [];
+                t = b.createElement(e);
+                t.async = !0;
+                t.src = v;
+                s = b.getElementsByTagName(e)[0];
+                s.parentNode.insertBefore(t, s)
+            }(window, document, 'script',
+                'https://connect.facebook.net/en_US/fbevents.js');
 
-        fbq('set', 'autoConfig', false, '889773993189166');
-        fbq('init', '889773993189166');
+            fbq('set', 'autoConfig', false, '889773993189166');
+            fbq('init', '889773993189166');
 
-        let lastTrackedUrl = null;
-        document.addEventListener('livewire:navigated', () => {
-            if (lastTrackedUrl === window.location.href) return;
-            lastTrackedUrl = window.location.href;
-            fbq('track', 'PageView');
-        });
+            window.lastFbTrackedUrl = null;
+            document.addEventListener('livewire:navigated', () => {
+                if (window.lastFbTrackedUrl === window.location.href) return;
+                window.lastFbTrackedUrl = window.location.href;
+                fbq('track', 'PageView');
+                console.log('Meta Pixel: PageView tracked for ' + window.location.href);
+            });
+
+            window.metaPixelInitialized = true;
+        }
     </script>
     <noscript>
         <img height="1" width="1" style="display:none"
