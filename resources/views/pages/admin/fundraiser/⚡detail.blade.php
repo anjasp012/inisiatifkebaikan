@@ -103,6 +103,15 @@ new #[Layout('layouts.admin')] class extends Component {
                         </div>
                     </div>
 
+                    <div class="card bg-light border-0 mb-3">
+                        <div class="card-body">
+                            <h6 class="text-uppercase text-muted extra-small fw-bold mb-3">Tentang Fundraiser</h6>
+                            <div class="text-dark small" style="line-height: 1.6;">
+                                {!! nl2br(e($fundraiser->about ?? 'Belum ada informasi.')) !!}
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Bank Info -->
                     <div class="card border-primary border-2 mb-3">
                         <div class="card-body">

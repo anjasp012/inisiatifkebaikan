@@ -53,19 +53,20 @@ new #[Layout('layouts.app')] class extends Component {
     <section class="fundraiser-profile-about py-4 bg-white mb-3">
         <div class="container-fluid">
             <h6 class="fw-bold text-dark mb-3 small text-uppercase ls-sm">Tentang Penggalang</h6>
-            <div x-data="{ expanded: false }" class="position-relative">
-                <div class="text-muted small lh-lg overflow-hidden" :class="expanded ? '' : 'max-h-120'">
+            <div x-data="{ expanded: false }" class="position-relative" wire:ignore>
+                <div class="text-muted small lh-lg overflow-hidden transition-all duration-300"
+                    :style="expanded ? 'max-height: none' : 'max-height: 100px'">
                     {!! nl2br(e($fundraiser->about ?? 'Belum ada informasi profil.')) !!}
                 </div>
 
-                @if (strlen($fundraiser->about ?? '') > 150)
-                    <div x-show="!expanded"
-                        class="position-absolute bottom-0 start-0 end-0 h-40 bg-gradient-white-to-t"></div>
+                @if (strlen($fundraiser->about ?? '') > 160)
+                    <div x-show="!expanded" class="position-absolute bottom-0 start-0 end-0 h-40 bg-gradient-white-to-t"
+                        style="height: 60px; pointer-events: none;"></div>
                     <div class="text-center mt-3">
-                        <button @click="expanded = !expanded"
+                        <button type="button" @click="expanded = !expanded"
                             class="btn btn-outline-primary btn-sm rounded-pill px-4 fw-bold extra-small transition-200 shadow-micro">
-                            <span x-show="!expanded">Baca Selengkapnya <i class="bi bi-chevron-down ms-1"></i></span>
-                            <span x-show="expanded" x-cloak>Tutup <i class="bi bi-chevron-up ms-1"></i></span>
+                            <span x-text="expanded ? 'Tutup' : 'Baca Selengkapnya'"></span>
+                            <i class="bi ms-1" :class="expanded ? 'bi-chevron-up' : 'bi-chevron-down'"></i>
                         </button>
                     </div>
                 @endif
