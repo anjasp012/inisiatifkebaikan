@@ -16,14 +16,15 @@ new #[Layout('layouts.app')] class extends Component {
         $this->fundraiser = Fundraiser::where('user_id', Auth::id())->first();
 
         // Security check
-        if (!$this->fundraiser || ($this->fundraiser->status !== 'approved' && $this->campaign->fundraiser_id !== $this->fundraiser->id)) {
-            session()->flash('error', 'Akses ditolak');
+        if (!$this->fundraiser || $this->fundraiser->status !== 'approved') {
+            session()->flash('error', 'Akun Anda belum disetujui untuk mengelola program.');
             $this->redirectRoute('fundraiser.dashboard', navigate: true);
             return;
         }
 
-        if ($this->fundraiser->status !== 'approved') {
-            $this->redirectRoute('fundraiser.dashboard', navigate: true);
+        if ($this->campaign->fundraiser_id != $this->fundraiser->id) {
+            session()->flash('error', 'Campaign ini bukan milik Anda.');
+            $this->redirectRoute('fundraiser.galang-dana.index', navigate: true);
             return;
         }
     }

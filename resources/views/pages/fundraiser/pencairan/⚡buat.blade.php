@@ -15,8 +15,8 @@ new #[Layout('layouts.app')] class extends Component {
     {
         $this->fundraiser = Fundraiser::where('user_id', Auth::id())->first();
 
-        if (!$this->fundraiser) {
-            abort(403);
+        if (!$this->fundraiser || $this->fundraiser->status !== 'approved') {
+            abort(403, 'Akses ditolak. Pastikan akun mitra Anda sudah disetujui.');
         }
 
         $this->campaign_id = request('campaign_id');

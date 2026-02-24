@@ -23,8 +23,8 @@ new #[Layout('layouts.app')] class extends Component {
 
         // Security check
         $fundraiser = Fundraiser::where('user_id', Auth::id())->first();
-        if (!$fundraiser || $fundraiser->id !== $this->campaign->fundraiser_id) {
-            abort(403);
+        if (!$fundraiser || $fundraiser->status !== 'approved' || $this->campaign->fundraiser_id != $fundraiser->id) {
+            abort(403, 'Akses ditolak. Pastikan akun sudah disetujui dan campaign adalah milik Anda.');
         }
 
         $this->loadWithdrawals();

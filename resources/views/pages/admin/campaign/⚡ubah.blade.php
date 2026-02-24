@@ -27,6 +27,8 @@
      public bool $is_optimized = false;
  
      public $categories = [];
+     public $fundraisers = [];
+     public $fundraiser_id;
  
      public function mount(Campaign $campaign)
      {
@@ -43,8 +45,10 @@
          $this->is_priority = (bool) $campaign->is_priority;
          $this->is_inisiatif = (bool) $campaign->is_inisiatif;
          $this->is_optimized = (bool) $campaign->is_optimized;
+         $this->fundraiser_id = $campaign->fundraiser_id;
  
          $this->categories = CampaignCategory::all();
+         $this->fundraisers = \App\Models\Fundraiser::where('status', 'approved')->get();
      }
  
      public function update(): void
@@ -57,6 +61,7 @@
              'target_amount' => 'required|numeric|min:1000',
              'start_date' => 'required|date',
              'end_date' => 'required|date|after_or_equal:start_date',
+             'fundraiser_id' => 'nullable|exists:fundraisers,id',
          ];
  
          $messages = [
@@ -95,6 +100,7 @@
              'is_priority' => $this->is_priority,
              'is_inisiatif' => $this->is_inisiatif,
              'is_optimized' => $this->is_optimized,
+             'fundraiser_id' => $this->fundraiser_id,
          ]);
  
          session()->flash('toast', [
@@ -146,34 +152,65 @@
                      </div>
 
                      <div class="col-md-6">
-                         <label for="category_id" class="form-label">Kategori</label>
-                         <div class="@error('category_id') is-invalid-tomselect @enderror">
+                         <label for="category_id" class="form-label text-dark fw-bold small">Kategori</label>
+                         <div class="@error('category_id') is-invalid-tomselect @enderror shadow-none">
                              <div wire:ignore>
-                                 <select class="form-select @error('category_id') is-invalid @enderror" id="category_id"
-                                     x-data="{
-                                         tom: null,
-                                         init() {
-                                             this.tom = new TomSelect(this.$el, {
-                                                 placeholder: 'Cari Kategori...',
-                                                 allowEmptyOption: true,
-                                                 maxOptions: 50,
-                                                 onChange: (value) => {
-                                                     $wire.set('category_id', value || null);
-                                                 }
-                                             });
-                                         }
-                                     }">
+                                 <select class="form-select" id="category_id" x-data="{
+                                     tom: null,
+                                     init() {
+                                         this.tom = new TomSelect(this.$el, {
+                                             placeholder: 'Cari Kategori...',
+                                             allowEmptyOption: true,
+                                             maxOptions: 50,
+                                             onChange: (value) => {
+                                                 $wire.set('category_id', value || null);
+                                             }
+                                         });
+                                         this.tom.setValue(@js($category_id));
+                                     }
+                                 }">
                                      <option value="">Pilih Kategori</option>
                                      @foreach ($categories as $category)
-                                         <option value="{{ $category->id }}"
-                                             {{ $category->id == $category_id ? 'selected' : '' }}>{{ $category->name }}
+                                         <option value="{{ $category->id }}">{{ $category->name }}
                                          </option>
                                      @endforeach
                                  </select>
                              </div>
                          </div>
                          @error('category_id')
-                             <div class="invalid-feedback">{{ $message }}</div>
+                             <div class="text-danger extra-small mt-1">{{ $message }}</div>
+                         @enderror
+                     </div>
+
+                     <div class="col-md-6">
+                         <label for="fundraiser_id" class="form-label text-dark fw-bold small">Pemilik / Penggalang
+                             Dana</label>
+                         <div class="@error('fundraiser_id') is-invalid-tomselect @enderror shadow-none">
+                             <div wire:ignore>
+                                 <select class="form-select" id="fundraiser_id" x-data="{
+                                     tom: null,
+                                     init() {
+                                         this.tom = new TomSelect(this.$el, {
+                                             placeholder: 'Cari Fundraiser...',
+                                             allowEmptyOption: true,
+                                             maxOptions: 50,
+                                             onChange: (value) => {
+                                                 $wire.set('fundraiser_id', value || null);
+                                             }
+                                         });
+                                         this.tom.setValue(@js($fundraiser_id));
+                                     }
+                                 }">
+                                     <option value="">-- Inisiatif Kebaikan (Admin) --</option>
+                                     @foreach ($fundraisers as $f)
+                                         <option value="{{ $f->id }}">{{ $f->foundation_name }}
+                                             ({{ $f->user->name }})</option>
+                                     @endforeach
+                                 </select>
+                             </div>
+                         </div>
+                         @error('fundraiser_id')
+                             <div class="text-danger extra-small mt-1">{{ $message }}</div>
                          @enderror
                      </div>
 
