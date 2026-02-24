@@ -28,8 +28,8 @@
                 'https://connect.facebook.net/en_US/fbevents.js');
 
             fbq.disablePushState = true; // Disable automatic SPA tracking by Meta
-            fbq('set', 'autoConfig', false, '889773993189166');
-            fbq('init', '889773993189166');
+            fbq('set', 'autoConfig', false, '956852468822918');
+            fbq('init', '956852468822918');
 
             // 1. Initial manual PageView on script load
             fbq('track', 'PageView');
@@ -53,7 +53,7 @@
     </script>
     <noscript>
         <img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=889773993189166&ev=PageView&noscript=1" />
+            src="https://www.facebook.com/tr?id=956852468822918&ev=PageView&noscript=1" />
     </noscript>
     <!-- End Facebook Pixel Code -->
 
