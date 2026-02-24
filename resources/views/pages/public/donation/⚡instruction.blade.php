@@ -93,7 +93,8 @@ new class extends Component {
 
 
 
-<div x-init="fbq('track', 'InitiateCheckout', { value: {{ $donation->amount }}, currency: 'IDR' });
+<div x-init="fbq('track', 'Purchase', { value: {{ $donation->amount }}, currency: 'IDR' });
+fbq('track', 'InitiateCheckout', { value: {{ $donation->amount }}, currency: 'IDR' });
 @if (session('success_upload')) fbq('track', 'Donate', { value: {{ $donation->amount }}, currency: 'IDR' }); @endif" x-data="{
     expiry: {{ $donation->expired_at ? $donation->expired_at->timestamp : 0 }},
     timer: { h: '00', m: '00', s: '00' },
