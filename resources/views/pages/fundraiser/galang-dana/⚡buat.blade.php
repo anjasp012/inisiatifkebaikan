@@ -41,7 +41,7 @@ new #[Layout('layouts.app')] class extends Component {
     public function store()
     {
         $rules = [
-            'thumbnail' => 'required|image|max:2048',
+            'thumbnail' => 'required|image|max:3072',
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:campaign_categories,id',
             'description' => 'required|string',

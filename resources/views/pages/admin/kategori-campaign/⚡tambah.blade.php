@@ -45,7 +45,7 @@ new #[Layout('layouts.admin')] class extends Component {
         ];
 
         if ($this->iconType === 'upload') {
-            $rules['icon'] = 'required|image|max:2048';
+            $rules['icon'] = 'required|image|max:3072';
         } else {
             $rules['selectedIcon'] = 'required|string';
         }

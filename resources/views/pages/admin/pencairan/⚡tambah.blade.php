@@ -125,7 +125,7 @@ new #[Layout('layouts.admin')] #[Title('Tambah Pencairan')] class extends Compon
             'optimization_fee' => 'nullable|numeric|min:0',
             'merchant_fee' => 'nullable|numeric|min:0',
             'notes' => 'nullable|string',
-            'proof_image' => 'nullable|image|max:2048',
+            'proof_image' => 'nullable|image|max:3072',
         ]);
 
         if ((float) $this->amount > $this->maxAmount) {

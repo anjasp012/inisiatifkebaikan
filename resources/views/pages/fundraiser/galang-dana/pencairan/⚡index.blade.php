@@ -48,7 +48,7 @@ new #[Layout('layouts.app')] class extends Component {
         $this->validate([
             'amount' => 'required|numeric|min:10000|max:' . $this->maxAmount,
             'notes' => 'required|string|max:255',
-            'proof' => 'required|image|max:2048',
+            'proof' => 'required|image|max:3072',
         ]);
 
         $withdrawal = new Withdrawal();

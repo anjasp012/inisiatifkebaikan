@@ -29,7 +29,7 @@ new #[Layout('layouts.admin')] #[Title('Tambah Update')] class extends Component
             'title' => 'required|string|max:255',
             'content' => 'required|string',
             'published_at' => 'nullable|date',
-            'image' => 'nullable|image|max:2048', // 2MB max
+            'image' => 'nullable|image|max:3072', // 3MB max
         ]);
 
         $imagePath = null;

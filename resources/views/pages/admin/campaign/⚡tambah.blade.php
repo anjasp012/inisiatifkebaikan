@@ -34,7 +34,7 @@ new #[Layout('layouts.admin')] #[Title('Tambah Program')] class extends Componen
     public function store(): void
     {
         $rules = [
-            'thumbnail' => 'required|image|max:2048',
+            'thumbnail' => 'required|image|max:3072',
             'title' => 'required|string|max:255',
             'category_id' => 'required|exists:campaign_categories,id',
             'description' => 'required|string',

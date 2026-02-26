@@ -48,7 +48,7 @@ new #[Layout('layouts.admin')] #[Title('Riwayat Distribusi')] class extends Comp
             'recipient_name' => 'required|string',
             'distribution_date' => 'required|date',
             'description' => 'required|string',
-            'file_path' => 'required|image|max:2048',
+            'file_path' => 'required|image|max:3072',
         ]);
 
         $path = $this->file_path->store('distributions', 'public');

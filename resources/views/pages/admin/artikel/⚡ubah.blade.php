@@ -29,7 +29,7 @@ new #[Layout('layouts.admin')] class extends Component {
     public function update(): void
     {
         $rules = [
-            'thumbnail' => 'nullable|image|max:2048',
+            'thumbnail' => 'nullable|image|max:3072',
             'title' => 'required|string|max:255',
             'category' => 'required|string|max:100',
             'content' => 'required|string',

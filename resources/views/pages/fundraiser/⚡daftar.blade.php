@@ -42,14 +42,14 @@ new #[Layout('layouts.app')] class extends Component {
                 'foundation_name' => 'required|string|max:255',
                 'about' => 'required|string|min:50',
                 'office_address' => 'required|string',
-                'logo_image' => 'required|image|max:2048',
-                'office_image' => 'required|image|max:2048',
+                'logo_image' => 'required|image|max:3072',
+                'office_image' => 'required|image|max:3072',
             ]);
         } elseif ($this->step == 2) {
             $this->validate([
-                'legal_doc' => 'required|file|mimes:pdf|max:2048',
-                'notary_doc' => 'required|file|mimes:pdf|max:2048',
-                'tax_id' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+                'legal_doc' => 'required|file|mimes:pdf|max:3072',
+                'notary_doc' => 'required|file|mimes:pdf|max:3072',
+                'tax_id' => 'required|file|mimes:pdf,jpg,jpeg,png|max:3072',
             ]);
         }
 

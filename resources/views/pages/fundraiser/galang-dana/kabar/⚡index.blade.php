@@ -41,7 +41,7 @@ new #[Layout('layouts.app')] class extends Component {
         $this->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|max:3072',
         ]);
 
         $update = new CampaignUpdate();

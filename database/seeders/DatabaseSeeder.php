@@ -139,8 +139,8 @@ class DatabaseSeeder extends Seeder
     {
         // Admin
         $admin = User::firstOrCreate(
-            ['email' => 'admin@inisiatifkebaikan.org'],
-            ['name' => 'Admin Inisiatif', 'password' => Hash::make('password'), 'role' => 'admin', 'user_verified_at' => now(), 'phone' => '628111111111']
+            ['email' => 'info@inisiatifkebaikan.org'],
+            ['name' => 'Admin Inisiatif', 'password' => Hash::make('BerbuatBaik2026'), 'role' => 'admin', 'user_verified_at' => now(), 'phone' => '628111111111']
         );
 
         // Fundraisers

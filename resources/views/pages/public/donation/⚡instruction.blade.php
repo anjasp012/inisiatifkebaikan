@@ -29,7 +29,7 @@ new class extends Component {
     public function updatedProof()
     {
         $this->validate([
-            'proof' => 'image|max:2048',
+            'proof' => 'image|max:3072',
         ]);
 
         $this->uploadProof();

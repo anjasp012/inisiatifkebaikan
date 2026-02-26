@@ -18,7 +18,7 @@ new #[Layout('layouts.admin')] class extends Component {
     public function store(): void
     {
         $rules = [
-            'thumbnail' => 'required|image|max:2048',
+            'thumbnail' => 'required|image|max:3072',
             'title' => 'required|string|max:255',
             'category' => 'required|string|max:100',
             'content' => 'required|string',

@@ -54,7 +54,7 @@
      public function update(): void
      {
          $rules = [
-             'thumbnail' => 'nullable|image|max:2048',
+             'thumbnail' => 'nullable|image|max:3072',
              'title' => 'required|string|max:255',
              'category_id' => 'required|exists:campaign_categories,id',
              'description' => 'required|string',
@@ -204,7 +204,8 @@
                                      <option value="">-- Inisiatif Kebaikan (Admin) --</option>
                                      @foreach ($fundraisers as $f)
                                          <option value="{{ $f->id }}">{{ $f->foundation_name }}
-                                             ({{ $f->user->name }})</option>
+                                             ({{ $f->user->name }})
+                                         </option>
                                      @endforeach
                                  </select>
                              </div>
