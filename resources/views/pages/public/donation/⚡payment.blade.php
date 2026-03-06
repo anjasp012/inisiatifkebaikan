@@ -270,7 +270,29 @@ new class extends Component {
                 </div>
             @endif
 
-            <div class="space-y-4" x-data="{ isProcessing: @entangle('isProcessing') }">
+            <div class="space-y-4" x-data="{
+                isProcessing: @entangle('isProcessing'),
+                localProcessing: false,
+                startProcessing(bankId) {
+                    if (this.isProcessing || this.localProcessing) return;
+                    this.localProcessing = true;
+                    $wire.processPayment(bankId);
+                }
+            }">
+
+                {{-- Global Loading Overlay --}}
+                <div x-show="isProcessing || localProcessing" x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+                    class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                    style="background: rgba(255,255,255,0.8); z-index: 9999; backdrop-filter: blur(4px);">
+                    <div class="text-center">
+                        <div class="spinner-grow text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h6 class="fw-bold text-dark">Memproses Pembayaran...</h6>
+                        <p class="text-muted small">Mohon tunggu sebentar, jangan tutup halaman ini.</p>
+                    </div>
+                </div>
 
                 {{-- E-Wallet & QRIS --}}
                 @php $ewalletBanks = $banks->whereIn('method', ['ewallet', 'qris']); @endphp
@@ -286,8 +308,8 @@ new class extends Component {
                         <div class="card border rounded-4 shadow-micro overflow-hidden border-light">
                             <div class="list-group list-group-flush">
                                 @foreach ($ewalletBanks as $bank)
-                                    <button wire:click="processPayment({{ $bank->id }})"
-                                        wire:loading.attr="disabled" :disabled="isProcessing"
+                                    <button @click="startProcessing({{ $bank->id }})"
+                                        :disabled="isProcessing || localProcessing"
                                         class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="bank-logo-mini">
@@ -296,9 +318,10 @@ new class extends Component {
                                             </div>
                                             <span class="fw-bold text-dark small">{{ $bank->bank_name }}</span>
                                         </div>
-                                        <div wire:loading wire:target="processPayment({{ $bank->id }})"
+                                        <div x-show="isProcessing || localProcessing" wire:loading
+                                            wire:target="processPayment({{ $bank->id }})"
                                             class="spinner-border spinner-border-sm text-primary" role="status"></div>
-                                        <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
+                                        <i x-show="!(isProcessing || localProcessing)"
                                             class="bi bi-chevron-right text-muted extra-small"></i>
                                     </button>
                                 @endforeach
@@ -321,8 +344,8 @@ new class extends Component {
                         <div class="card border rounded-4 shadow-micro overflow-hidden border-light">
                             <div class="list-group list-group-flush">
                                 @foreach ($vaBanks as $bank)
-                                    <button wire:click="processPayment({{ $bank->id }})"
-                                        wire:loading.attr="disabled" :disabled="isProcessing"
+                                    <button @click="startProcessing({{ $bank->id }})"
+                                        :disabled="isProcessing || localProcessing"
                                         class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="bank-logo-mini">
@@ -331,9 +354,10 @@ new class extends Component {
                                             </div>
                                             <span class="fw-bold text-dark small">{{ $bank->bank_name }}</span>
                                         </div>
-                                        <div wire:loading wire:target="processPayment({{ $bank->id }})"
+                                        <div x-show="isProcessing || localProcessing" wire:loading
+                                            wire:target="processPayment({{ $bank->id }})"
                                             class="spinner-border spinner-border-sm text-primary" role="status"></div>
-                                        <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
+                                        <i x-show="!(isProcessing || localProcessing)"
                                             class="bi bi-chevron-right text-muted extra-small"></i>
                                     </button>
                                 @endforeach
@@ -356,8 +380,8 @@ new class extends Component {
                         <div class="card border rounded-4 shadow-micro overflow-hidden border-light">
                             <div class="list-group list-group-flush">
                                 @foreach ($manualBanks as $bank)
-                                    <button wire:click="processPayment({{ $bank->id }})"
-                                        wire:loading.attr="disabled" :disabled="isProcessing"
+                                    <button @click="startProcessing({{ $bank->id }})"
+                                        :disabled="isProcessing || localProcessing"
                                         class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="bank-logo-mini">
@@ -372,9 +396,10 @@ new class extends Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div wire:loading wire:target="processPayment({{ $bank->id }})"
+                                        <div x-show="isProcessing || localProcessing" wire:loading
+                                            wire:target="processPayment({{ $bank->id }})"
                                             class="spinner-border spinner-border-sm text-primary" role="status"></div>
-                                        <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
+                                        <i x-show="!(isProcessing || localProcessing)"
                                             class="bi bi-chevron-right text-muted extra-small"></i>
                                     </button>
                                 @endforeach
@@ -397,8 +422,8 @@ new class extends Component {
                         <div class="card border rounded-4 shadow-micro overflow-hidden border-light">
                             <div class="list-group list-group-flush">
                                 @foreach ($retailBanks as $bank)
-                                    <button wire:click="processPayment({{ $bank->id }})"
-                                        wire:loading.attr="disabled" :disabled="isProcessing"
+                                    <button @click="startProcessing({{ $bank->id }})"
+                                        :disabled="isProcessing || localProcessing"
                                         class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="bank-logo-mini">
@@ -407,10 +432,11 @@ new class extends Component {
                                             </div>
                                             <span class="fw-bold text-dark small">{{ $bank->bank_name }}</span>
                                         </div>
-                                        <div wire:loading wire:target="processPayment({{ $bank->id }})"
+                                        <div x-show="isProcessing || localProcessing" wire:loading
+                                            wire:target="processPayment({{ $bank->id }})"
                                             class="spinner-border spinner-border-sm text-primary" role="status">
                                         </div>
-                                        <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
+                                        <i x-show="!(isProcessing || localProcessing)"
                                             class="bi bi-chevron-right text-muted extra-small"></i>
                                     </button>
                                 @endforeach
