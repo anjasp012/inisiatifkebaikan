@@ -29,7 +29,7 @@
 
             fbq.disablePushState = true; // Disable automatic SPA tracking by Meta
             fbq('set', 'autoConfig', false, '956852468822918');
-            fbq('init', '956852468822918' {
+            fbq('init', '956852468822918', {
                 em: 'ahmdrmdnu@gmail.com',
                 ph: '087777177174'
             });
