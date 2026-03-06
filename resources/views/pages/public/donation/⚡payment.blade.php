@@ -13,6 +13,7 @@ new class extends Component {
     public Campaign $campaign;
     public $donationData;
     public $banks;
+    public $isProcessing = false;
 
     public function mount(Campaign $campaign)
     {
@@ -29,8 +30,15 @@ new class extends Component {
 
     public function processPayment($bankId)
     {
+        if ($this->isProcessing) {
+            return;
+        }
+
+        $this->isProcessing = true;
+
         $bank = Bank::find($bankId);
         if (!$bank) {
+            $this->isProcessing = false;
             return;
         }
 
@@ -98,46 +106,51 @@ new class extends Component {
                 $params['payment_type'] = $bank->bank_code;
             }
 
-            $response = $midtrans->charge($params);
+            try {
+                $response = $midtrans->charge($params);
 
-            if ($response && (isset($response->va_numbers) || isset($response->payment_code) || isset($response->bill_key) || isset($response->permata_va_number) || isset($response->actions))) {
-                $payCode = '-';
-                $payUrl = null;
-                $expiryTime = $donation->expired_at;
+                if ($response && (isset($response->va_numbers) || isset($response->payment_code) || isset($response->bill_key) || isset($response->permata_va_number) || isset($response->actions))) {
+                    $payCode = '-';
+                    $payUrl = null;
+                    $expiryTime = $donation->expired_at;
 
-                if (isset($response->va_numbers[0]->va_number)) {
-                    $payCode = $response->va_numbers[0]->va_number;
-                } elseif (isset($response->bill_key)) {
-                    $payCode = $response->bill_key;
-                } elseif (isset($response->permata_va_number)) {
-                    $payCode = $response->permata_va_number;
-                } elseif (isset($response->payment_code)) {
-                    $payCode = $response->payment_code;
-                } elseif (isset($response->actions)) {
-                    foreach ($response->actions as $action) {
-                        if ($action->name === 'generate-qr-code') {
-                            $payCode = $action->url;
-                        } elseif ($action->name === 'deeplink-redirect') {
-                            $payUrl = $action->url;
+                    if (isset($response->va_numbers[0]->va_number)) {
+                        $payCode = $response->va_numbers[0]->va_number;
+                    } elseif (isset($response->bill_key)) {
+                        $payCode = $response->bill_key;
+                    } elseif (isset($response->permata_va_number)) {
+                        $payCode = $response->permata_va_number;
+                    } elseif (isset($response->payment_code)) {
+                        $payCode = $response->payment_code;
+                    } elseif (isset($response->actions)) {
+                        foreach ($response->actions as $action) {
+                            if ($action->name === 'generate-qr-code') {
+                                $payCode = $action->url;
+                            } elseif ($action->name === 'deeplink-redirect') {
+                                $payUrl = $action->url;
+                            }
                         }
                     }
-                }
 
-                if (isset($response->expiry_time)) {
-                    try {
-                        $expiryTime = \Illuminate\Support\Carbon::parse($response->expiry_time);
-                    } catch (\Exception $e) {
+                    if (isset($response->expiry_time)) {
+                        try {
+                            $expiryTime = \Illuminate\Support\Carbon::parse($response->expiry_time);
+                        } catch (\Exception $e) {
+                        }
                     }
-                }
 
-                $donation->update([
-                    'payment_code' => $payCode,
-                    'payment_url' => $payUrl ?: $donation->payment_url,
-                    'expired_at' => $expiryTime,
-                ]);
-                return $this->redirect(route('donation.instruction', $donation->transaction_id), navigate: true);
+                    $donation->update([
+                        'payment_code' => $payCode,
+                        'payment_url' => $payUrl ?: $donation->payment_url,
+                        'expired_at' => $expiryTime,
+                    ]);
+                    return $this->redirect(route('donation.instruction', $donation->transaction_id), navigate: true);
+                }
+            } catch (\Exception $e) {
+                \Log::error('Midtrans Charge Error: ' . $e->getMessage());
             }
 
+            $this->isProcessing = false;
             session()->flash('error', 'Gagal memproses pembayaran Midtrans.');
             return null;
         }
@@ -154,24 +167,31 @@ new class extends Component {
                 'campaign_name' => $this->campaign->title,
             ];
 
-            $result = $tripay->requestTransaction($params);
+            try {
+                $result = $tripay->requestTransaction($params);
 
-            if (isset($result['success']) && $result['success']) {
-                $payData = $result['data'];
-                $payCode = $payData['pay_code'] ?? ($payData['qr_url'] ?? '-');
-                $payUrl = $payData['checkout_url'] ?? null;
-                $expiryTime = isset($payData['expired_time']) ? \Illuminate\Support\Carbon::createFromTimestamp($payData['expired_time']) : $donation->expired_at;
+                if (isset($result['success']) && $result['success']) {
+                    $payData = $result['data'];
+                    $payCode = $payData['pay_code'] ?? ($payData['qr_url'] ?? '-');
+                    $payUrl = $payData['checkout_url'] ?? null;
+                    $expiryTime = isset($payData['expired_time']) ? \Illuminate\Support\Carbon::createFromTimestamp($payData['expired_time']) : $donation->expired_at;
 
-                $donation->update([
-                    'payment_code' => $payCode,
-                    'payment_url' => $payUrl,
-                    'payment_instructions' => $payData['instructions'] ?? null,
-                    'expired_at' => $expiryTime,
-                ]);
-                return $this->redirect(route('donation.instruction', $donation->transaction_id), navigate: true);
+                    $donation->update([
+                        'payment_code' => $payCode,
+                        'payment_url' => $payUrl,
+                        'payment_instructions' => $payData['instructions'] ?? null,
+                        'expired_at' => $expiryTime,
+                    ]);
+                    return $this->redirect(route('donation.instruction', $donation->transaction_id), navigate: true);
+                }
+
+                session()->flash('error', $result['message'] ?? 'Gagal membuat transaksi ke Tripay.');
+            } catch (\Exception $e) {
+                \Log::error('Tripay Request Error: ' . $e->getMessage());
+                session()->flash('error', 'Terjadi kesalahan saat menghubungi Tripay.');
             }
 
-            session()->flash('error', $result['message'] ?? 'Gagal membuat transaksi ke Tripay.');
+            $this->isProcessing = false;
             return null;
         }
 
@@ -250,142 +270,135 @@ new class extends Component {
                 </div>
             @endif
 
-            <div class="space-y-3" x-data="{ activeGroup: 'ewallet' }">
+            <div class="space-y-4" x-data="{ isProcessing: @entangle('isProcessing') }">
 
                 {{-- E-Wallet & QRIS --}}
-                <div class="card border rounded-4 shadow-micro overflow-hidden border-light">
-                    <button class="w-100 border-0 bg-white p-3 d-flex align-items-center justify-content-between"
-                        @click="activeGroup = activeGroup === 'ewallet' ? '' : 'ewallet'">
-                        <div class="d-flex align-items-center gap-3">
-                            <i class="bi bi-phone text-muted fs-5"></i>
-                            <div class="text-start">
-                                <span class="d-block fw-bold text-dark small">E-Wallet & QRIS</span>
-                                <span class="text-muted extra-small">Otomatis Terverifikasi</span>
+                @php $ewalletBanks = $banks->whereIn('method', ['ewallet', 'qris']); @endphp
+                @if ($ewalletBanks->count() > 0)
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center gap-2 mb-3 px-1">
+                            <i class="bi bi-phone text-primary fs-5"></i>
+                            <div>
+                                <h6 class="mb-0 fw-bold small">E-Wallet & QRIS</h6>
+                                <p class="text-muted extra-small mb-0">Otomatis Terverifikasi</p>
                             </div>
                         </div>
-                        <i class="bi bi-chevron-down extra-small transition-transform"
-                            :class="activeGroup === 'ewallet' ? 'rotate-180' : ''"></i>
-                    </button>
-                    <div x-show="activeGroup === 'ewallet'" x-collapse>
-                        <div class="list-group list-group-flush border-top border-light">
-                            @foreach ($banks->whereIn('method', ['ewallet', 'qris']) as $bank)
-                                <button wire:click="processPayment({{ $bank->id }})" wire:loading.attr="disabled"
-                                    class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div class="bank-logo-mini">
-                                            <img src="{{ $bank->logo_url }}" class="img-fluid"
-                                                alt="{{ $bank->bank_name }}">
+                        <div class="card border rounded-4 shadow-micro overflow-hidden border-light">
+                            <div class="list-group list-group-flush">
+                                @foreach ($ewalletBanks as $bank)
+                                    <button wire:click="processPayment({{ $bank->id }})"
+                                        wire:loading.attr="disabled" :disabled="isProcessing"
+                                        class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="bank-logo-mini">
+                                                <img src="{{ $bank->logo_url }}" class="img-fluid"
+                                                    alt="{{ $bank->bank_name }}">
+                                            </div>
+                                            <span class="fw-bold text-dark small">{{ $bank->bank_name }}</span>
                                         </div>
-                                        <span class="fw-bold text-dark small">{{ $bank->bank_name }}</span>
-                                    </div>
-                                    <div wire:loading wire:target="processPayment({{ $bank->id }})"
-                                        class="spinner-border spinner-border-sm text-primary" role="status"></div>
-                                    <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
-                                        class="bi bi-chevron-right text-muted extra-small"></i>
-                                </button>
-                            @endforeach
+                                        <div wire:loading wire:target="processPayment({{ $bank->id }})"
+                                            class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                                        <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
+                                            class="bi bi-chevron-right text-muted extra-small"></i>
+                                    </button>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
                 {{-- Virtual Account --}}
-                <div class="card border rounded-4 shadow-micro overflow-hidden border-light">
-                    <button class="w-100 border-0 bg-white p-3 d-flex align-items-center justify-content-between"
-                        @click="activeGroup = activeGroup === 'va' ? '' : 'va'">
-                        <div class="d-flex align-items-center gap-3">
-                            <i class="bi bi-credit-card text-muted fs-5"></i>
-                            <div class="text-start">
-                                <span class="d-block fw-bold text-dark small">Virtual Account</span>
-                                <span class="text-muted extra-small">Transfer Bank Otomatis</span>
+                @php $vaBanks = $banks->where('method', 'va'); @endphp
+                @if ($vaBanks->count() > 0)
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center gap-2 mb-3 px-1">
+                            <i class="bi bi-credit-card text-primary fs-5"></i>
+                            <div>
+                                <h6 class="mb-0 fw-bold small">Virtual Account</h6>
+                                <p class="text-muted extra-small mb-0">Transfer Bank Otomatis</p>
                             </div>
                         </div>
-                        <i class="bi bi-chevron-down extra-small transition-transform"
-                            :class="activeGroup === 'va' ? 'rotate-180' : ''"></i>
-                    </button>
-                    <div x-show="activeGroup === 'va'" x-collapse>
-                        <div class="list-group list-group-flush border-top border-light">
-                            @foreach ($banks->where('method', 'va') as $bank)
-                                <button wire:click="processPayment({{ $bank->id }})" wire:loading.attr="disabled"
-                                    class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div class="bank-logo-mini">
-                                            <img src="{{ $bank->logo_url }}" class="img-fluid"
-                                                alt="{{ $bank->bank_name }}">
+                        <div class="card border rounded-4 shadow-micro overflow-hidden border-light">
+                            <div class="list-group list-group-flush">
+                                @foreach ($vaBanks as $bank)
+                                    <button wire:click="processPayment({{ $bank->id }})"
+                                        wire:loading.attr="disabled" :disabled="isProcessing"
+                                        class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="bank-logo-mini">
+                                                <img src="{{ $bank->logo_url }}" class="img-fluid"
+                                                    alt="{{ $bank->bank_name }}">
+                                            </div>
+                                            <span class="fw-bold text-dark small">{{ $bank->bank_name }}</span>
                                         </div>
-                                        <span class="fw-bold text-dark small">{{ $bank->bank_name }}</span>
-                                    </div>
-                                    <div wire:loading wire:target="processPayment({{ $bank->id }})"
-                                        class="spinner-border spinner-border-sm text-primary" role="status"></div>
-                                    <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
-                                        class="bi bi-chevron-right text-muted extra-small"></i>
-                                </button>
-                            @endforeach
+                                        <div wire:loading wire:target="processPayment({{ $bank->id }})"
+                                            class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                                        <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
+                                            class="bi bi-chevron-right text-muted extra-small"></i>
+                                    </button>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
                 {{-- Manual --}}
-                <div class="card border rounded-4 shadow-micro overflow-hidden border-light">
-                    <button class="w-100 border-0 bg-white p-3 d-flex align-items-center justify-content-between"
-                        @click="activeGroup = activeGroup === 'manual' ? '' : 'manual'">
-                        <div class="d-flex align-items-center gap-3">
-                            <i class="bi bi-bank text-muted fs-5"></i>
-                            <div class="text-start">
-                                <span class="d-block fw-bold text-dark small">Transfer Manual</span>
-                                <span class="text-muted extra-small">Konfirmasi via Upload Bukti</span>
+                @php $manualBanks = $banks->where('method', 'manual'); @endphp
+                @if ($manualBanks->count() > 0)
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center gap-2 mb-3 px-1">
+                            <i class="bi bi-bank text-primary fs-5"></i>
+                            <div>
+                                <h6 class="mb-0 fw-bold small">Transfer Manual</h6>
+                                <p class="text-muted extra-small mb-0">Konfirmasi via Upload Bukti</p>
                             </div>
                         </div>
-                        <i class="bi bi-chevron-down extra-small transition-transform"
-                            :class="activeGroup === 'manual' ? 'rotate-180' : ''"></i>
-                    </button>
-                    <div x-show="activeGroup === 'manual'" x-collapse>
-                        <div class="list-group list-group-flush border-top border-light">
-                            @foreach ($banks->where('method', 'manual') as $bank)
-                                <button wire:click="processPayment({{ $bank->id }})" wire:loading.attr="disabled"
-                                    class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
-                                    <div class="d-flex align-items-center gap-3">
-                                        <div class="bank-logo-mini">
-                                            <img src="{{ $bank->logo_url }}" class="img-fluid"
-                                                alt="{{ $bank->bank_name }}">
-                                        </div>
-                                        <div>
-                                            <span
-                                                class="text-start d-block fw-bold text-dark small">{{ $bank->bank_name }}</span>
-                                            <div class="text-muted extra-small text-start"><span>a.n
-                                                    {{ $bank->account_name }}</span>
+                        <div class="card border rounded-4 shadow-micro overflow-hidden border-light">
+                            <div class="list-group list-group-flush">
+                                @foreach ($manualBanks as $bank)
+                                    <button wire:click="processPayment({{ $bank->id }})"
+                                        wire:loading.attr="disabled" :disabled="isProcessing"
+                                        class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="bank-logo-mini">
+                                                <img src="{{ $bank->logo_url }}" class="img-fluid"
+                                                    alt="{{ $bank->bank_name }}">
+                                            </div>
+                                            <div>
+                                                <span
+                                                    class="text-start d-block fw-bold text-dark small">{{ $bank->bank_name }}</span>
+                                                <div class="text-muted extra-small text-start"><span>a.n
+                                                        {{ $bank->account_name }}</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div wire:loading wire:target="processPayment({{ $bank->id }})"
-                                        class="spinner-border spinner-border-sm text-primary" role="status"></div>
-                                    <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
-                                        class="bi bi-chevron-right text-muted extra-small"></i>
-                                </button>
-                            @endforeach
+                                        <div wire:loading wire:target="processPayment({{ $bank->id }})"
+                                            class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                                        <i wire:loading.remove wire:target="processPayment({{ $bank->id }})"
+                                            class="bi bi-chevron-right text-muted extra-small"></i>
+                                    </button>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
 
                 {{-- Retail --}}
-                @if ($banks->where('method', 'retail')->count() > 0)
-                    <div class="card border rounded-4 shadow-micro overflow-hidden border-light">
-                        <button class="w-100 border-0 bg-white p-3 d-flex align-items-center justify-content-between"
-                            @click="activeGroup = activeGroup === 'retail' ? '' : 'retail'">
-                            <div class="d-flex align-items-center gap-3">
-                                <i class="bi bi-shop text-muted fs-5"></i>
-                                <div class="text-start">
-                                    <span class="d-block fw-bold text-dark small">Gerai Retail</span>
-                                    <span class="text-muted extra-small">Alfamart / Indomaret</span>
-                                </div>
+                @php $retailBanks = $banks->where('method', 'retail'); @endphp
+                @if ($retailBanks->count() > 0)
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center gap-2 mb-3 px-1">
+                            <i class="bi bi-shop text-primary fs-5"></i>
+                            <div>
+                                <h6 class="mb-0 fw-bold small">Gerai Retail</h6>
+                                <p class="text-muted extra-small mb-0">Alfamart / Indomaret</p>
                             </div>
-                            <i class="bi bi-chevron-down extra-small transition-transform"
-                                :class="activeGroup === 'retail' ? 'rotate-180' : ''"></i>
-                        </button>
-                        <div x-show="activeGroup === 'retail'" x-collapse>
-                            <div class="list-group list-group-flush border-top border-light">
-                                @foreach ($banks->where('method', 'retail') as $bank)
+                        </div>
+                        <div class="card border rounded-4 shadow-micro overflow-hidden border-light">
+                            <div class="list-group list-group-flush">
+                                @foreach ($retailBanks as $bank)
                                     <button wire:click="processPayment({{ $bank->id }})"
-                                        wire:loading.attr="disabled"
+                                        wire:loading.attr="disabled" :disabled="isProcessing"
                                         class="list-group-item d-flex align-items-center justify-content-between p-3 border-0">
                                         <div class="d-flex align-items-center gap-3">
                                             <div class="bank-logo-mini">
