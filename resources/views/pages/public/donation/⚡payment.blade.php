@@ -229,7 +229,7 @@ new class extends Component {
 
 
 
-<div x-init="fbq('track', 'AddToCart')"
+<div x-init="if (typeof fbq !== 'undefined') fbq('track', 'AddToCart')"
     @donation-created.window="
         (function() {
             try {
