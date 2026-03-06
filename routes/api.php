@@ -15,4 +15,5 @@ Route::post('/prayer/{donation}/amin', function (Donation $donation) {
 });
 
 Route::post('/midtrans/callback', [App\Http\Controllers\MidtransCallbackController::class, 'handle']);
+Route::post('verify-payment', [App\Http\Controllers\MidtransCallbackController::class, 'handle']);
 Route::post('/tripay/callback', [App\Http\Controllers\TripayCallbackController::class, 'handle']);
