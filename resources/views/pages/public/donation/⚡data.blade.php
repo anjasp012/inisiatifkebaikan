@@ -19,7 +19,7 @@ new class extends Component {
     #[Rule('required|email')]
     public $email = '';
 
-    #[Rule('required|string')]
+    #[Rule('required|string|min:10|max:13')]
     public $phone = '';
 
     public $is_anonymous = false;
