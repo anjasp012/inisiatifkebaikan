@@ -271,17 +271,17 @@ new class extends Component {
             @endif
 
             <div class="space-y-4" x-data="{
-                isProcessing: @entangle('isProcessing').live,
+                isProcessing: @entangle('isProcessing').live || false,
                 localProcessing: false,
                 startProcessing(bankId) {
                     if (this.isProcessing || this.localProcessing) return;
                     this.localProcessing = true;
                     $wire.processPayment(bankId);
                 }
-            }">
+            }" x-init="localProcessing = false">
 
                 {{-- Global Loading Overlay --}}
-                <div x-show="isProcessing || localProcessing" x-cloak
+                <div x-show="isProcessing === true || localProcessing === true" x-cloak
                     x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
                     x-transition:enter-end="opacity-100"
                     class="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
