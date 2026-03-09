@@ -179,7 +179,7 @@ is-invalid
                                     <input class="form-check-input" type="checkbox" wire:model="is_anonymous"
                                         id="anon">
                                     <label class="form-check-label small" for="anon">Sembunyikan nama (Sahabat
-                                        Inisiat)</label>
+                                        Inisiatif)</label>
                                 </div>
                             </div>
 
