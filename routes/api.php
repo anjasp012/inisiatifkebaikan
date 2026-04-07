@@ -17,3 +17,7 @@ Route::post('/prayer/{donation}/amin', function (Donation $donation) {
 Route::post('/midtrans/callback', [App\Http\Controllers\MidtransCallbackController::class, 'handle']);
 Route::post('verify-payment', [App\Http\Controllers\MidtransCallbackController::class, 'handle']);
 Route::post('/tripay/callback', [App\Http\Controllers\TripayCallbackController::class, 'handle']);
+
+// Espay Callbacks
+Route::post('/espay/inquiry', [App\Http\Controllers\EspayCallbackController::class, 'inquiry']);
+Route::post('/espay/payment', [App\Http\Controllers\EspayCallbackController::class, 'payment']);

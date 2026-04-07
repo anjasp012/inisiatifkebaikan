@@ -158,6 +158,7 @@ new class extends Component {
         }
 
         if ($bank->type === 'espay') {
+            \Illuminate\Support\Facades\Log::info('Processing Espay payment for bank:', ['bank_id' => $bankId, 'method' => $bank->method]);
             $espay = new \App\Services\EspayService();
             $params = [
                 'order_id' => $donation->transaction_id,
@@ -329,7 +330,9 @@ new class extends Component {
                 startProcessing(bankId) {
                     if (this.isProcessing || this.localProcessing) return;
                     this.localProcessing = true;
-                    $wire.processPayment(bankId);
+                    $wire.processPayment(bankId).finally(() => {
+                        this.localProcessing = false;
+                    });
                 }
             }" x-init="localProcessing = false">
 

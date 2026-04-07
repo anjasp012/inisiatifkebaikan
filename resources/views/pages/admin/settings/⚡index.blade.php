@@ -31,6 +31,7 @@ new #[Layout('layouts.admin')] class extends Component {
     // Espay Settings
     public $espay_merchant_code;
     public $espay_signature_key;
+    public $espay_private_key;
     public $espay_mode = 'sandbox';
 
     // WhaCenter Settings
@@ -68,6 +69,7 @@ new #[Layout('layouts.admin')] class extends Component {
         // Espay
         $this->espay_merchant_code = Setting::get('espay_merchant_code');
         $this->espay_signature_key = Setting::get('espay_signature_key');
+        $this->espay_private_key = Setting::get('espay_private_key');
         $this->espay_mode = Setting::get('espay_mode', 'sandbox');
 
         // WhaCenter
@@ -110,6 +112,7 @@ new #[Layout('layouts.admin')] class extends Component {
         // Espay
         Setting::set('espay_merchant_code', $this->espay_merchant_code);
         Setting::set('espay_signature_key', $this->espay_signature_key);
+        Setting::set('espay_private_key', $this->espay_private_key);
         Setting::set('espay_mode', $this->espay_mode);
 
         // WhaCenter
@@ -291,6 +294,10 @@ new #[Layout('layouts.admin')] class extends Component {
                             <div class="col-12">
                                 <label class="form-label fw-bold extra-small text-uppercase">Signature Key / Password</label>
                                 <input type="password" wire:model="espay_signature_key" class="form-control">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold extra-small text-uppercase">Private Key (For QRIS/Linkage SNAP)</label>
+                                <textarea wire:model="espay_private_key" class="form-control" rows="5"></textarea>
                             </div>
                         </div>
                         <div class="alert alert-info mt-4 border-0 bg-opacity-10 mb-0">

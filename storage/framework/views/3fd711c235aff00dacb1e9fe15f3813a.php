@@ -40,7 +40,7 @@ use Livewire\WithPagination;
                                 </button>
                             </li>
                             <li>
-                                <button class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2"
+                                <button class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2 mb-1"
                                     type="button" wire:click="syncMidtrans" wire:loading.attr="disabled">
                                     <div
                                         class="bg-primary bg-opacity-10 text-primary rounded p-1 avatar-sm d-flex align-items-center justify-content-center">
@@ -49,6 +49,20 @@ use Livewire\WithPagination;
                                     <div class="flex-grow-1">
                                         <div class="fw-bold small">Sync Midtrans</div>
                                         <div class="text-muted extra-small">Update common Midtrans channels
+                                        </div>
+                                    </div>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2"
+                                    type="button" wire:click="syncEspay" wire:loading.attr="disabled">
+                                    <div
+                                        class="bg-warning bg-opacity-10 text-warning rounded p-1 avatar-sm d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-wallet2"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-bold small">Sync Espay</div>
+                                        <div class="text-muted extra-small">Update channels from Espay
                                         </div>
                                     </div>
                                 </button>
@@ -103,6 +117,9 @@ use Livewire\WithPagination;
                                 <?php elseif($bank->type == 'tripay'): ?>
                                     <span
                                         class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-10 px-2 py-1 text-uppercase">Tripay</span>
+                                <?php elseif($bank->type == 'espay'): ?>
+                                    <span
+                                        class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-10 px-2 py-1 text-uppercase">Espay</span>
                                 <?php else: ?>
                                     <span
                                         class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-10 px-2 py-1 text-uppercase">Midtrans</span>
