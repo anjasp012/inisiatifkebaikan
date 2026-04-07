@@ -157,6 +157,57 @@ new class extends Component {
             return null;
         }
 
+        if ($bank->type === 'espay') {
+            $espay = new \App\Services\EspayService();
+            $params = [
+                'order_id' => $donation->transaction_id,
+                'amount' => (int) $donation->amount,
+                'pay_code' => $bank->bank_code,
+                'cust_name' => $donation->donor_name,
+                'cust_email' => $donation->donor_email,
+                'cust_phone' => $donation->donor_phone,
+            ];
+
+            try {
+                if ($bank->method === 'va') {
+                    $result = $espay->createVA($params);
+                } elseif ($bank->method === 'qris') {
+                    $result = $espay->createQRIS($params);
+                } elseif ($bank->method === 'ewallet') {
+                    $result = $espay->createEwallet($params);
+                } else {
+                    $result = ['rq_ret_code' => '99', 'rq_ret_msg' => 'Metode tidak didukung'];
+                }
+
+                if (isset($result['rq_ret_code']) && $result['rq_ret_code'] === '0000') {
+                    $payCode = $result['va_number'] ?? ($result['qr_data'] ?? ($result['pay_code'] ?? '-'));
+                    $payUrl = $result['pay_url'] ?? null;
+
+                    // If it's QRIS and we have raw QR data, generate a QR image URL using a public service
+                    if ($bank->method === 'qris' && isset($result['qr_data']) && !Str::startsWith($result['qr_data'], 'http')) {
+                        $payCode = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' . urlencode($result['qr_data']);
+                    }
+
+                    $donation->update([
+                        'payment_code' => $payCode,
+                        'payment_url' => $payUrl,
+                        'expired_at' => now()->addDay(),
+                    ]);
+
+                    $this->sendNotification($donation, $bank);
+                    return $this->redirect(route('donation.instruction', $donation->transaction_id), navigate: true);
+                }
+
+                session()->flash('error', $result['rq_ret_msg'] ?? 'Gagal membuat transaksi ke Espay.');
+            } catch (\Exception $e) {
+                \Log::error('Espay Request Error: ' . $e->getMessage());
+                session()->flash('error', 'Terjadi kesalahan saat menghubungi Espay.');
+            }
+
+            $this->isProcessing = false;
+            return null;
+        }
+
         if ($bank->type === 'tripay') {
             $tripay = new \App\Services\TripayService();
             $params = [
