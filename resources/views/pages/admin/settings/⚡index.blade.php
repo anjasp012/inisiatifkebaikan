@@ -28,6 +28,11 @@ new #[Layout('layouts.admin')] class extends Component {
     public $midtrans_server_key;
     public $midtrans_mode = 'sandbox';
 
+    // Espay Settings
+    public $espay_merchant_code;
+    public $espay_signature_key;
+    public $espay_mode = 'sandbox';
+
     // WhaCenter Settings
     public $whacenter_device_id;
 
@@ -59,6 +64,11 @@ new #[Layout('layouts.admin')] class extends Component {
         $this->midtrans_client_key = Setting::get('midtrans_client_key');
         $this->midtrans_server_key = Setting::get('midtrans_server_key');
         $this->midtrans_mode = Setting::get('midtrans_mode', 'sandbox');
+
+        // Espay
+        $this->espay_merchant_code = Setting::get('espay_merchant_code');
+        $this->espay_signature_key = Setting::get('espay_signature_key');
+        $this->espay_mode = Setting::get('espay_mode', 'sandbox');
 
         // WhaCenter
         $this->whacenter_device_id = Setting::get('whacenter_device_id');
@@ -96,6 +106,11 @@ new #[Layout('layouts.admin')] class extends Component {
         Setting::set('midtrans_client_key', $this->midtrans_client_key);
         Setting::set('midtrans_server_key', $this->midtrans_server_key);
         Setting::set('midtrans_mode', $this->midtrans_mode);
+
+        // Espay
+        Setting::set('espay_merchant_code', $this->espay_merchant_code);
+        Setting::set('espay_signature_key', $this->espay_signature_key);
+        Setting::set('espay_mode', $this->espay_mode);
 
         // WhaCenter
         Setting::set('whacenter_device_id', $this->whacenter_device_id);
@@ -141,6 +156,12 @@ new #[Layout('layouts.admin')] class extends Component {
                         <button class="nav-link px-4 py-2 fw-bold" id="midtrans-tab" data-bs-toggle="tab"
                             data-bs-target="#midtrans" type="button" role="tab">
                             <i class="bi bi-shield-check me-2"></i>Midtrans
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link px-4 py-2 fw-bold" id="espay-tab" data-bs-toggle="tab"
+                            data-bs-target="#espay" type="button" role="tab">
+                            <i class="bi bi-wallet2 me-2"></i>Espay
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -249,6 +270,32 @@ new #[Layout('layouts.admin')] class extends Component {
                             <i class="bi bi-info-circle-fill me-2"></i>
                             Dapatkan kredensial di dashboard Midtrans Anda pada menu <strong>Settings > Access
                                 Keys</strong>.
+                        </div>
+                    </div>
+
+                    <!-- Espay Settings -->
+                    <div class="tab-pane fade" id="espay" role="tabpanel">
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold extra-small text-uppercase">Merchant Code / ID</label>
+                                <input type="text" wire:model="espay_merchant_code" class="form-control"
+                                    placeholder="MSxxxx">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold extra-small text-uppercase">Mode Environment</label>
+                                <select wire:model="espay_mode" class="form-select">
+                                    <option value="sandbox">Sandbox (Testing)</option>
+                                    <option value="production">Production (Live)</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold extra-small text-uppercase">Signature Key / Password</label>
+                                <input type="password" wire:model="espay_signature_key" class="form-control">
+                            </div>
+                        </div>
+                        <div class="alert alert-info mt-4 border-0 bg-opacity-10 mb-0">
+                            <i class="bi bi-info-circle-fill me-2"></i>
+                            Kredensial Espay dapat dilihat di dashboard merchant Espay Anda.
                         </div>
                     </div>
 

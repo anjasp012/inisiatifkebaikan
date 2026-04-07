@@ -138,6 +138,47 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
             $this->dispatch('toast', type: 'error', message: 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
+    public function syncEspay()
+    {
+        $merchantCode = \App\Models\Setting::get('espay_merchant_code');
+        if (!$merchantCode) {
+            $this->dispatch('toast', type: 'error', message: 'Merchant Code Espay belum diatur di Pengaturan ❌');
+            return;
+        }
+
+        $channels = [
+            ['code' => 'BCAVA', 'name' => 'BCA Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bca.png', 'method' => 'va'],
+            ['code' => 'MANDIRIVA', 'name' => 'Mandiri Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/mandiri.png', 'method' => 'va'],
+            ['code' => 'BRIVA', 'name' => 'BRI Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bri.png', 'method' => 'va'],
+            ['code' => 'BNIVA', 'name' => 'BNI Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bni.png', 'method' => 'va'],
+            ['code' => 'PERMATAVA', 'name' => 'Permata Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/permata.png', 'method' => 'va'],
+            ['code' => 'DANAMONVA', 'name' => 'Danamon Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/danamon.png', 'method' => 'va'],
+            ['code' => 'CIMBVA', 'name' => 'CIMB Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/cimb.png', 'method' => 'va'],
+            ['code' => 'MAYBANKVA', 'name' => 'Maybank Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/maybank.png', 'method' => 'va'],
+            ['code' => 'BSIVA', 'name' => 'BSI Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bsi.png', 'method' => 'va'],
+            ['code' => 'MUAMALATVA', 'name' => 'Muamalat Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/muamalat.png', 'method' => 'va'],
+            ['code' => 'QRIS', 'name' => 'QRIS', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/qris/qris.png', 'method' => 'qris'],
+            ['code' => 'SHOPEEPAY', 'name' => 'ShopeePay', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/ewallet/shopeepay.png', 'method' => 'ewallet'],
+        ];
+
+        try {
+            foreach ($channels as $channel) {
+                $bank = Bank::firstOrNew(['bank_code' => $channel['code'], 'type' => 'espay']);
+                if (!$bank->exists) {
+                    $bank->is_active = true;
+                }
+                $bank->bank_name = $channel['name'];
+                $bank->logo = $channel['logo'];
+                $bank->method = $channel['method'];
+                $bank->save();
+            }
+
+            $this->dispatch('toast', type: 'success', message: 'Sinkronisasi Espay berhasil ✅');
+        } catch (\Exception $e) {
+            $this->dispatch('toast', type: 'error', message: 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
 };
 ?>
 
@@ -174,7 +215,7 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
                                 </button>
                             </li>
                             <li>
-                                <button class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2"
+                                <button class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2 mb-1"
                                     type="button" wire:click="syncMidtrans" wire:loading.attr="disabled">
                                     <div
                                         class="bg-primary bg-opacity-10 text-primary rounded p-1 avatar-sm d-flex align-items-center justify-content-center">
@@ -183,6 +224,20 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
                                     <div class="flex-grow-1">
                                         <div class="fw-bold small">Sync Midtrans</div>
                                         <div class="text-muted extra-small">Update common Midtrans channels
+                                        </div>
+                                    </div>
+                                </button>
+                            </li>
+                            <li>
+                                <button class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2"
+                                    type="button" wire:click="syncEspay" wire:loading.attr="disabled">
+                                    <div
+                                        class="bg-warning bg-opacity-10 text-warning rounded p-1 avatar-sm d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-wallet2"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="fw-bold small">Sync Espay</div>
+                                        <div class="text-muted extra-small">Update channels from Espay
                                         </div>
                                     </div>
                                 </button>
@@ -237,6 +292,9 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
                                 @elseif($bank->type == 'tripay')
                                     <span
                                         class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-10 px-2 py-1 text-uppercase">Tripay</span>
+                                @elseif($bank->type == 'espay')
+                                    <span
+                                        class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-10 px-2 py-1 text-uppercase">Espay</span>
                                 @else
                                     <span
                                         class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-10 px-2 py-1 text-uppercase">Midtrans</span>
