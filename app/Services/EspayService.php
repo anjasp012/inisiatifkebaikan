@@ -35,13 +35,14 @@ class EspayService
         $rqUuid = (string) Str::uuid();
         $rqDatetime = now()->format('Y-m-d H:i:s');
         $orderId = $params['order_id'];
-        $amount = (string)$params['amount'];
+        $amount = number_format($params['amount'], 2, '.', '');
         $bankCode = $params['pay_code'];
         $ccy = 'IDR';
         
         // Correct Signature Formula: ##signatureKey##rq_uuid##rq_datetime##order_id##amount##ccy##comm_code##SENDINVOICE##
         // Must be UPPERCASE before hashing.
         $stringToSign = "##" . $this->signatureKey . "##" . $rqUuid . "##" . $rqDatetime . "##" . $orderId . "##" . $amount . "##" . $ccy . "##" . strtoupper($this->merchantCode) . "##SENDINVOICE##";
+        \Illuminate\Support\Facades\Log::info('Espay String to Sign:', ['string' => strtoupper($stringToSign)]);
         $signature = hash('sha256', strtoupper($stringToSign));
 
         $payload = [
