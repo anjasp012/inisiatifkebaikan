@@ -35,14 +35,16 @@ class EspayService
         $rqUuid = (string) Str::uuid();
         $rqDatetime = now()->format('Y-m-d H:i:s');
         $orderId = $params['order_id'];
-        $amount = number_format($params['amount'], 2, '.', '');
+        // Espay non-SNAP: amount is integer string (no decimals)
+        $amount = (string)(int)$params['amount'];
         $bankCode = $params['pay_code'];
         $ccy = 'IDR';
+        $commCode = strtoupper($this->merchantCode);
         
-        // Correct Signature Formula: ##signatureKey##rq_uuid##rq_datetime##order_id##amount##ccy##comm_code##SENDINVOICE##
+        // Signature Formula: ##signatureKey##rq_uuid##rq_datetime##order_id##amount##ccy##comm_code##SENDINVOICE##
         // Must be UPPERCASE before hashing.
-        $stringToSign = "##" . $this->signatureKey . "##" . $rqUuid . "##" . $rqDatetime . "##" . $orderId . "##" . $amount . "##" . $ccy . "##" . strtoupper($this->merchantCode) . "##SENDINVOICE##";
-        \Illuminate\Support\Facades\Log::info('Espay String to Sign:', ['string' => strtoupper($stringToSign)]);
+        $stringToSign = "##" . $this->signatureKey . "##" . $rqUuid . "##" . $rqDatetime . "##" . strtoupper($orderId) . "##" . $amount . "##" . $ccy . "##" . $commCode . "##SENDINVOICE##";
+        \Illuminate\Support\Facades\Log::info('Espay VA String to Sign:', ['string' => strtoupper($stringToSign)]);
         $signature = hash('sha256', strtoupper($stringToSign));
 
         $payload = [
@@ -76,9 +78,12 @@ class EspayService
             ];
         }
 
-        // Normalize response keys to match frontend expectations
+        // Normalize: Espay non-SNAP uses numeric error_code (0 = success)
+        $errorCode = $result['error_code'] ?? $result['rq_ret_code'] ?? '999';
+        $isSuccess = ($errorCode == 0 || $errorCode === '0' || $errorCode === '0000');
+
         return [
-            'rq_ret_code' => $result['error_code'] ?? ($result['rq_ret_code'] ?? '999'),
+            'rq_ret_code' => $isSuccess ? '0000' : (string)$errorCode,
             'rq_ret_msg' => $result['error_message'] ?? ($result['rq_ret_msg'] ?? 'Unknown error'),
             'va_number' => $result['va_number'] ?? null,
             'pay_code' => $result['va_number'] ?? null,
@@ -91,52 +96,63 @@ class EspayService
      */
     public function createQRIS($params)
     {
-        $timestamp = now()->toIso8601String();
-        $externalId = (string) Str::uuid();
-        
-        $body = [
-            'partnerReferenceNo' => $params['order_id'],
-            'merchantId' => $this->merchantCode,
-            'amount' => [
-                'value' => number_format($params['amount'], 2, '.', ''),
-                'currency' => 'IDR'
-            ],
-            'additionalInfo' => [
-                'productCode' => 'QRIS'
-            ],
-            'validityPeriod' => now()->addDay()->toIso8601String()
+        // Espay QRIS menggunakan non-SNAP (sendinvoice) seperti VA, bukan BI-SNAP
+        // Referensi: https://docs.espay.id
+        $rqUuid = (string) Str::uuid();
+        $rqDatetime = now()->format('Y-m-d H:i:s');
+        $orderId = $params['order_id'];
+        $amount = (string)(int)$params['amount'];
+        $ccy = 'IDR';
+        $commCode = strtoupper($this->merchantCode);
+
+        $stringToSign = "##" . $this->signatureKey . "##" . $rqUuid . "##" . $rqDatetime . "##" . strtoupper($orderId) . "##" . $amount . "##" . $ccy . "##" . $commCode . "##SENDINVOICE##";
+        \Illuminate\Support\Facades\Log::info('Espay QRIS String to Sign:', ['string' => strtoupper($stringToSign)]);
+        $signature = hash('sha256', strtoupper($stringToSign));
+
+        $payload = [
+            'rq_uuid' => $rqUuid,
+            'rq_datetime' => $rqDatetime,
+            'comm_code' => $this->merchantCode,
+            'order_id' => $orderId,
+            'amount' => $amount,
+            'ccy' => $ccy,
+            'remark1' => $params['cust_phone'],
+            'remark2' => $params['cust_name'],
+            'remark3' => $params['cust_email'],
+            'update' => 'N',
+            'bank_code' => 'QRIS',
+            'va_expired' => 1440,
+            'signature' => $signature
         ];
 
-        // RSA Signature for SNAP
-        $signature = $this->generateSnapSignature('POST', '/api/v1.0/qr/qr-mpm-generate', $body, $timestamp);
+        $url = $this->baseUrl . 'rest/merchantpg/sendinvoice';
 
-        $url = $this->baseUrl . 'api/v1.0/qr/qr-mpm-generate';
-
-        \Illuminate\Support\Facades\Log::info('Espay QRIS Request:', ['url' => $url, 'body' => $body]);
-
-        $response = Http::withHeaders([
-            'X-TIMESTAMP' => $timestamp,
-            'X-SIGNATURE' => $signature,
-            'X-PARTNER-ID' => $this->merchantCode,
-            'X-EXTERNAL-ID' => $externalId,
-            'CHANNEL-ID' => 'ESPAY',
-            'Content-Type' => 'application/json'
-        ])->post($url, $body);
+        \Illuminate\Support\Facades\Log::info('Espay QRIS Request:', ['url' => $url, 'payload' => $payload]);
+        $response = Http::asForm()->post($url, $payload);
 
         $result = $response->json();
         \Illuminate\Support\Facades\Log::info('Espay QRIS Response:', $result ?? ['raw' => $response->body()]);
 
-        if (isset($result['responseCode']) && $result['responseCode'] === '2004700') {
+        if (!$result) {
+            return ['rq_ret_code' => '999', 'rq_ret_msg' => 'Empty response from Espay QRIS'];
+        }
+
+        $errorCode = $result['error_code'] ?? $result['rq_ret_code'] ?? '999';
+        $isSuccess = ($errorCode == 0 || $errorCode === '0' || $errorCode === '0000');
+
+        if ($isSuccess) {
+            $qrData = $result['qr_string'] ?? $result['qr_content'] ?? $result['va_number'] ?? null;
             return [
                 'rq_ret_code' => '0000',
                 'rq_ret_msg' => 'Success',
-                'qr_data' => $result['qrContent'] ?? ($result['qrImage'] ?? null),
+                'qr_data' => $qrData,
+                'pay_code' => $qrData,
             ];
         }
 
         return [
-            'rq_ret_code' => $result['responseCode'] ?? '999',
-            'rq_ret_msg' => $result['responseMessage'] ?? 'Unknown SNAP error'
+            'rq_ret_code' => (string)$errorCode,
+            'rq_ret_msg' => $result['error_message'] ?? ($result['rq_ret_msg'] ?? 'Unknown QRIS error')
         ];
     }
 
@@ -155,20 +171,27 @@ class EspayService
         ];
     }
 
+    // Method ini tidak lagi digunakan (QRIS sekarang pakai non-SNAP)
+    // Tetap ada untuk referensi / keperluan masa depan
     protected function generateSnapSignature($method, $path, $body, $timestamp)
     {
         if (!$this->privateKey) {
+            \Illuminate\Support\Facades\Log::warning('Espay: MISSING_PRIVATE_KEY for SNAP signature');
             return 'MISSING_PRIVATE_KEY';
         }
 
-        // BI SNAP Standard String to Sign for Transactions
-        // HTTPMethod + ":" + EndpointUrl + ":" + AccessToken + ":" + Lowercase(HexEncode(SHA-256(RequestBody))) + ":" + Timestamp
-        
-        $hashedBody = strtolower(hash('sha256', json_encode($body, JSON_UNESCAPED_SLASHES)));
-        $stringToSign = $method . ':' . $path . '::' . $hashedBody . ':' . $timestamp;
+        $hashedBody = strtolower(hash('sha256', json_encode($body, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)));
+        $stringToSign = $method . ':' . $path . ':' . ':' . $hashedBody . ':' . $timestamp;
 
         $binarySignature = '';
-        openssl_sign($stringToSign, $binarySignature, $this->privateKey, OPENSSL_ALGO_SHA256);
+        $result = openssl_sign($stringToSign, $binarySignature, $this->privateKey, OPENSSL_ALGO_SHA256);
+
+        if (!$result) {
+            \Illuminate\Support\Facades\Log::error('Espay: openssl_sign failed. Key may be invalid.', [
+                'openssl_error' => openssl_error_string()
+            ]);
+            return 'SIGN_FAILED';
+        }
 
         return base64_encode($binarySignature);
     }
