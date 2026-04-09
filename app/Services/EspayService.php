@@ -18,10 +18,11 @@ class EspayService
 
     public function __construct()
     {
-        $this->merchantCode = Setting::get('espay_merchant_code');
-        $this->signatureKey = Setting::get('espay_signature_key');
-        $this->apiKey       = Setting::get('espay_api_key', ''); // Note: Pastikan user menyimpan API Key di database
-        $this->privateKey   = Setting::get('espay_private_key');
+        // TEMPORARY HARDCODE FOR TESTING KARENA DI DB LOCAL BELUM ADA
+        $this->merchantCode = 'SGWINISIATIFKEBAIKAN';
+        $this->signatureKey = 'azomlhfqb7if4qgj';
+        $this->apiKey       = '35d486e202931dba4f18f12edb250500'; 
+        $this->privateKey   = null;
 
         $this->isProduction = Setting::get('espay_mode') === 'production';
 
