@@ -18,11 +18,10 @@ class EspayService
 
     public function __construct()
     {
-        // TEMPORARY HARDCODE FOR TESTING - bypass DB
-        $this->merchantCode = 'SGWINISIATIFKEBAIKAN';
-        $this->signatureKey = 'azomlhfqb7if4qgj';
-        $this->apiKey       = '35d486e202931dba4f18f12edb250500'; // API Key untuk merchantinfo
-        $this->privateKey   = null;
+        $this->merchantCode = Setting::get('espay_merchant_code');
+        $this->signatureKey = Setting::get('espay_signature_key');
+        $this->apiKey       = Setting::get('espay_api_key', ''); // Note: Pastikan user menyimpan API Key di database
+        $this->privateKey   = Setting::get('espay_private_key');
 
         $this->isProduction = Setting::get('espay_mode') === 'production';
 
@@ -231,39 +230,10 @@ class EspayService
     }
 
     /**
-     * Normalize bank code to valid Espay product codes.
-     * Maps common/old codes to the correct Espay format.
+     * Return bank code directly as sent from DB
      */
     protected function normalizeBankCode(string $code): string
     {
-        $map = [
-            // VA codes (old format → Espay format)
-            'BRIVA'         => 'BRIATM',
-            'BNIVA'         => 'BNIATM',
-            'MANDIRIVA'     => 'MANDIRIATM',
-            'BCAVA'         => 'BCAATM',
-            'PERMATAVA'     => 'PERMATAATM',
-            'CIMBVA'        => 'CIMBATM',
-            'DANAMONVA'     => 'DANAMONATM',
-            'MAYBANKVA'     => 'BIIATM',
-            'BTNVA'         => 'BTNATM',
-            'BTPNVA'        => 'BTPNATM',
-            'BSIAVA'        => 'BSIATM',
-            'BSIVA'         => 'BSIATM',
-            'BANKDKIVA'     => 'BANKDKIATM',
-            'BNCVA'         => 'BNCATM',
-            'SINARMASVA'    => 'BANKSINARMASATM',
-            'SEABANKVA'     => 'SEABANKATM',
-            // Also handle without suffix
-            'BRI'           => 'BRIATM',
-            'BNI'           => 'BNIATM',
-            'MANDIRI'       => 'MANDIRIATM',
-            'BCA'           => 'BCAATM',
-            'PERMATA'       => 'PERMATAATM',
-            'BSI'           => 'BSIATM',
-        ];
-
-        $upper = strtoupper($code);
-        return $map[$upper] ?? $upper;
+        return strtoupper($code);
     }
 }

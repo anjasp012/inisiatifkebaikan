@@ -186,6 +186,7 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
 
             $count = 0;
             foreach ($products as $product) {
+                // Simpan langsung bankcode ke database
                 $productCode = $product['bankCode'] ?? null;
                 $productName = $product['productName'] ?? $productCode;
                 if (!$productCode) {

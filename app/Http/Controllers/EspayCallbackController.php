@@ -20,12 +20,8 @@ class EspayCallbackController extends Controller
         $donation = Donation::where('transaction_id', $orderId)->first();
 
         if (!$donation) {
-            return response()->json([
-                'rq_uuid' => $request->input('rq_uuid'),
-                'rs_datetime' => now()->format('Y-m-d H:i:s'),
-                'error_code' => '0001',
-                'error_message' => 'Order ID not found'
-            ]);
+            // Note: Espay inquiry expects a plain text string response, not JSON.
+            return response('res_code=0001&res_msg=Order ID not found');
         }
 
         // Return the valid donation info to Espay
