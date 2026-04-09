@@ -20,12 +20,18 @@ class EspayCallbackController extends Controller
         $donation = Donation::where('transaction_id', $orderId)->first();
 
         if (!$donation) {
-            // Note: Espay inquiry expects a plain text string response, not JSON.
-            return response('res_code=0001&res_msg=Order ID not found');
+            // Error format: 1;Error Message;;;;;;
+            return response('1;Order ID not found;;;;;;');
         }
 
         // Return the valid donation info to Espay
-        return response('res_code=0000&res_msg=Success&order_id=' . $orderId . '&amount=' . (int)$donation->amount . '&ccy=IDR&description=Donasi ' . $donation->campaign->title);
+        // Format: error_code;error_message;order_id;amount;ccy;description;trx_date
+        $trxDate = date('d/m/Y H:i:s');
+        $desc = 'Donasi ' . $donation->campaign->title;
+        $amount = (string)(int)$donation->amount;
+        
+        $res = "0;Success;{$orderId};{$amount};IDR;{$desc};{$trxDate}";
+        return response($res);
     }
 
     /**
@@ -49,12 +55,14 @@ class EspayCallbackController extends Controller
 
             Log::info("Donation {$orderId} successfully updated to success via Espay.");
             
-            // Trigger any notifications if needed
-            // event(new \App\Events\DonationPaid($donation));
+            // Format: error_code;error_message;order_id;amount;ccy;description;trx_date
+            $trxDate = date('d/m/Y H:i:s');
+            $desc = 'Donasi ' . $donation->campaign->title;
+            $amount = (string)(int)$donation->amount;
 
-            return response('res_code=0000&res_msg=Success');
+            return response("0;Success;{$orderId};{$amount};IDR;{$desc};{$trxDate}");
         }
 
-        return response('res_code=0001&res_msg=Order ID not found');
+        return response('1;Order ID not found');
     }
 }
