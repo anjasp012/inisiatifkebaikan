@@ -16,13 +16,14 @@ class EspayService
 
     public function __construct()
     {
-        $this->merchantCode = Setting::get('espay_merchant_code');
-        $this->signatureKey = Setting::get('espay_signature_key');
-        $this->privateKey = Setting::get('espay_private_key');
-        
+        // TEMPORARY HARDCODE FOR TESTING - bypass DB
+        $this->merchantCode = 'SGWINISIATIFKEBAIKAN';
+        $this->signatureKey = 'azomlhfqb7if4qgj';
+        $this->privateKey = null;
+
         $this->isProduction = Setting::get('espay_mode') === 'production';
-        $this->baseUrl = $this->isProduction 
-            ? 'https://api.espay.id/' 
+        $this->baseUrl = $this->isProduction
+            ? 'https://api.espay.id/'
             : 'https://sandbox-api.espay.id/';
     }
 
