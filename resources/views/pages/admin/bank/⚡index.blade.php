@@ -141,41 +141,82 @@ new #[Layout('layouts.admin')] #[Title('Daftar Bank')] class extends Component {
 
     public function syncEspay()
     {
-        $merchantCode = \App\Models\Setting::get('espay_merchant_code');
-        if (!$merchantCode) {
-            $this->dispatch('toast', type: 'error', message: 'Merchant Code Espay belum diatur di Pengaturan ❌');
-            return;
-        }
-
-        $channels = [
-            ['code' => 'BCAVA', 'name' => 'BCA Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bca.png', 'method' => 'va'],
-            ['code' => 'MANDIRIVA', 'name' => 'Mandiri Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/mandiri.png', 'method' => 'va'],
-            ['code' => 'BRIVA', 'name' => 'BRI Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bri.png', 'method' => 'va'],
-            ['code' => 'BNIVA', 'name' => 'BNI Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bni.png', 'method' => 'va'],
-            ['code' => 'PERMATAVA', 'name' => 'Permata Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/permata.png', 'method' => 'va'],
-            ['code' => 'DANAMONVA', 'name' => 'Danamon Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/danamon.png', 'method' => 'va'],
-            ['code' => 'CIMBVA', 'name' => 'CIMB Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/cimb.png', 'method' => 'va'],
-            ['code' => 'MAYBANKVA', 'name' => 'Maybank Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/maybank.png', 'method' => 'va'],
-            ['code' => 'BSIVA', 'name' => 'BSI Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bsi.png', 'method' => 'va'],
-            ['code' => 'MUAMALATVA', 'name' => 'Muamalat Virtual Account', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/muamalat.png', 'method' => 'va'],
-            ['code' => 'QRIS', 'name' => 'QRIS', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/qris/qris.png', 'method' => 'qris'],
-            ['code' => 'SHOPEEPAY', 'name' => 'ShopeePay', 'logo' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/ewallet/shopeepay.png', 'method' => 'ewallet'],
-        ];
-
         try {
-            foreach ($channels as $channel) {
-                $bank = Bank::firstOrNew(['bank_code' => $channel['code'], 'type' => 'espay']);
+            $espay = new \App\Services\EspayService();
+            $result = $espay->getMerchantInfo();
+
+            if (!isset($result['error_code']) || $result['error_code'] !== '0000') {
+                $errMsg = $result['error_message'] ?? ($result['errorMsg'] ?? 'Unknown error');
+                $this->dispatch('toast', type: 'error', message: 'Gagal koneksi ke Espay: ' . $errMsg . ' ❌');
+                return;
+            }
+
+            $products = $result['data'] ?? [];
+            if (empty($products)) {
+                $this->dispatch('toast', type: 'error', message: 'Tidak ada data produk dari Espay ❌');
+                return;
+            }
+
+            // Logo fallback map berdasarkan productCode / nama
+            $logoMap = [
+                'BCAATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bca.png',
+                'MANDIRIATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/mandiri.png',
+                'BRIATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bri.png',
+                'BNIATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bni.png',
+                'PERMATAATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/permata.png',
+                'CIMBATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/cimb.png',
+                'DANAMONATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/danamon.png',
+                'BIIATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/maybank.png',
+                'BTNATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/btn.png',
+                'BSIATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bsi.png',
+                'BTPNATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/btpn.png',
+                'BANKDKIATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/bank-dki.png',
+                'BNCATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/neo.png',
+                'BANKSINARMASATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/sinarmas.png',
+                'SEABANKATM' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/seabank.png',
+                'QRISPLUS' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/qris/qris.png',
+                'SHOPEEQRPAY' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/ewallet/shopeepay.png',
+                'CIMBQRISDINAMIS' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/bank/cimb.png',
+                'OVO' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/ewallet/ovo.png',
+                'SALDOMUQR' => 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/ewallet/saldomu.png',
+            ];
+
+            $qrisCodes = ['QRISPLUS', 'SHOPEEQRPAY', 'CIMBQRISDINAMIS'];
+            $ewalletCodes = ['OVO', 'DANA', 'LINKAJA', 'GOPAY', 'SALDOMUQR', 'ASTRAPAY'];
+
+            $count = 0;
+            foreach ($products as $product) {
+                $productCode = $product['bankCode'] ?? null;
+                $productName = $product['productName'] ?? $productCode;
+                if (!$productCode) {
+                    continue;
+                }
+
+                // Tentukan method
+                if (in_array(strtoupper($productCode), $qrisCodes)) {
+                    $method = 'qris';
+                } elseif (in_array(strtoupper($productCode), $ewalletCodes)) {
+                    $method = 'ewallet';
+                } else {
+                    $method = 'va'; // Default ATM/VA
+                }
+
+                $logo = $logoMap[strtoupper($productCode)] ?? 'https://cdn.jsdelivr.net/gh/Adekabang/indonesia-logo-library@master/payment/qris/qris.png';
+
+                $bank = Bank::firstOrNew(['bank_code' => $productCode, 'type' => 'espay']);
                 if (!$bank->exists) {
                     $bank->is_active = true;
                 }
-                $bank->bank_name = $channel['name'];
-                $bank->logo = $channel['logo'];
-                $bank->method = $channel['method'];
+                $bank->bank_name = $productName;
+                $bank->logo = $logo;
+                $bank->method = $method;
                 $bank->save();
+                $count++;
             }
 
-            $this->dispatch('toast', type: 'success', message: 'Sinkronisasi Espay berhasil ✅');
+            $this->dispatch('toast', type: 'success', message: "Sinkronisasi Espay berhasil — {$count} produk diperbarui ✅");
         } catch (\Exception $e) {
+            \Log::error('Espay syncEspay error: ' . $e->getMessage());
             $this->dispatch('toast', type: 'error', message: 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }

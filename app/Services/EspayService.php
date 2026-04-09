@@ -9,9 +9,11 @@ use Illuminate\Support\Str;
 class EspayService
 {
     protected $merchantCode;
-    protected $signatureKey;
-    protected $privateKey;
-    protected $baseUrl;
+    protected $apiKey;       // untuk Merchant Info (key parameter)
+    protected $signatureKey; // untuk HMAC-SHA256 signature transaksi
+    protected $privateKey;   // untuk RSA signature SNAP (tidak dipakai lagi)
+    protected $baseUrl;      // untuk transaksi (sendinvoice, dll)
+    protected $merchantUrl;  // untuk merchant info (domain berbeda di production)
     protected $isProduction;
 
     public function __construct()
@@ -19,12 +21,43 @@ class EspayService
         // TEMPORARY HARDCODE FOR TESTING - bypass DB
         $this->merchantCode = 'SGWINISIATIFKEBAIKAN';
         $this->signatureKey = 'azomlhfqb7if4qgj';
-        $this->privateKey = null;
+        $this->apiKey       = '35d486e202931dba4f18f12edb250500'; // API Key untuk merchantinfo
+        $this->privateKey   = null;
 
         $this->isProduction = Setting::get('espay_mode') === 'production';
+
+        // Transaksi (sendinvoice):
+        //   Sandbox:    https://sandbox-api.espay.id/
+        //   Production: https://api.espay.id/
         $this->baseUrl = $this->isProduction
             ? 'https://api.espay.id/'
             : 'https://sandbox-api.espay.id/';
+
+        // Merchant Info (merchantinfo):
+        //   Sandbox:    https://sandbox-api.espay.id/rest/merchant/merchantinfo
+        //   Production: https://api-merchant.espay.id/rest/merchant/merchantinfo
+        $this->merchantUrl = $this->isProduction
+            ? 'https://api-merchant.espay.id/rest/merchant/merchantinfo'
+            : 'https://sandbox-api.espay.id/rest/merchant/merchantinfo';
+    }
+
+    /**
+     * Inquiry Merchant Info — ambil daftar produk yang aktif di akun merchant.
+     * Docs: https://docs.espay.id/api-mandatory/non-snap/inquiry-merchant-info/
+     * Wajib dipanggil untuk tahu productCode yang valid sebelum transaksi.
+     */
+    public function getMerchantInfo(): array
+    {
+        \Illuminate\Support\Facades\Log::info('Espay getMerchantInfo request', ['url' => $this->merchantUrl]);
+
+        $response = Http::asForm()->post($this->merchantUrl, [
+            'key' => $this->apiKey,
+        ]);
+
+        $result = $response->json();
+        \Illuminate\Support\Facades\Log::info('Espay getMerchantInfo response', $result ?? ['raw' => $response->body()]);
+
+        return $result ?? [];
     }
 
     /**
@@ -38,7 +71,7 @@ class EspayService
         $orderId = $params['order_id'];
         // Espay non-SNAP: amount is integer string (no decimals)
         $amount = (string)(int)$params['amount'];
-        $bankCode = $params['pay_code'];
+        $bankCode = $this->normalizeBankCode($params['pay_code']);
         $ccy = 'IDR';
         $commCode = strtoupper($this->merchantCode);
         
@@ -195,5 +228,42 @@ class EspayService
         }
 
         return base64_encode($binarySignature);
+    }
+
+    /**
+     * Normalize bank code to valid Espay product codes.
+     * Maps common/old codes to the correct Espay format.
+     */
+    protected function normalizeBankCode(string $code): string
+    {
+        $map = [
+            // VA codes (old format → Espay format)
+            'BRIVA'         => 'BRIATM',
+            'BNIVA'         => 'BNIATM',
+            'MANDIRIVA'     => 'MANDIRIATM',
+            'BCAVA'         => 'BCAATM',
+            'PERMATAVA'     => 'PERMATAATM',
+            'CIMBVA'        => 'CIMBATM',
+            'DANAMONVA'     => 'DANAMONATM',
+            'MAYBANKVA'     => 'BIIATM',
+            'BTNVA'         => 'BTNATM',
+            'BTPNVA'        => 'BTPNATM',
+            'BSIAVA'        => 'BSIATM',
+            'BSIVA'         => 'BSIATM',
+            'BANKDKIVA'     => 'BANKDKIATM',
+            'BNCVA'         => 'BNCATM',
+            'SINARMASVA'    => 'BANKSINARMASATM',
+            'SEABANKVA'     => 'SEABANKATM',
+            // Also handle without suffix
+            'BRI'           => 'BRIATM',
+            'BNI'           => 'BNIATM',
+            'MANDIRI'       => 'MANDIRIATM',
+            'BCA'           => 'BCAATM',
+            'PERMATA'       => 'PERMATAATM',
+            'BSI'           => 'BSIATM',
+        ];
+
+        $upper = strtoupper($code);
+        return $map[$upper] ?? $upper;
     }
 }
