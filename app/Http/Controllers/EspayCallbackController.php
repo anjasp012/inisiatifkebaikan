@@ -14,37 +14,55 @@ class EspayCallbackController extends Controller
      */
     public function inquiry(Request $request)
     {
-        Log::info('Espay Inquiry Callback:', $request->all());
+        Log::info('Espay Inquiry Callback (SNAP):', $request->all());
 
-        $orderId = $request->input('order_id');
-        $donation = Donation::where('transaction_id', $orderId)->first();
+        // Get Order ID from virtualAccountNo (SNAP format)
+        $orderId = $request->input('virtualAccountNo');
+        $donation = Donation::with('campaign')->where('transaction_id', $orderId)->first();
 
         if (!$donation) {
-            // Error format: 1;Error Message;;;;;;
-            return response('1;Order ID not found;;;;;;');
+            return response()->json([
+                'responseCode' => '4042400',
+                'responseMessage' => 'Order Not Found'
+            ]);
         }
 
-        // Return the valid donation info to Espay
-        // Format: error_code;error_message;order_id;amount;ccy;description;trx_date
-        $trxDate = date('d/m/Y H:i:s');
-        $desc = 'Donasi ' . $donation->campaign->title;
-        $amount = (string)(int)$donation->amount;
-        
-        $res = "0;Success;{$orderId};{$amount};IDR;{$desc};{$trxDate}";
-        return response($res);
+        $amount = number_format($donation->amount, 2, '.', '');
+        $campaignTitle = $donation->campaign ? $donation->campaign->title : 'Donasi';
+
+        return response()->json([
+            'responseCode' => '2002400',
+            'responseMessage' => 'Success',
+            'virtualAccountData' => [
+                'partnerServiceId' => 'SGWINISIATIFKEBAIKAN', // Should be dynamic
+                'customerNo' => $donation->phone ?? '08000000000',
+                'virtualAccountNo' => $orderId,
+                'virtualAccountName' => $donation->name ?? 'Donatur Inisiatif',
+                'totalAmount' => [
+                    'value' => $amount,
+                    'currency' => 'IDR'
+                ],
+                'billDetails' => [
+                    [
+                        'billDescription' => [
+                            'english' => 'Donation for ' . $campaignTitle,
+                            'indonesia' => 'Donasi untuk ' . $campaignTitle
+                        ]
+                    ]
+                ],
+                'inquiryRequestId' => $request->input('inquiryRequestId') ?? uniqid()
+            ]
+        ]);
     }
 
     /**
      * Handle Payment Notification Callback from Espay
-     * Espay calls this when the customer has successfully paid.
      */
     public function payment(Request $request)
     {
-        Log::info('Espay Payment Callback:', $request->all());
+        Log::info('Espay Payment Callback (SNAP):', $request->all());
 
-        // Note: For production, you should verify the signature here
-        
-        $orderId = $request->input('order_id');
+        $orderId = $request->input('virtualAccountNo') ?? $request->input('order_id');
         $donation = Donation::where('transaction_id', $orderId)->first();
 
         if ($donation) {
@@ -53,16 +71,17 @@ class EspayCallbackController extends Controller
                 'paid_at' => now(),
             ]);
 
-            Log::info("Donation {$orderId} successfully updated to success via Espay.");
+            Log::info("Donation {$orderId} successfully updated via SNAP Callback.");
             
-            // Format: error_code;error_message;order_id;amount;ccy;description;trx_date
-            $trxDate = date('d/m/Y H:i:s');
-            $desc = 'Donasi ' . $donation->campaign->title;
-            $amount = (string)(int)$donation->amount;
-
-            return response("0;Success;{$orderId};{$amount};IDR;{$desc};{$trxDate}");
+            return response()->json([
+                'responseCode' => '2002500', // Success code for payment notification
+                'responseMessage' => 'Success'
+            ]);
         }
 
-        return response('1;Order ID not found');
+        return response()->json([
+            'responseCode' => '4042500',
+            'responseMessage' => 'Order Not Found'
+        ]);
     }
 }
